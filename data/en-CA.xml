@@ -1,0 +1,24 @@
+<translation>
+  <key>gender_man</key>
+  <value>Man</value>
+</translation>
+
+<translation>
+  <key>gender_woman</key>
+  <value>Woman</value>
+</translation>
+
+<translation>
+  <key>gender_nb</key>
+  <value>Non-binary person</value>
+</translation>
+
+<translation>
+  <key>input_firstname</key>
+  <value>Enter the person's first name:</value>
+</translation>
+
+<translation>
+  <key>report_person</key>
+  <value>%s entered the %s facility on %s.</value>
+</translation>
