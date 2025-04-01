@@ -31,7 +31,6 @@ public class SupplyController {
 
 
 
-
     // Populate supplyModels from database
     private void populateSuppliesFromDatabase() throws SQLException {
         try {

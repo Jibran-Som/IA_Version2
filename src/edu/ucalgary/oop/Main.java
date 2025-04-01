@@ -8,10 +8,10 @@ public class Main {
 
 
     public static void main(String[] args) {
-        // userView.displaySupplyDetails();
+        userView.displaySupplyDetails();
 
-        translationManager = TranslationManager.getInstance();
-        System.out.println(translationManager.getTranslation("gender_man"));
+        //translationManager = TranslationManager.getInstance();
+        //System.out.println(translationManager.getTranslation("gender_man"));
 
 
 

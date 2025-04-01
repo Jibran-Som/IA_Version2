@@ -15,10 +15,10 @@
 
 <translation>
     <key>input_firstname</key>
-    <value>Enter the person's first name:</value>
+    <value>Test3: Enter the person's first name:</value>
 </translation>
 
 <translation>
     <key>report_person</key>
-    <value>%s entered the %s facility on %s.</value>
+    <value>Test4: %s entered the %s facility on %s.</value>
 </translation>
