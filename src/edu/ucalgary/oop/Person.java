@@ -3,14 +3,14 @@ package edu.ucalgary.oop;
 import java.util.ArrayList;
 
 
-public abstract class Person {
+public class Person {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
     private String comments;
     private String phoneNumber;
     private FamilyGroup familyGroup;
-    private Gender gender;
+    private String gender;
     private ArrayList<MedicalRecord> medicalRecords;
     private int personId = createPersonId();
     private static int counter = 10;
@@ -26,6 +26,8 @@ public abstract class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.medicalRecords = new ArrayList<>();
+
+
     }
 
 
@@ -75,7 +77,7 @@ public abstract class Person {
         return familyGroup;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
@@ -134,7 +136,7 @@ public abstract class Person {
 
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         if (gender == null) {
             throw new IllegalArgumentException("Gender cannot be null");
         }

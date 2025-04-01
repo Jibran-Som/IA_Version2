@@ -1,6 +1,6 @@
 package edu.ucalgary.oop;
 
-public abstract class Supply {
+public class Supply {
     private String supplyName;
     private String supplyType;
     private int supplyId = createSupplyId();
@@ -9,9 +9,10 @@ public abstract class Supply {
 
     // Constructor
     public Supply(String supplyName, String supplyType) {
+        /*
         if (supplyName == null || supplyName.trim().isEmpty()) {
             throw new IllegalArgumentException("Supply name cannot be null or empty");
-        }
+        }*/
         if (supplyType == null || supplyType.trim().isEmpty()) {
             throw new IllegalArgumentException("Supply type cannot be null or empty");
         }
@@ -64,5 +65,7 @@ public abstract class Supply {
     private int createSupplyId() {
         return counter++;
     }
+
+
 
 }

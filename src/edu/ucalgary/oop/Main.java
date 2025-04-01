@@ -1,29 +1,44 @@
 package edu.ucalgary.oop;
 
+import java.sql.SQLException;
+
 public class Main {
+    public static UserView userView = new UserView();
+    public static TranslationManager translationManager;
 
 
     public static void main(String[] args) {
-        FileModel fileModel = new FileModel("data/en-CA.xml", null);
-        fileModel.openFile();
-        fileModel.readFile();
-        System.out.println(fileModel.getFileContent());
+        // userView.displaySupplyDetails();
+
+        translationManager = TranslationManager.getInstance();
+        System.out.println(translationManager.getTranslation("gender_man"));
+
+
+
+
+
+
 
     }
 
 }
 
-/*import java.util.HashMap;
-import java.util.Map;
+/*
 
-public class TranslationManager {
-    private Map<String, String> translations = new HashMap<>();
+        FileModel fileModel = new FileModel("data/en-CA.xml", null);
+        fileModel.openFile();
+        fileModel.readFile();
+        System.out.println(fileModel.getFileContent());
+        translationManager = TranslationManager.getInstance();
+        System.out.println(translationManager.getTranslation("gender_man"));
 
-    public void addTranslation(String key, String value) {
-        translations.put(key, value);
-    }
+        translationManager = TranslationManager.getInstance();
+        translationManager.loadTranslations("data/en-CA.xml");
+        System.out.println(translationManager.getTranslation("gender_nb"));
 
-    public String getTranslation(String key) {
-        return translations.get(key);
-    }
-}*/
+
+
+
+
+
+*/
