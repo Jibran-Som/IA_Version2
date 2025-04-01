@@ -93,7 +93,7 @@ public class UserView {
                         updateSupply();
                         break;
                     case 4:
-                        allocateSupply();
+                        // allocateSupply();
                         break;
                     case 0:
                         stayInMenu = false;
@@ -337,52 +337,6 @@ public class UserView {
     }
 
 
-    public static void allocateSupply() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("\nAllocate Supply");
-        System.out.println("----------------");
-
-        try {
-            // First show all available supplies
-            viewAllSupplies();
-
-            System.out.print("\nEnter the ID of the supply to allocate: ");
-            int supplyId = Integer.parseInt(scanner.nextLine());
-
-            System.out.println("\nAllocation Options:");
-            System.out.println("1. Allocate to a person");
-            System.out.println("2. Allocate to a location");
-            System.out.print("Enter your choice (1 or 2): ");
-            int allocationChoice = Integer.parseInt(scanner.nextLine());
-
-            Integer personId = null;
-            Integer locationId = null;
-
-            if (allocationChoice == 1) {
-                System.out.print("Enter person ID: ");
-                personId = Integer.parseInt(scanner.nextLine());
-            } else if (allocationChoice == 2) {
-                System.out.print("Enter location ID: ");
-                locationId = Integer.parseInt(scanner.nextLine());
-            } else {
-                System.out.println("Invalid choice. Allocation cancelled.");
-                return;
-            }
-
-            // Call the controller method
-            supplyController.allocateSupply(supplyId, personId, locationId);
-            System.out.println("Supply allocated successfully!");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter valid numbers for IDs.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An unexpected error occurred: " + e.getMessage());
-        }
-    }
-
 
 
 
@@ -404,6 +358,8 @@ public class UserView {
         System.out.println("0. Back to Main Menu");
         System.out.print("\nEnter your choice: ");
     }
+
+
 
 
 

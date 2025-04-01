@@ -100,21 +100,6 @@ public class SupplyController {
 
 
 
-    // Allocate supply to person or location
-    public void allocateSupply(int supplyId, Integer personId, Integer locationId) throws SQLException {
-        if (personId == null && locationId == null) {
-            throw new IllegalArgumentException("Must specify either personId or locationId");
-        }
-
-        try {
-            databaseManager.allocateSupply(supplyId, personId, locationId);
-        } catch (SQLException e) {
-            System.err.println("Error allocating supply: " + e.getMessage());
-            throw e;
-        }
-    }
-
-
 
 
     // Get supplies allocated to a specific person or location

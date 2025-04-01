@@ -51,7 +51,7 @@ public class DatabaseManager {
 
     // Code for Supply
 
-    public int addSupply(Supply supply) throws SQLException {
+    public void addSupply(Supply supply) throws SQLException {
         String sql = "INSERT INTO Supply (type, comments) VALUES (?, ?) RETURNING supply_id";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -60,7 +60,8 @@ public class DatabaseManager {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1);
+                rs.getInt(1);
+                return;
             }
             throw new SQLException("Failed to insert supply, no ID obtained");
         }
@@ -168,4 +169,22 @@ public class DatabaseManager {
         }
         return supplies;
     }
+
+
+
+    // Code for Person
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
