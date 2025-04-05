@@ -99,7 +99,7 @@ public class UserView {
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-3.");
+                        System.out.println("Invalid choice. Please enter a number between 0-4.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");

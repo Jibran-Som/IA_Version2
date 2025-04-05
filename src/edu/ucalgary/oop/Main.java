@@ -4,11 +4,19 @@ import java.sql.SQLException;
 
 public class Main {
     public static UserView userView = new UserView();
+    public static LocationController locationController = new LocationController();
     public static TranslationManager translationManager;
 
 
     public static void main(String[] args) {
         userView.displaySupplyDetails();
+
+
+
+
+
+        //
+        // System.out.println(locationController.getAllLocations());
 
         //translationManager = TranslationManager.getInstance();
         //System.out.println(translationManager.getTranslation("gender_man"));

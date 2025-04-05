@@ -172,7 +172,138 @@ public class DatabaseManager {
 
 
 
-    // Code for Person
+
+
+
+
+
+
+
+
+
+
+// Code for Location
+public void addLocation(Location location) throws SQLException {
+    String sql = "INSERT INTO Location (name, address) VALUES (?, ?) RETURNING location_id";
+
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        pstmt.setString(1, location.getLocationName());
+        pstmt.setString(2, location.getLocationAddress());
+
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            location.setLocationId(rs.getInt("location_id"));
+        }
+    }
+}
+
+    public List<Location> getAllLocations() throws SQLException {
+        List<Location> locations = new ArrayList<>();
+        String sql = "SELECT * FROM Location";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Location location = new Location(
+                        rs.getString("name"),
+                        rs.getString("address")
+                );
+                location.setLocationId(rs.getInt("location_id"));
+                locations.add(location);
+            }
+        }
+        return locations;
+    }
+
+    public void updateLocation(Location location) throws SQLException {
+        String sql = "UPDATE Location SET name = ?, address = ? WHERE location_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, location.getLocationName());
+            pstmt.setString(2, location.getLocationAddress());
+            pstmt.setInt(3, location.getLocationId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating location failed, no rows affected.");
+            }
+        }
+    }
+
+    public void deleteLocation(int locationId) throws SQLException {
+        String sql = "DELETE FROM Location WHERE location_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, locationId);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting location failed, no rows affected.");
+            }
+        }
+    }
+
+    public List<Person> getOccupantsAtLocation(int locationId) throws SQLException {
+        List<Person> occupants = new ArrayList<>();
+        String sql = "SELECT p.* FROM Person p JOIN PersonLocation pl ON p.person_id = pl.person_id WHERE pl.location_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, locationId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(rs.getInt("person_id"));
+                occupants.add(person);
+            }
+        }
+        return occupants;
+    }
+
+    public void addPersonToLocation(int personId, int locationId) throws SQLException {
+        String sql = "INSERT INTO PersonLocation (person_id, location_id) VALUES (?, ?)";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, personId);
+            pstmt.setInt(2, locationId);
+
+            pstmt.executeUpdate();
+        }
+    }
+
+    public void removePersonFromLocation(int personId, int locationId) throws SQLException {
+        String sql = "DELETE FROM PersonLocation WHERE person_id = ? AND location_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, personId);
+            pstmt.setInt(2, locationId);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Removing person from location failed, no rows affected.");
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
