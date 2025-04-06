@@ -69,4 +69,38 @@ public class PersonController {
     public void refresh() throws SQLException {
         populatePeopleFromDatabase();
     }
+
+
+
+    public void convertToDisasterVictim(int personId) throws SQLException {
+        Person person = getPersonById(personId);
+        if (person == null) {
+            throw new IllegalArgumentException("Person not found with ID: " + personId);
+        }
+
+        if (person instanceof DisasterVictim) {
+            throw new IllegalArgumentException("Person is already a DisasterVictim");
+        }
+
+        // Create new DisasterVictim with same properties
+        DisasterVictim victim = new DisasterVictim(person.getFirstName(), person.getLastName());
+        if (person.getDateOfBirth() != null) {
+            victim.setDateOfBirth(person.getDateOfBirth());
+        }
+        victim.setGender(person.getGender());
+        victim.setComments(person.getComments());
+        victim.setPhoneNumber(person.getPhoneNumber());
+        victim.setFamilyGroup(person.getFamilyGroup());
+        victim.setMedicalRecords(person.getMedicalRecords());
+
+        // Delete original person and add new victim
+        deletePerson(personId);
+        addPerson(victim);
+
+        // Transfer any allocated supplies
+        List<Supply> allocatedSupplies = databaseManager.getSuppliesAllocatedTo(personId, null);
+        for (Supply supply : allocatedSupplies) {
+            databaseManager.allocateSupply(supply.getSupplyId(), victim.getPersonId(), null);
+        }
+    }
 }

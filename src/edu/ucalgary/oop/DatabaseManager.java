@@ -2,7 +2,9 @@ package edu.ucalgary.oop;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -492,19 +494,35 @@ public void addLocation(Location location) throws SQLException {
 
     public List<Person> getAllPeople() throws SQLException {
         List<Person> people = new ArrayList<>();
-        String sql = "SELECT * FROM Person";
 
+        // First get all people
+        String personSql = "SELECT * FROM Person";
         try (Statement stmt = connection.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery(personSql)) {
+
+            // Pre-fetch all supply allocations to minimize database queries
+            Map<Integer, Boolean> hasSuppliesMap = getPeopleWithSuppliesMap();
 
             while (rs.next()) {
-                Person person = new Person(
-                        rs.getString("first_name"),
-                        rs.getString("last_name")
-                );
-                person.setPersonId(rs.getInt("person_id"));
+                int personId = rs.getInt("person_id");
+                boolean isDisasterVictim = hasSuppliesMap.getOrDefault(personId, false);
 
-                // Only set date of birth if it's not null
+                Person person;
+                if (isDisasterVictim) {
+                    person = new DisasterVictim(
+                            rs.getString("first_name"),
+                            rs.getString("last_name")
+                    );
+                } else {
+                    person = new Person(
+                            rs.getString("first_name"),
+                            rs.getString("last_name")
+                    );
+                }
+
+                person.setPersonId(personId);
+
+                // Set date of birth if available
                 String dob = rs.getString("date_of_birth");
                 if (dob != null) {
                     person.setDateOfBirth(dob);
@@ -521,11 +539,18 @@ public void addLocation(Location location) throws SQLException {
 
                 // Handle family group
                 int familyGroupId = rs.getInt("family_group");
-                if (!rs.wasNull()) {  // Check if family_group was not NULL
+                if (!rs.wasNull()) {
                     FamilyGroup familyGroup = getFamilyGroupById(familyGroupId);
                     if (familyGroup != null) {
                         person.setFamilyGroup(familyGroup);
                     }
+                }
+
+                // If this is a DisasterVictim, load their personal inventory
+                if (isDisasterVictim && person instanceof DisasterVictim) {
+                    DisasterVictim victim = (DisasterVictim) person;
+                    List<Supply> supplies = getSuppliesAllocatedTo(personId, null);
+                    victim.setPersonalInventory(new ArrayList<>(supplies));
                 }
 
                 people.add(person);
@@ -534,6 +559,18 @@ public void addLocation(Location location) throws SQLException {
         return people;
     }
 
+    private Map<Integer, Boolean> getPeopleWithSuppliesMap() throws SQLException {
+        Map<Integer, Boolean> result = new HashMap<>();
+        String sql = "SELECT DISTINCT person_id FROM SupplyAllocation WHERE person_id IS NOT NULL";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                result.put(rs.getInt("person_id"), true);
+            }
+        }
+        return result;
+    }
     public Person getPersonById(int personId) throws SQLException {
         String sql = "SELECT * FROM Person WHERE person_id = ?";
 
@@ -542,18 +579,33 @@ public void addLocation(Location location) throws SQLException {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                Person person = new Person(
-                        rs.getString("first_name"),
-                        rs.getString("last_name")
-                );
+                // Determine if this person should be a DisasterVictim
+                boolean isDisasterVictim = checkIfPersonHasSupplies(personId);
+
+                Person person;
+                if (isDisasterVictim) {
+                    // Create as DisasterVictim
+                    person = new DisasterVictim(
+                            rs.getString("first_name"),
+                            rs.getString("last_name")
+                    );
+                } else {
+                    // Create as regular Person
+                    person = new Person(
+                            rs.getString("first_name"),
+                            rs.getString("last_name")
+                    );
+                }
+
                 person.setPersonId(personId);
 
-                // Only set date of birth if it's not null
+                // Set date of birth if available
                 String dob = rs.getString("date_of_birth");
                 if (dob != null) {
                     person.setDateOfBirth(dob);
                 }
 
+                // Set other fields
                 person.setGender(rs.getString("gender"));
                 person.setComments(rs.getString("comments"));
 
@@ -565,11 +617,18 @@ public void addLocation(Location location) throws SQLException {
 
                 // Handle family group
                 int familyGroupId = rs.getInt("family_group");
-                if (!rs.wasNull()) {  // Check if family_group was not NULL
+                if (!rs.wasNull()) {
                     FamilyGroup familyGroup = getFamilyGroupById(familyGroupId);
                     if (familyGroup != null) {
                         person.setFamilyGroup(familyGroup);
                     }
+                }
+
+                // If this is a DisasterVictim, load their personal inventory
+                if (isDisasterVictim && person instanceof DisasterVictim) {
+                    DisasterVictim victim = (DisasterVictim) person;
+                    List<Supply> supplies = getSuppliesAllocatedTo(personId, null);
+                    victim.setPersonalInventory(new ArrayList<>(supplies));
                 }
 
                 return person;
@@ -577,6 +636,17 @@ public void addLocation(Location location) throws SQLException {
         }
         return null;
     }
+
+    private boolean checkIfPersonHasSupplies(int personId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE person_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, personId);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        }
+    }
+
     // New helper method to get FamilyGroup by ID
     private FamilyGroup getFamilyGroupById(int familyGroupId) throws SQLException {
         String sql = "SELECT * FROM Person WHERE family_group = ?";
@@ -707,6 +777,170 @@ public void addLocation(Location location) throws SQLException {
 
 
 
+
+    // Add these methods to DatabaseManager.java
+
+    public List<Inquiry> getAllInquiries() throws SQLException {
+        List<Inquiry> inquiries = new ArrayList<>();
+        String sql = "SELECT i.*, " +
+                "p1.first_name as inquirer_first, p1.last_name as inquirer_last, " +
+                "p2.first_name as seeking_first, p2.last_name as seeking_last, " +
+                "l.name as location_name, l.address as location_address " +
+                "FROM Inquiry i " +
+                "JOIN Person p1 ON i.inquirer_id = p1.person_id " +
+                "JOIN Person p2 ON i.seeking_id = p2.person_id " +
+                "JOIN Location l ON i.location_id = l.location_id";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                // Create inquirer (regular Person)
+                Person inquirer = new Person(
+                        rs.getString("inquirer_first"),
+                        rs.getString("inquirer_last")
+                );
+                inquirer.setPersonId(rs.getInt("inquirer_id"));
+
+                // Create missing person (DisasterVictim)
+                DisasterVictim missingPerson = new DisasterVictim(
+                        rs.getString("seeking_first"),
+                        rs.getString("seeking_last")
+                );
+                missingPerson.setPersonId(rs.getInt("seeking_id"));
+
+                // Create location
+                Location location = new Location(
+                        rs.getString("location_name"),
+                        rs.getString("location_address")
+                );
+                location.setLocationId(rs.getInt("location_id"));
+
+                // Create inquiry
+                Timestamp timestamp = rs.getTimestamp("date_of_inquiry");
+                String dateStr = timestamp != null ? timestamp.toLocalDateTime().toLocalDate().toString() : "";
+
+                Inquiry inquiry = new Inquiry(
+                        inquirer,
+                        missingPerson,
+                        dateStr,
+                        rs.getString("comments"),
+                        location
+                );
+                inquiry.setInquiryId(rs.getInt("inquiry_id"));
+
+                inquiries.add(inquiry);
+            }
+        }
+        return inquiries;
+    }
+
+    public Inquiry getInquiryById(int inquiryId) throws SQLException {
+        String sql = "SELECT i.*, " +
+                "p1.first_name as inquirer_first, p1.last_name as inquirer_last, " +
+                "p2.first_name as seeking_first, p2.last_name as seeking_last, " +
+                "l.name as location_name, l.address as location_address " +
+                "FROM Inquiry i " +
+                "JOIN Person p1 ON i.inquirer_id = p1.person_id " +
+                "JOIN Person p2 ON i.seeking_id = p2.person_id " +
+                "JOIN Location l ON i.location_id = l.location_id " +
+                "WHERE i.inquiry_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, inquiryId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                // Create inquirer (regular Person)
+                Person inquirer = new Person(
+                        rs.getString("inquirer_first"),
+                        rs.getString("inquirer_last")
+                );
+                inquirer.setPersonId(rs.getInt("inquirer_id"));
+
+                // Create missing person (DisasterVictim)
+                DisasterVictim missingPerson = new DisasterVictim(
+                        rs.getString("seeking_first"),
+                        rs.getString("seeking_last")
+                );
+                missingPerson.setPersonId(rs.getInt("seeking_id"));
+
+                // Create location
+                Location location = new Location(
+                        rs.getString("location_name"),
+                        rs.getString("location_address")
+                );
+                location.setLocationId(rs.getInt("location_id"));
+
+                // Create inquiry
+                Timestamp timestamp = rs.getTimestamp("date_of_inquiry");
+                String dateStr = timestamp != null ? timestamp.toLocalDateTime().toLocalDate().toString() : "";
+
+                Inquiry inquiry = new Inquiry(
+                        inquirer,
+                        missingPerson,
+                        dateStr,
+                        rs.getString("comments"),
+                        location
+                );
+                inquiry.setInquiryId(rs.getInt("inquiry_id"));
+
+                return inquiry;
+            }
+        }
+        return null;
+    }
+
+    public void addInquiry(Inquiry inquiry) throws SQLException {
+        String sql = "INSERT INTO Inquiry (inquirer_id, seeking_id, location_id, date_of_inquiry, comments) " +
+                "VALUES (?, ?, ?, ?::timestamp, ?) RETURNING inquiry_id";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, inquiry.getInquirer().getPersonId());
+            pstmt.setInt(2, inquiry.getMissingPerson().getPersonId());
+            pstmt.setInt(3, inquiry.getLastKnownLocation().getLocationId());
+            pstmt.setString(4, inquiry.getDateOfInquiry() + " 00:00:00"); // Add time component
+            pstmt.setString(5, inquiry.getInfoProvided());
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                inquiry.setInquiryId(rs.getInt("inquiry_id"));
+            }
+        }
+    }
+
+    public void updateInquiry(Inquiry inquiry) throws SQLException {
+        String sql = "UPDATE Inquiry SET inquirer_id = ?, seeking_id = ?, location_id = ?, " +
+                "date_of_inquiry = ?::timestamp, comments = ? " +
+                "WHERE inquiry_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, inquiry.getInquirer().getPersonId());
+            pstmt.setInt(2, inquiry.getMissingPerson().getPersonId());
+            pstmt.setInt(3, inquiry.getLastKnownLocation().getLocationId());
+            pstmt.setString(4, inquiry.getDateOfInquiry() + " 00:00:00"); // Add time component
+            pstmt.setString(5, inquiry.getInfoProvided());
+            pstmt.setInt(6, inquiry.getInquiryId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating inquiry failed, no rows affected.");
+            }
+        }
+    }
+
+    public void deleteInquiry(int inquiryId) throws SQLException {
+        String sql = "DELETE FROM Inquiry WHERE inquiry_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, inquiryId);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting inquiry failed, no rows affected.");
+            }
+        }
+    }
 
 
 }

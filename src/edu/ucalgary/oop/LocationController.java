@@ -137,4 +137,22 @@ public class LocationController {
     public void refreshLocations() throws SQLException {
         populateLocationsFromDatabase();
     }
+
+
+    public Location getLocationById(int locationId) throws SQLException, IllegalArgumentException {
+        // Validate input
+        if (locationId <= 0) {
+            throw new IllegalArgumentException("Location ID must be positive");
+        }
+
+        // First check local models
+        for (Location location : locationModels) {
+            if (location.getLocationId() == locationId) {
+                return location;
+            }
+        }
+
+        return null;
+    }
+
 }

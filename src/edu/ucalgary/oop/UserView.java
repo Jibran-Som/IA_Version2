@@ -12,6 +12,8 @@ public class UserView {
     public static SupplyController supplyController;
     public static MedicalRecordController medicalRecordController;
     public static PersonController personController;
+    public static InquiryController inquiryController;
+
 
 
 
@@ -50,6 +52,7 @@ public class UserView {
         locationController = new LocationController();
         medicalRecordController = new MedicalRecordController();
         personController = new PersonController();
+        inquiryController = new InquiryController();
 
 
     }
@@ -932,6 +935,7 @@ public class UserView {
             System.out.println("3. Update Person");
             System.out.println("4. View Disaster Victims");
             System.out.println("5. Add Disaster Victim");
+            System.out.println("6. Convert to Disaster Victim");
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -954,6 +958,8 @@ public class UserView {
                     case 5:
                         addDisasterVictim();
                         break;
+                    case 6:
+                        convertToDisasterVictim();
                     case 0:
                         stayInMenu = false;
                         break;
@@ -1104,6 +1110,25 @@ public class UserView {
         }
     }
 
+
+    public static void convertToDisasterVictim() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            viewAllPersons();
+            System.out.print("\nEnter ID of person to convert to Disaster Victim: ");
+            int personId = Integer.parseInt(scanner.nextLine());
+
+            personController.convertToDisasterVictim(personId);
+            System.out.println("Person converted to Disaster Victim successfully!");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+
     // Disaster Victim specific methods
     public static void viewDisasterVictims() {
         System.out.println("\n--------------------------------------------------");
@@ -1193,6 +1218,260 @@ public class UserView {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
+
+
+
+
+
+    public static void displayInquiryDetails() {
+        Scanner scanner = new Scanner(System.in);
+        boolean stayInMenu = true;
+
+        while (stayInMenu) {
+            System.out.println("\nInquiry Management");
+            System.out.println("1. View All Inquiries");
+            System.out.println("2. Add New Inquiry");
+            System.out.println("3. Update Inquiry");
+            System.out.println("4. Delete Inquiry");
+            System.out.println("0. Back to Main Menu");
+            System.out.print("\nEnter your choice: ");
+
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        viewAllInquiries();
+                        break;
+                    case 2:
+                        addNewInquiry();
+                        break;
+                    case 3:
+                        updateInquiry();
+                        break;
+                    case 4:
+                        deleteInquiry();
+                        break;
+                    case 0:
+                        stayInMenu = false;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 0-4.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void viewAllInquiries() {
+        System.out.println("\n--------------------------------------------------");
+        System.out.printf("%-8s %-20s %-20s %-15s %-20s %-30s%n",
+                "ID", "INQUIRER", "MISSING PERSON", "DATE", "LOCATION", "COMMENTS");
+        System.out.println("--------------------------------------------------");
+
+        for (Inquiry inquiry : inquiryController.getAllInquiries()) {
+            String inquirerName = inquiry.getInquirer().getFirstName() + " " + inquiry.getInquirer().getLastName();
+            String missingPersonName = inquiry.getMissingPerson().getFirstName() + " " + inquiry.getMissingPerson().getLastName();
+            String locationName = inquiry.getLastKnownLocation().getLocationName();
+
+            System.out.printf("%-8s %-20s %-20s %-15s %-20s %-30s%n",
+                    inquiry.getInquiryId(),
+                    inquirerName,
+                    missingPersonName,
+                    inquiry.getDateOfInquiry(),
+                    locationName,
+                    inquiry.getInfoProvided());
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
+
+    public static void addNewInquiry() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nAdd New Inquiry");
+        System.out.println("----------------");
+
+        try {
+            // List available people (potential inquirers)
+            System.out.println("\nAvailable Inquirers:");
+            for (Person person : personController.getAllPeople()) {
+                System.out.println(person.getPersonId() + ": " +
+                        person.getFirstName() + " " + person.getLastName());
+            }
+
+            System.out.print("\nEnter ID of inquirer: ");
+            int inquirerId = Integer.parseInt(scanner.nextLine());
+            Person inquirer = personController.getPersonById(inquirerId);
+            if (inquirer == null) {
+                throw new IllegalArgumentException("Invalid inquirer ID");
+            }
+
+            // List available disaster victims (missing persons)
+            System.out.println("\nAvailable Missing Persons:");
+            for (Person person : personController.getAllPeople()) {
+                if (person instanceof DisasterVictim) {
+                    System.out.println(person.getPersonId() + ": " +
+                            person.getFirstName() + " " + person.getLastName());
+                }
+            }
+
+            System.out.print("\nEnter ID of missing person: ");
+            int missingPersonId = Integer.parseInt(scanner.nextLine());
+            Person person = personController.getPersonById(missingPersonId);
+            if (!(person instanceof DisasterVictim)) {
+                throw new IllegalArgumentException("Selected person is not a Disaster Victim");
+            }
+            DisasterVictim missingPerson = (DisasterVictim) person;
+
+            // List available locations
+            System.out.println("\nAvailable Locations:");
+            for (Location location : locationController.getAllLocations()) {
+                System.out.println(location.getLocationId() + ": " +
+                        location.getLocationName() + " - " + location.getLocationAddress());
+            }
+
+            System.out.print("\nEnter ID of last known location: ");
+            int locationId = Integer.parseInt(scanner.nextLine());
+            Location location = locationController.getLocationById(locationId);
+            if (location == null) {
+                throw new IllegalArgumentException("Invalid location ID");
+            }
+
+            // Get inquiry details
+            System.out.print("\nEnter date of inquiry (YYYY-MM-DD): ");
+            String date = scanner.nextLine();
+
+            System.out.print("Enter information provided: ");
+            String info = scanner.nextLine();
+
+            // Create and add the inquiry
+            Inquiry inquiry = new Inquiry(inquirer, missingPerson, date, info, location);
+            inquiryController.addInquiry(inquiry);
+
+            System.out.println("\nInquiry added successfully! ID: " + inquiry.getInquiryId());
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid numbers for IDs.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public static void updateInquiry() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nUpdate Inquiry");
+        System.out.println("--------------");
+
+        try {
+            // First show all inquiries
+            viewAllInquiries();
+
+            System.out.print("\nEnter ID of inquiry to update: ");
+            int inquiryId = Integer.parseInt(scanner.nextLine());
+
+            Inquiry inquiry = inquiryController.getInquiryById(inquiryId);
+            if (inquiry == null) {
+                System.out.println("No inquiry found with ID: " + inquiryId);
+                return;
+            }
+
+            // Display current details
+            System.out.println("\nCurrent Inquiry Details:");
+            System.out.println("1. Inquirer: " + inquiry.getInquirer().getFirstName() + " " +
+                    inquiry.getInquirer().getLastName());
+            System.out.println("2. Missing Person: " + inquiry.getMissingPerson().getFirstName() + " " +
+                    inquiry.getMissingPerson().getLastName());
+            System.out.println("3. Location: " + inquiry.getLastKnownLocation().getLocationName());
+            System.out.println("4. Date: " + inquiry.getDateOfInquiry());
+            System.out.println("5. Info Provided: " + inquiry.getInfoProvided());
+
+            System.out.print("\nEnter field number to update (1-5) or 0 to cancel: ");
+            int field = Integer.parseInt(scanner.nextLine());
+
+            if (field == 0) return;
+
+            System.out.print("Enter new value: ");
+            String newValue = scanner.nextLine();
+
+            switch (field) {
+                case 1:
+                    // Update inquirer
+                    Person newInquirer = personController.getPersonById(Integer.parseInt(newValue));
+                    if (newInquirer == null) {
+                        throw new IllegalArgumentException("Invalid person ID");
+                    }
+                    inquiry.setInquirer(newInquirer);
+                    break;
+                case 2:
+                    // Update missing person
+                    Person person = personController.getPersonById(Integer.parseInt(newValue));
+                    if (!(person instanceof DisasterVictim)) {
+                        throw new IllegalArgumentException("Selected person is not a Disaster Victim");
+                    }
+                    inquiry.setMissingPerson((DisasterVictim) person);
+                    break;
+                case 3:
+                    // Update location
+                    Location newLocation = locationController.getLocationById(Integer.parseInt(newValue));
+                    if (newLocation == null) {
+                        throw new IllegalArgumentException("Invalid location ID");
+                    }
+                    inquiry.setLastKnownLocation(newLocation);
+                    break;
+                case 4:
+                    // Update date
+                    inquiry.setDateOfInquiry(newValue);
+                    break;
+                case 5:
+                    // Update info
+                    inquiry.setInfoProvided(newValue);
+                    break;
+                default:
+                    System.out.println("Invalid field number");
+                    return;
+            }
+
+            inquiryController.updateInquiry(inquiry);
+            System.out.println("Inquiry updated successfully!");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid numbers where required.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public static void deleteInquiry() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nDelete Inquiry");
+        System.out.println("--------------");
+
+        try {
+            viewAllInquiries();
+            System.out.print("\nEnter ID of inquiry to delete: ");
+            int inquiryId = Integer.parseInt(scanner.nextLine());
+
+            inquiryController.deleteInquiry(inquiryId);
+            System.out.println("Inquiry deleted successfully!");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
 
 
 
