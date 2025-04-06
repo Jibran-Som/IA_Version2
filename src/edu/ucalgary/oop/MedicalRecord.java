@@ -13,19 +13,24 @@ public class MedicalRecord {
     public MedicalRecord(Person person, Location location, String treatmentDetails, String dateOfTreatment) {
         this.person = person;
         this.location = location;
-        if(!isValidDateFormat(dateOfTreatment)) {
-            throw new IllegalArgumentException("Invalid date format");
+
+        // Convert database timestamp to date string if needed
+        if (dateOfTreatment != null && dateOfTreatment.contains(" ")) {
+            dateOfTreatment = dateOfTreatment.split(" ")[0]; // Take just the date part
         }
-        if(treatmentDetails == null) {
+
+        if (!isValidDateFormat(dateOfTreatment)) {
+            throw new IllegalArgumentException("Invalid date format: " + dateOfTreatment);
+        }
+        if (treatmentDetails == null) {
             throw new IllegalArgumentException("Treatment details cannot be null");
         }
-        if(treatmentDetails.trim().isEmpty()) {
+        if (treatmentDetails.trim().isEmpty()) {
             throw new IllegalArgumentException("Treatment details cannot be empty");
         }
         this.treatmentDetails = treatmentDetails;
         this.dateOfTreatment = dateOfTreatment;
     }
-
 
     // Getters
     public Person getPerson() {
@@ -92,7 +97,16 @@ public class MedicalRecord {
 
     // Private Code for Checking or Initialization
     private static boolean isValidDateFormat(String date) {
-        if (date == null || date.length() != 10) {
+        if (date == null) {
+            return false;
+        }
+
+        // Handle database timestamp format (YYYY-MM-DD HH:MM:SS)
+        if (date.contains(" ")) {
+            date = date.split(" ")[0];
+        }
+
+        if (date.length() != 10) {
             return false;
         }
 
@@ -100,29 +114,27 @@ public class MedicalRecord {
             return false;
         }
 
-        String yearStr = date.substring(0, 4);
-        String monthStr = date.substring(5, 7);
-        String dayStr = date.substring(8, 10);
+        try {
+            String yearStr = date.substring(0, 4);
+            String monthStr = date.substring(5, 7);
+            String dayStr = date.substring(8, 10);
 
+            int year = Integer.parseInt(yearStr);
+            int month = Integer.parseInt(monthStr);
+            int day = Integer.parseInt(dayStr);
 
-        int year = Integer.parseInt(yearStr);
-        int month = Integer.parseInt(monthStr);
-        int day = Integer.parseInt(dayStr);
+            if (month < 1 || month > 12) {
+                return false;
+            }
 
-        if (month < 1 || month > 12) {
+            if (day < 1 || day > 31) {
+                return false;
+            }
+
+            return year >= 1900 && year <= 2100;
+        } catch (NumberFormatException e) {
             return false;
         }
-
-        if (day < 1 || day > 31) {
-            return false;
-        }
-
-        if(year < 1900 || year > 2026) {
-            return false;
-        }
-
-        return true;
-
     }
 
     private static int createMedicalRecordId() {

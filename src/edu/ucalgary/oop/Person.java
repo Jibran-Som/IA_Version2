@@ -123,9 +123,9 @@ public class Person {
         if(isValidPhoneNumberSimpleFormat(phoneNumber)){
             this.phoneNumber = phoneNumber;
         }
-        else {
+        /*else {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
-        }
+        }*/
     }
 
     public void setFamilyGroup(FamilyGroup familyGroup) {
@@ -137,9 +137,9 @@ public class Person {
     }
 
     public void setGender(String gender) {
-        if (gender == null) {
+        /*if (gender == null) {
             throw new IllegalArgumentException("Gender cannot be null");
-        }
+        }*/
         this.gender = gender;
     }
 

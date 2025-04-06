@@ -303,6 +303,176 @@ public void addLocation(Location location) throws SQLException {
 
 
 
+    // MedicalRecord
+
+    public void addMedicalRecord(MedicalRecord record) throws SQLException {
+        String sql = "INSERT INTO MedicalRecord (location_id, person_id, date_of_treatment, treatment_details) " +
+                "VALUES (?, ?, ?::timestamp, ?) RETURNING medical_record_id";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, record.getLocation().getLocationId());
+            pstmt.setInt(2, record.getPerson().getPersonId());
+            pstmt.setString(3, record.getDateOfTreatment() + " 00:00:00"); // Add time component
+            pstmt.setString(4, record.getTreatmentDetails());
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                record.setMedicalRecordId(rs.getInt("medical_record_id"));
+            }
+        }
+    }
+
+    public List<MedicalRecord> getAllMedicalRecords() throws SQLException {
+        List<MedicalRecord> records = new ArrayList<>();
+        String sql = "SELECT mr.*, p.first_name, p.last_name, l.name as location_name, l.address as location_address " +
+                "FROM MedicalRecord mr " +
+                "JOIN Person p ON mr.person_id = p.person_id " +
+                "JOIN Location l ON mr.location_id = l.location_id";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(rs.getInt("person_id"));
+
+                Location location = new Location(
+                        rs.getString("location_name"),
+                        rs.getString("location_address")
+                );
+                location.setLocationId(rs.getInt("location_id"));
+
+                // Convert timestamp to date string
+                Timestamp timestamp = rs.getTimestamp("date_of_treatment");
+                String dateStr = timestamp != null ? timestamp.toLocalDateTime().toLocalDate().toString() : "";
+
+                MedicalRecord record = new MedicalRecord(
+                        person,
+                        location,
+                        rs.getString("treatment_details"),
+                        dateStr
+                );
+                record.setMedicalRecordId(rs.getInt("medical_record_id"));
+                records.add(record);
+            }
+        }
+        return records;
+    }
+
+
+    public void updateMedicalRecord(MedicalRecord record) throws SQLException {
+        String sql = "UPDATE MedicalRecord SET location_id = ?, person_id = ?, " +
+                "date_of_treatment = ?, treatment_details = ? " +
+                "WHERE medical_record_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, record.getLocation().getLocationId());
+            pstmt.setInt(2, record.getPerson().getPersonId());
+            pstmt.setString(3, record.getDateOfTreatment());
+            pstmt.setString(4, record.getTreatmentDetails());
+            pstmt.setInt(5, record.getMedicalRecordId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating medical record failed, no rows affected.");
+            }
+        }
+    }
+
+    public void deleteMedicalRecord(int medicalRecordId) throws SQLException {
+        String sql = "DELETE FROM MedicalRecord WHERE medical_record_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, medicalRecordId);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting medical record failed, no rows affected.");
+            }
+        }
+    }
+
+    public List<MedicalRecord> getMedicalRecordsForPerson(int personId) throws SQLException {
+        List<MedicalRecord> records = new ArrayList<>();
+        String sql = "SELECT mr.*, l.name as location_name, l.address as location_address " +
+                "FROM MedicalRecord mr " +
+                "JOIN Location l ON mr.location_id = l.location_id " +
+                "WHERE mr.person_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, personId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Person person = new Person("", "");
+                person.setPersonId(personId);
+
+                Location location = new Location(
+                        rs.getString("location_name"),
+                        rs.getString("location_address")
+                );
+                location.setLocationId(rs.getInt("location_id"));
+
+                Timestamp timestamp = rs.getTimestamp("date_of_treatment");
+                String dateStr = timestamp != null ? timestamp.toLocalDateTime().toLocalDate().toString() : "";
+
+                MedicalRecord record = new MedicalRecord(
+                        person,
+                        location,
+                        rs.getString("treatment_details"),
+                        dateStr
+                );
+                record.setMedicalRecordId(rs.getInt("medical_record_id"));
+                records.add(record);
+            }
+        }
+        return records;
+    }
+
+    // In DatabaseManager.java - update getMedicalRecordsAtLocation
+    public List<MedicalRecord> getMedicalRecordsAtLocation(int locationId) throws SQLException {
+        List<MedicalRecord> records = new ArrayList<>();
+        String sql = "SELECT mr.*, p.first_name, p.last_name, l.name as location_name, l.address as location_address " +
+                "FROM MedicalRecord mr " +
+                "JOIN Person p ON mr.person_id = p.person_id " +
+                "JOIN Location l ON mr.location_id = l.location_id " +
+                "WHERE mr.location_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, locationId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(rs.getInt("person_id"));
+
+                Location location = new Location(
+                        rs.getString("location_name"),
+                        rs.getString("location_address")
+                );
+                location.setLocationId(locationId);
+
+                Timestamp timestamp = rs.getTimestamp("date_of_treatment");
+                String dateStr = timestamp != null ? timestamp.toLocalDateTime().toLocalDate().toString() : "";
+
+                MedicalRecord record = new MedicalRecord(
+                        person,
+                        location,
+                        rs.getString("treatment_details"),
+                        dateStr
+                );
+                record.setMedicalRecordId(rs.getInt("medical_record_id"));
+                records.add(record);
+            }
+        }
+        return records;
+    }
 
 
 
@@ -312,6 +482,227 @@ public void addLocation(Location location) throws SQLException {
 
 
 
+
+
+    //Person
+    // In DatabaseManager.java
+
+    // Person-related methods
+// In DatabaseManager.java
+
+    public List<Person> getAllPeople() throws SQLException {
+        List<Person> people = new ArrayList<>();
+        String sql = "SELECT * FROM Person";
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(rs.getInt("person_id"));
+
+                // Only set date of birth if it's not null
+                String dob = rs.getString("date_of_birth");
+                if (dob != null) {
+                    person.setDateOfBirth(dob);
+                }
+
+                person.setGender(rs.getString("gender"));
+                person.setComments(rs.getString("comments"));
+
+                // Handle phone number
+                String phoneNumber = rs.getString("phone_number");
+                if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+                    person.setPhoneNumber(phoneNumber);
+                }
+
+                // Handle family group
+                int familyGroupId = rs.getInt("family_group");
+                if (!rs.wasNull()) {  // Check if family_group was not NULL
+                    FamilyGroup familyGroup = getFamilyGroupById(familyGroupId);
+                    if (familyGroup != null) {
+                        person.setFamilyGroup(familyGroup);
+                    }
+                }
+
+                people.add(person);
+            }
+        }
+        return people;
+    }
+
+    public Person getPersonById(int personId) throws SQLException {
+        String sql = "SELECT * FROM Person WHERE person_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, personId);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(personId);
+
+                // Only set date of birth if it's not null
+                String dob = rs.getString("date_of_birth");
+                if (dob != null) {
+                    person.setDateOfBirth(dob);
+                }
+
+                person.setGender(rs.getString("gender"));
+                person.setComments(rs.getString("comments"));
+
+                // Handle phone number
+                String phoneNumber = rs.getString("phone_number");
+                if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+                    person.setPhoneNumber(phoneNumber);
+                }
+
+                // Handle family group
+                int familyGroupId = rs.getInt("family_group");
+                if (!rs.wasNull()) {  // Check if family_group was not NULL
+                    FamilyGroup familyGroup = getFamilyGroupById(familyGroupId);
+                    if (familyGroup != null) {
+                        person.setFamilyGroup(familyGroup);
+                    }
+                }
+
+                return person;
+            }
+        }
+        return null;
+    }
+    // New helper method to get FamilyGroup by ID
+    private FamilyGroup getFamilyGroupById(int familyGroupId) throws SQLException {
+        String sql = "SELECT * FROM Person WHERE family_group = ?";
+        List<Person> members = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, familyGroupId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Person person = new Person(
+                        rs.getString("first_name"),
+                        rs.getString("last_name")
+                );
+                person.setPersonId(rs.getInt("person_id"));
+                // Set other fields as needed
+                members.add(person);
+            }
+        }
+
+        if (!members.isEmpty()) {
+            FamilyGroup familyGroup = new FamilyGroup(new ArrayList<>(members));
+            familyGroup.setFamilyGroupId(familyGroupId);
+            return familyGroup;
+        }
+        return null;
+    }
+
+
+
+
+    public void addPerson(Person person) throws SQLException {
+        String sql = "INSERT INTO Person (first_name, last_name, date_of_birth, gender, comments, phone_number, family_group) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING person_id";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, person.getFirstName());
+            pstmt.setString(2, person.getLastName());
+
+            // Handle date_of_birth properly
+            if (person.getDateOfBirth() != null && !person.getDateOfBirth().isEmpty()) {
+                pstmt.setDate(3, Date.valueOf(person.getDateOfBirth()));
+            } else {
+                pstmt.setNull(3, Types.DATE);
+            }
+
+            pstmt.setString(4, person.getGender());
+            pstmt.setString(5, person.getComments());
+            pstmt.setString(6, person.getPhoneNumber());
+
+            if (person.getFamilyGroup() != null) {
+                pstmt.setInt(7, person.getFamilyGroup().getFamilyGroupId());
+            } else {
+                pstmt.setNull(7, Types.INTEGER);
+            }
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                person.setPersonId(rs.getInt("person_id"));
+            }
+        }
+    }
+
+
+    public void updatePerson(Person person) throws SQLException {
+        String sql = "UPDATE Person SET first_name = ?, last_name = ?, date_of_birth = ?, " +
+                "gender = ?, comments = ?, phone_number = ?, family_group = ? " +
+                "WHERE person_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, person.getFirstName());
+            pstmt.setString(2, person.getLastName());
+            pstmt.setString(3, person.getDateOfBirth());
+            pstmt.setString(4, person.getGender());
+            pstmt.setString(5, person.getComments());
+            pstmt.setString(6, person.getPhoneNumber());
+
+            if (person.getFamilyGroup() != null) {
+                pstmt.setInt(7, person.getFamilyGroup().getFamilyGroupId());
+            } else {
+                pstmt.setNull(7, Types.INTEGER);
+            }
+
+            pstmt.setInt(8, person.getPersonId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Updating person failed, no rows affected.");
+            }
+        }
+    }
+
+    public void deletePerson(int personId) throws SQLException {
+        // First delete dependent records to maintain referential integrity
+        String[] deleteQueries = {
+                "DELETE FROM MedicalRecord WHERE person_id = ?",
+                "DELETE FROM PersonLocation WHERE person_id = ?",
+                "DELETE FROM SupplyAllocation WHERE person_id = ?",
+                "DELETE FROM Inquiry WHERE inquirer_id = ? OR seeking_id = ?",
+                "DELETE FROM Person WHERE person_id = ?"
+        };
+
+        try {
+            connection.setAutoCommit(false); // Start transaction
+
+            for (String query : deleteQueries) {
+                try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+                    // For the Inquiry query which has two parameters
+                    if (query.contains("OR seeking_id")) {
+                        pstmt.setInt(1, personId);
+                        pstmt.setInt(2, personId);
+                    } else {
+                        pstmt.setInt(1, personId);
+                    }
+                    pstmt.executeUpdate();
+                }
+            }
+
+            connection.commit(); // Commit transaction if all queries succeed
+        } catch (SQLException e) {
+            connection.rollback(); // Rollback if any query fails
+            throw e;
+        } finally {
+            connection.setAutoCommit(true); // Reset auto-commit
+        }
+    }
 
 
 
