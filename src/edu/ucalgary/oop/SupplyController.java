@@ -171,6 +171,7 @@ public class SupplyController {
             databaseManager.allocateSupply(supplyId, personId, locationId);
 
             // Update local models
+
             refreshSupplies();
 
         } catch (SQLException e) {
