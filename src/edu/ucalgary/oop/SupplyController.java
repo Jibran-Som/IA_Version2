@@ -124,4 +124,79 @@ public class SupplyController {
     }
 
 
+    public void allocateSupply(int supplyId, Integer personId, Integer locationId)
+            throws SQLException, IllegalArgumentException {
+
+        // Validate that we're allocating to either a person or location, but not both
+        if (personId == null && locationId == null) {
+            throw new IllegalArgumentException("Must specify either personId or locationId");
+        }
+        if (personId != null && locationId != null) {
+            throw new IllegalArgumentException("Cannot allocate to both person and location simultaneously");
+        }
+
+        // Find the supply in our local models
+        Supply supplyToAllocate = null;
+        for (Supply supply : supplyModels) {
+            if (supply.getSupplyId() == supplyId) {
+                supplyToAllocate = supply;
+                break;
+            }
+        }
+
+        if (supplyToAllocate == null) {
+            throw new IllegalArgumentException("No supply found with ID: " + supplyId);
+        }
+
+        // Special handling for PersonalBelonging - can't be allocated to locations
+        if (supplyToAllocate instanceof PersonalBelonging && locationId != null) {
+            throw new IllegalArgumentException("Personal belongings cannot be allocated to locations");
+        }
+
+        // Special handling for Water - needs allocation date
+        if (supplyToAllocate instanceof Water) {
+            Water water = (Water) supplyToAllocate;
+            if (water.getAllocationDate() == null || water.getAllocationDate().isEmpty()) {
+                throw new IllegalArgumentException("Water allocation requires a valid allocation date");
+            }
+        }
+
+        try {
+            // Allocate in the database
+            databaseManager.allocateSupply(supplyId, personId, locationId);
+
+            // If allocated to a person, update the local model if it's a DisasterVictim
+            if (personId != null) {
+                // In a real application, you would need to get the person from PersonController
+                // and check if it's a DisasterVictim, then add to their inventory
+                // For now, we'll just update our supply list
+                refreshSupplies();
+            }
+
+            // If allocated to a location, update the local model
+            if (locationId != null) {
+                // In a real application, you would need to get the location from LocationController
+                // and add the supply to its inventory
+                // For now, we'll just update our supply list
+                refreshSupplies();
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error allocating supply: " + e.getMessage());
+            throw e;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

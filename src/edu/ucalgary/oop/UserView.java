@@ -62,16 +62,54 @@ public class UserView {
 
     // Menu
     public static void displayMenuOptions() {
-        System.out.println("\nDisaster Victim Information System\n");
-        System.out.println("1. Location Details");
-        System.out.println("2. Person Details");
-        System.out.println("3. Supply Details");
-        System.out.println("4. Inquiry Details");
-        System.out.println("5. Medical Details");
-        System.out.println("0. Exit");
-        System.out.print("\nEnter your choice: ");
-    }
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
 
+        while (!exit) {
+            System.out.println("\nDisaster Victim Information System\n");
+            System.out.println("1. Location Details");
+            System.out.println("2. Person Details");
+            System.out.println("3. Supply Details");
+            System.out.println("4. Inquiry Details");
+            System.out.println("5. Medical Details");
+            System.out.println("0. Exit");
+            System.out.print("\nEnter your choice: ");
+
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+
+                switch (choice) {
+                    case 1:
+                        displayLocationDetails();
+                        break;
+                    case 2:
+                        displayPersonDetails();
+                        break;
+                    case 3:
+                        displaySupplyDetails();
+                        break;
+                    case 4:
+                        displayInquiryDetails();
+                        break;
+                    case 5:
+                        displayMedicalDetails();
+                        break;
+                    case 0:
+                        exit = true;
+                        System.out.println("Exiting system...");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 0-5.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        scanner.close();
+    }
 
 
 
@@ -89,6 +127,7 @@ public class UserView {
             System.out.println("2. Add New Supply");
             System.out.println("3. Update Supply");
             System.out.println("4. Allocate Supply");
+            System.out.println("5. View Allocated Supplies");
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -106,7 +145,10 @@ public class UserView {
                         updateSupply();
                         break;
                     case 4:
-                        // allocateSupply();
+                        allocateSupply();
+                        break;
+                    case 5:
+                        viewAllocatedSupplies();
                         break;
                     case 0:
                         stayInMenu = false;
@@ -238,6 +280,103 @@ public class UserView {
     }
 
 
+    public static void viewAllocatedSupplies() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.println("\nView Allocated Supplies");
+            System.out.println("1. View supplies allocated to a person");
+            System.out.println("2. View supplies allocated to a location");
+            System.out.println("0. Back");
+            System.out.print("Enter your choice: ");
+
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1:
+                    viewSuppliesAllocatedToPerson();
+                    break;
+                case 2:
+                    viewSuppliesAllocatedToLocation();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 0.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void viewSuppliesAllocatedToPerson() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        // First show all people
+        System.out.println("\nAvailable People:");
+        for (Person person : personController.getAllPeople()) {
+            System.out.println(person.getPersonId() + ": " +
+                    person.getFirstName() + " " + person.getLastName());
+        }
+
+        System.out.print("\nEnter the ID of the person: ");
+        int personId = Integer.parseInt(scanner.nextLine());
+
+        // Get allocated supplies
+        ArrayList<Supply> supplies = supplyController.getSuppliesAllocatedTo(personId, null);
+
+        // Display results
+        System.out.println("\nSupplies allocated to Person ID " + personId + ":");
+        System.out.println("--------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "NAME");
+        System.out.println("--------------------------------------------------");
+
+        for (Supply supply : supplies) {
+            System.out.printf("%-8s %-15s %-20s%n",
+                    supply.getSupplyId(),
+                    supply.getSupplyType(),
+                    supply.getSupplyName());
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
+
+    private static void viewSuppliesAllocatedToLocation() throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+
+        // First show all locations
+        System.out.println("\nAvailable Locations:");
+        for (Location location : locationController.getAllLocations()) {
+            System.out.println(location.getLocationId() + ": " +
+                    location.getLocationName() + " - " + location.getLocationAddress());
+        }
+
+        System.out.print("\nEnter the ID of the location: ");
+        int locationId = Integer.parseInt(scanner.nextLine());
+
+        // Get allocated supplies
+        ArrayList<Supply> supplies = supplyController.getSuppliesAllocatedTo(null, locationId);
+
+        // Display results
+        System.out.println("\nSupplies allocated to Location ID " + locationId + ":");
+        System.out.println("--------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "NAME");
+        System.out.println("--------------------------------------------------");
+
+        for (Supply supply : supplies) {
+            System.out.printf("%-8s %-15s %-20s%n",
+                    supply.getSupplyId(),
+                    supply.getSupplyType(),
+                    supply.getSupplyName());
+        }
+
+        System.out.println("--------------------------------------------------");
+    }
+
+
     public static void updateSupply() {
         Scanner scanner = new Scanner(System.in);
 
@@ -348,6 +487,109 @@ public class UserView {
             System.out.println("An error occurred while updating the supply: " + e.getMessage());
         }
     }
+
+
+    public static void allocateSupply() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Display all supplies
+            viewAllSupplies();
+
+            System.out.print("\nEnter the ID of the supply to allocate: ");
+            int supplyId = Integer.parseInt(scanner.nextLine());
+
+            // Find the supply
+            Supply supplyToAllocate = null;
+            for (Supply supply : supplyController.getAllSupplies()) {
+                if (supply.getSupplyId() == supplyId) {
+                    supplyToAllocate = supply;
+                    break;
+                }
+            }
+
+            if (supplyToAllocate == null) {
+                System.out.println("No supply found with ID: " + supplyId);
+                return;
+            }
+
+            // Ask where to allocate (person or location)
+            System.out.println("\nAllocate to:");
+            System.out.println("1. Person");
+            System.out.println("2. Location");
+            System.out.print("Enter your choice (1-2): ");
+            int allocationChoice = Integer.parseInt(scanner.nextLine());
+
+            if (allocationChoice == 1) {
+                // Allocate to person
+                viewAllPersons();
+                System.out.print("\nEnter the ID of the person to allocate to: ");
+                int personId = Integer.parseInt(scanner.nextLine());
+
+                // Check if person exists
+                Person person = personController.getPersonById(personId);
+                if (person == null) {
+                    System.out.println("No person found with ID: " + personId);
+                    return;
+                }
+
+                // Special handling for Water
+                if (supplyToAllocate instanceof Water) {
+                    System.out.print("Enter allocation date (YYYY-MM-DD): ");
+                    String allocationDate = scanner.nextLine();
+                    ((Water)supplyToAllocate).setAllocationDate(allocationDate);
+                }
+
+                // Allocate supply
+                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), personId, null);
+
+                // If allocated to a DisasterVictim, add to their inventory
+                if (person instanceof DisasterVictim) {
+                    ((DisasterVictim)person).addItem(supplyToAllocate);
+                }
+
+                System.out.println("Supply allocated to person successfully!");
+
+            } else if (allocationChoice == 2) {
+                // Allocate to location
+                viewAllLocations();
+                System.out.print("\nEnter the ID of the location to allocate to: ");
+                int locationId = Integer.parseInt(scanner.nextLine());
+
+                // Check if location exists
+                Location location = locationController.getLocationById(locationId);
+                if (location == null) {
+                    System.out.println("No location found with ID: " + locationId);
+                    return;
+                }
+
+                // Special handling for Water
+                if (supplyToAllocate instanceof Water) {
+                    System.out.print("Enter allocation date (YYYY-MM-DD): ");
+                    String allocationDate = scanner.nextLine();
+                    ((Water)supplyToAllocate).setAllocationDate(allocationDate);
+                }
+
+                // Allocate supply
+                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), null, locationId);
+                location.addItem(supplyToAllocate);
+
+                System.out.println("Supply allocated to location successfully!");
+
+            } else {
+                System.out.println("Invalid choice. Allocation cancelled.");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid numbers.");
+        } catch (SQLException e) {
+            System.out.println("Database error during allocation: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+
 
 
 
@@ -1461,6 +1703,7 @@ public class UserView {
             viewAllInquiries();
             System.out.print("\nEnter ID of inquiry to delete: ");
             int inquiryId = Integer.parseInt(scanner.nextLine());
+
 
             inquiryController.deleteInquiry(inquiryId);
             System.out.println("Inquiry deleted successfully!");
