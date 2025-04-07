@@ -852,26 +852,32 @@ public class UserView {
             int locationId = Integer.parseInt(scanner.nextLine());
 
             ArrayList<Person> occupants = locationController.getOccupantsAtLocation(locationId);
+            Location locationTest = locationController.getLocationById(locationId);
 
-            System.out.println("\nOccupants at Location ID " + locationId + ":");
-            System.out.println("--------------------------------------------------");
-            System.out.printf("%-8s %-15s %-15s%n", "ID", "FIRST NAME", "LAST NAME");
-            System.out.println("--------------------------------------------------");
+            if (locationTest == null) {
+                System.out.println("No location found with ID: " + locationId);
+            }
+            else {
+                System.out.println("\nOccupants at Location ID " + locationId + ":");
+                System.out.println("--------------------------------------------------");
+                System.out.printf("%-8s %-15s %-15s%n", "ID", "FIRST NAME", "LAST NAME");
+                System.out.println("--------------------------------------------------");
 
-            for (Person person : occupants) {
-                System.out.printf("%-8s %-15s %-15s%n",
-                        person.getPersonId(),
-                        person.getFirstName(),
-                        person.getLastName());
+                for (Person person : occupants) {
+                    System.out.printf("%-8s %-15s %-15s%n",
+                            person.getPersonId(),
+                            person.getFirstName(),
+                            person.getLastName());
+                }
+
+                System.out.println("--------------------------------------------------");
+            }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
             }
 
-            System.out.println("--------------------------------------------------");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
     }
 
     public static void addOccupantToLocation() {
@@ -941,8 +947,8 @@ public class UserView {
             System.out.println("1. View All Medical Records");
             System.out.println("2. Add New Medical Record");
             System.out.println("3. Update Medical Record");
-            System.out.println("4. View Records for Person");
-            System.out.println("5. View Records at Location");
+            //System.out.println("4. View Records for Person");
+            //System.out.println("5. View Records at Location");
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -959,17 +965,18 @@ public class UserView {
                     case 3:
                         updateMedicalRecord();
                         break;
+                    /* Don't work and not needed
                     case 4:
                         viewMedicalRecordsForPerson();
                         break;
                     case 5:
                         viewMedicalRecordsAtLocation();
-                        break;
+                        break;*/
                     case 0:
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-5.");
+                        System.out.println("Invalid choice. Please enter a number between 0-3.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
@@ -1473,15 +1480,15 @@ public class UserView {
 
     // Disaster Victim specific methods
     public static void viewDisasterVictims() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-15s %-15s %-12s %-10s %-15s %-10s%n",
-                "ID", "FIRST NAME", "LAST NAME", "DOB", "GENDER", "PHONE", "INVENTORY");
-        System.out.println("--------------------------------------------------");
+        System.out.println("\n--------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
+                "ID", "FIRST NAME", "LAST NAME", "DOB", "GENDER", "PHONE", "INVENTORY ID");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
 
         for (Person person : personController.getAllPeople()) {
             if (person instanceof DisasterVictim) {
                 DisasterVictim victim = (DisasterVictim) person;
-                System.out.printf("%-8s %-15s %-15s %-12s %-10s %-15s %-10s%n",
+                System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
                         victim.getPersonId(),
                         victim.getFirstName(),
                         victim.getLastName(),
@@ -1492,7 +1499,7 @@ public class UserView {
             }
         }
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------");
     }
 
     public static void addDisasterVictim() {

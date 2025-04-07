@@ -96,6 +96,9 @@ public class LocationController {
     // Get occupants at a specific location
     public ArrayList<Person> getOccupantsAtLocation(int locationId) throws SQLException {
         try {
+            if(getAllLocations().isEmpty()) {
+                return null;
+            }
             return (ArrayList<Person>) databaseManager.getOccupantsAtLocation(locationId);
         } catch (SQLException e) {
             System.err.println("Error getting occupants: " + e.getMessage());
