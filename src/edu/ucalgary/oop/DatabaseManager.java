@@ -139,6 +139,20 @@ public class DatabaseManager {
         }
     }
 
+    public boolean isSupplyAllocated(int supplyId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE supply_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, supplyId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
 
 
 
