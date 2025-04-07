@@ -6,10 +6,11 @@ public class Main {
     public static UserView userView = new UserView();
     public static LocationController locationController = new LocationController();
     public static TranslationManager translationManager;
-
+    public static SupplyController supplyController = new SupplyController();
 
     public static void main(String[] args) {
         userView.displayMenuOptions();
+
 
 
 

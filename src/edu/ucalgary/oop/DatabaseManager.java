@@ -88,16 +88,59 @@ public class DatabaseManager {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Supply supply = new Supply(
-                        rs.getString("comments"), // Using comments as supplyName
-                        rs.getString("type")
-                ) {};
-                supply.setSupplyId(rs.getInt("supply_id"));
+                String type = rs.getString("type");
+                String name = rs.getString("comments"); // Using comments as supplyName
+                int supplyId = rs.getInt("supply_id");
+                Supply supply;
+
+                // Create the appropriate subclass based on the type
+                switch (type.toLowerCase()) {
+                    case "water":
+                        supply = new Water(name, type);
+                        setWaterAllocationDate((Water) supply, supplyId);
+                        break;
+                    case "cot":
+                        String[] cotSpecs = name.split(" ");
+                        supply = new Cot(type + supplyId, type, cotSpecs[0], cotSpecs[1]);
+                        break;
+                    case "personal item":
+                        supply = new PersonalBelonging(type + supplyId, type, name);
+                        break;
+                    case "blanket":
+                        supply = new Blanket(name, type);
+                        break;
+                    default:
+                        supply = new Supply(name, type);
+                        break;
+                }
+
+                supply.setSupplyId(supplyId);
                 supplies.add(supply);
             }
         }
         return supplies;
     }
+
+    private void setWaterAllocationDate(Water water, int supplyId) throws SQLException {
+        String sql = "SELECT allocation_date FROM SupplyAllocation " +
+                "WHERE supply_id = ? AND person_id IS NOT NULL " +
+                "ORDER BY allocation_date DESC LIMIT 1";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, supplyId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Timestamp timestamp = rs.getTimestamp("allocation_date");
+                if (timestamp != null) {
+                    water.setAllocationDate(timestamp.toLocalDateTime().toLocalDate().toString());
+                }
+            }
+        }
+    }
+
+
+
 
     // Updater
     public void updateSupply(Supply supply) throws SQLException {

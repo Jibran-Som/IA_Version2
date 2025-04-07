@@ -169,19 +169,91 @@ public class UserView {
     }
 
     public static void viewAllSupplies() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "COMMENTS");
-        System.out.println("--------------------------------------------------");
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "ALLOCATION DATE");
+        System.out.println("-----------------------------------------------------------");
 
         // Print each supply with consistent formatting
         for (Supply supply : supplyController.getAllSupplies()) {
-            System.out.printf("%-8s %-15s %-20s%n",
-                    supply.getSupplyId(),
-                    supply.getSupplyType(),
-                    supply.getSupplyName());
-        }
+            if(supply instanceof Water){
+                System.out.printf("%-8s %-15s %-20s%n",
+                        supply.getSupplyId(),
+                        supply.getSupplyType(),
+                        ((Water) supply).getAllocationDate());
+            }
 
-        System.out.println("--------------------------------------------------");
+        }
+        System.out.println("-----------------------------------------------------------");
+
+
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s %-20s%n", "ID", "TYPE", "GRID LOCATION", "ROOM LOCATION");
+        System.out.println("-----------------------------------------------------------");
+
+        // Print each supply with consistent formatting
+        for (Supply supply : supplyController.getAllSupplies()) {
+            if(supply instanceof Cot){
+                System.out.printf("%-8s %-15s %-20s %-20s%n",
+                        supply.getSupplyId(),
+                        supply.getSupplyType(),
+                        ((Cot) supply).getGridLocation(),
+                        ((Cot) supply).getRoomLocation());
+            }
+
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "COMMENTS");
+        System.out.println("-----------------------------------------------------------");
+
+        // Print each supply with consistent formatting
+        for (Supply supply : supplyController.getAllSupplies()) {
+            if(supply instanceof PersonalBelonging){
+                System.out.printf("%-8s %-15s %-20s%n",
+                        supply.getSupplyId(),
+                        supply.getSupplyType(),
+                        ((PersonalBelonging) supply).getItemDescription());
+            }
+
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "COMMENTS");
+        System.out.println("-----------------------------------------------------------");
+
+        // Print each supply with consistent formatting
+        for (Supply supply : supplyController.getAllSupplies()) {
+            if(supply instanceof Blanket){
+                System.out.printf("%-8s %-15s %-20s%n",
+                        supply.getSupplyId(),
+                        supply.getSupplyType(),
+                        ((Blanket) supply).getSupplyName());
+            }
+
+        }
+        System.out.println("-----------------------------------------------------------");
+
+
+        System.out.println("\n-----------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE (GENERAL)", "COMMENTS");
+        System.out.println("-----------------------------------------------------------");
+
+        // Print each supply with consistent formatting
+        for (Supply supply : supplyController.getAllSupplies()) {
+            if(!(supply instanceof Blanket) && !(supply instanceof PersonalBelonging) && !(supply instanceof Cot) && !(supply instanceof Water)){
+                System.out.printf("%-8s %-15s %-20s%n",
+                        supply.getSupplyId(),
+                        supply.getSupplyType(),
+                        supply.getSupplyName());
+            }
+
+        }
+        System.out.println("-----------------------------------------------------------");
+
+
+
     }
 
     public static void addNewSupply() {
