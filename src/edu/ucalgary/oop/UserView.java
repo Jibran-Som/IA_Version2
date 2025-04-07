@@ -13,6 +13,7 @@ public class UserView {
     public static MedicalRecordController medicalRecordController;
     public static PersonController personController;
     public static InquiryController inquiryController;
+    private static ErrorLogger errorLogger = ErrorLogger.getInstance();
 
 
 
@@ -43,6 +44,8 @@ public class UserView {
                 // Fallback to default
                 translationManager.loadTranslations("data/en-CA.xml");
             } catch (Exception defaultException) {
+                errorLogger.logFatalError(defaultException, "UserView constructor - loading default translations",
+                        "Fatal error: Could not load any translations! The application will now exit.");
                 System.err.println("Fatal error: Could not load default translations!");
                 throw new RuntimeException("Failed to load any translations", defaultException);
             }
@@ -672,18 +675,18 @@ public class UserView {
     }
 
     public static void viewAllLocations() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-20s %-30s%n", "ID", "NAME", "ADDRESS");
-        System.out.println("--------------------------------------------------");
+        System.out.println("\n------------------------------------------------------------");
+        System.out.printf("%-8s %-25s %-30s%n", "ID", "NAME", "ADDRESS");
+        System.out.println("------------------------------------------------------------");
 
         for (Location location : locationController.getAllLocations()) {
-            System.out.printf("%-8s %-20s %-30s%n",
+            System.out.printf("%-8s %-25s %-30s%n",
                     location.getLocationId(),
                     location.getLocationName(),
                     location.getLocationAddress());
         }
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("------------------------------------------------------------");
     }
 
     public static void addNewLocation() {
@@ -906,14 +909,14 @@ public class UserView {
     }
 
     public static void viewAllMedicalRecords() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-20s %-20s %-15s %-30s%n",
+        System.out.println("\n----------------------------------------------------------------------------------------------------");
+        System.out.printf("%-8s %-25s %-25s %-15s %-30s%n",
                 "ID", "PATIENT", "LOCATION", "DATE", "TREATMENT DETAILS");
-        System.out.println("--------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
 
         for (MedicalRecord record : medicalRecordController.getAllMedicalRecords()) {
             String patientName = record.getPerson().getFirstName() + " " + record.getPerson().getLastName();
-            System.out.printf("%-8s %-20s %-20s %-15s %-30s%n",
+            System.out.printf("%-8s %-25s %-25s %-15s %-30s%n",
                     record.getMedicalRecordId(),
                     patientName,
                     record.getLocation().getLocationName(),
@@ -921,7 +924,7 @@ public class UserView {
                     record.getTreatmentDetails());
         }
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
     // In UserView.java - update addNewMedicalRecord()
@@ -1218,13 +1221,13 @@ public class UserView {
     }
 
     public static void viewAllPersons() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-15s %-15s %-12s %-10s %-15s %-10s%n",
+        System.out.println("\n----------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
                 "ID", "FIRST NAME", "LAST NAME", "DOB", "GENDER", "PHONE", "FAMILY GROUP");
-        System.out.println("--------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------");
 
         for (Person person : personController.getAllPeople()) {
-            System.out.printf("%-8s %-15s %-15s %-12s %-10s %-15s %-10s%n",
+            System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
                     person.getPersonId(),
                     person.getFirstName(),
                     person.getLastName(),
@@ -1234,7 +1237,7 @@ public class UserView {
                     person.getFamilyGroup() != null ? person.getFamilyGroup().getFamilyGroupId() : "N/A");
         }
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------");
     }
 
     public static void addNewPerson() {
@@ -1256,7 +1259,7 @@ public class UserView {
             System.out.print("Gender (optional): ");
             String gender = scanner.nextLine();
 
-            System.out.print("Phone Number (XXX-XXX-XXXX, optional): ");
+            System.out.print("Phone Number (XXX-XXX-XXXX or XXX-XXXX, optional): ");
             String phone = scanner.nextLine();
 
             System.out.print("Comments (optional): ");
@@ -1285,6 +1288,7 @@ public class UserView {
 
     public static void updatePerson() {
         Scanner scanner = new Scanner(System.in);
+        TranslationManager translator = TranslationManager.getInstance();
 
         System.out.println("\nUpdate Person");
         System.out.println("-------------");
@@ -1313,8 +1317,33 @@ public class UserView {
 
             if (field == 0) return;
 
-            System.out.print("Enter new value: ");
-            String newValue = scanner.nextLine();
+            String newValue;
+            if (field == 4) { // Gender field
+                System.out.println("\nAvailable gender options:");
+                System.out.println("1. " + translator.getTranslation("gender_man"));
+                System.out.println("2. " + translator.getTranslation("gender_woman"));
+                System.out.println("3. " + translator.getTranslation("gender_nb"));
+                System.out.print("Select gender option (1-3): ");
+                int genderChoice = Integer.parseInt(scanner.nextLine());
+
+                switch (genderChoice) {
+                    case 1:
+                        newValue = translator.getTranslation("gender_man");
+                        break;
+                    case 2:
+                        newValue = translator.getTranslation("gender_woman");
+                        break;
+                    case 3:
+                        newValue = translator.getTranslation("gender_nb");
+                        break;
+                    default:
+                        System.out.println("Invalid gender option");
+                        return;
+                }
+            } else {
+                System.out.print("Enter new value: ");
+                newValue = scanner.nextLine();
+            }
 
             switch (field) {
                 case 1:
@@ -1351,7 +1380,6 @@ public class UserView {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
-
 
     public static void convertToDisasterVictim() {
         Scanner scanner = new Scanner(System.in);
@@ -1475,6 +1503,7 @@ public class UserView {
             System.out.println("2. Add New Inquiry");
             System.out.println("3. Update Inquiry");
             System.out.println("4. Delete Inquiry");
+            System.out.println("5. Generate Inquiry Report");  // New option
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -1494,6 +1523,9 @@ public class UserView {
                     case 4:
                         deleteInquiry();
                         break;
+                    case 5:
+                        generateInquiryReport();
+                        break;
                     case 0:
                         stayInMenu = false;
                         break;
@@ -1510,17 +1542,17 @@ public class UserView {
     }
 
     public static void viewAllInquiries() {
-        System.out.println("\n--------------------------------------------------");
-        System.out.printf("%-8s %-20s %-20s %-15s %-20s %-30s%n",
+        System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-8s %-25s %-25s %-15s %-25s %-30s%n",
                 "ID", "INQUIRER", "MISSING PERSON", "DATE", "LOCATION", "COMMENTS");
-        System.out.println("--------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
 
         for (Inquiry inquiry : inquiryController.getAllInquiries()) {
             String inquirerName = inquiry.getInquirer().getFirstName() + " " + inquiry.getInquirer().getLastName();
             String missingPersonName = inquiry.getMissingPerson().getFirstName() + " " + inquiry.getMissingPerson().getLastName();
             String locationName = inquiry.getLastKnownLocation().getLocationName();
 
-            System.out.printf("%-8s %-20s %-20s %-15s %-20s %-30s%n",
+            System.out.printf("%-8s %-25s %-25s %-15s %-25s %-30s%n",
                     inquiry.getInquiryId(),
                     inquirerName,
                     missingPersonName,
@@ -1529,7 +1561,7 @@ public class UserView {
                     inquiry.getInfoProvided());
         }
 
-        System.out.println("--------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public static void addNewInquiry() {
@@ -1710,6 +1742,54 @@ public class UserView {
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a valid number.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
+    public static void generateInquiryReport() {
+        Scanner scanner = new Scanner(System.in);
+        TranslationManager translator = TranslationManager.getInstance();
+
+        try {
+            // First show all inquiries
+            viewAllInquiries();
+
+            System.out.print("\nEnter ID of inquiry to generate report: ");
+            int inquiryId = Integer.parseInt(scanner.nextLine());
+
+            Inquiry inquiry = inquiryController.getInquiryById(inquiryId);
+            if (inquiry == null) {
+                System.out.println("No inquiry found with ID: " + inquiryId);
+                return;
+            }
+
+            // Get the required fields for the report
+            String personName = inquiry.getMissingPerson().getFirstName() + " " +
+                    inquiry.getMissingPerson().getLastName();
+            String facilityName = inquiry.getLastKnownLocation().getLocationName();
+            String entryDate = inquiry.getDateOfInquiry();
+
+            // Format the report using the translation
+            String report = String.format(
+                    translator.getTranslation("report_person"),
+                    personName,
+                    facilityName,
+                    entryDate
+            );
+
+            System.out.println("\nInquiry Report:");
+            System.out.println("----------------");
+            System.out.println(report);
+            System.out.println("Additional Info: " + inquiry.getInfoProvided());
+            System.out.println("Inquirer: " + inquiry.getInquirer().getFirstName() + " " +
+                    inquiry.getInquirer().getLastName());
+            System.out.println("----------------");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
         }

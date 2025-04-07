@@ -15,9 +15,19 @@ public class DatabaseManager {
 
     // Constructor
     public DatabaseManager() throws SQLException {
-        connect();
-    }
+        try {
+            connect();
+        }
+        catch (SQLException e) {
+            ErrorLogger.getInstance().logFatalError(
+                    e,
+                    "DatabaseManager constructor - database connection",
+                    "FATAL ERROR: Cannot connect to database. The application will now exit."
+            );
+            throw e;
 
+        }
+    }
     // Class Specific Code
     private void connect() throws SQLException {
         try {
@@ -719,7 +729,14 @@ public void addLocation(Location location) throws SQLException {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, person.getFirstName());
             pstmt.setString(2, person.getLastName());
-            pstmt.setString(3, person.getDateOfBirth());
+
+            // Handle date_of_birth properly
+            if (person.getDateOfBirth() != null && !person.getDateOfBirth().isEmpty()) {
+                pstmt.setDate(3, Date.valueOf(person.getDateOfBirth()));
+            } else {
+                pstmt.setNull(3, Types.DATE);
+            }
+
             pstmt.setString(4, person.getGender());
             pstmt.setString(5, person.getComments());
             pstmt.setString(6, person.getPhoneNumber());

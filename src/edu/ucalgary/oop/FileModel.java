@@ -7,6 +7,8 @@ public class FileModel {
     private String fileContent;
     private BufferedReader reader;
     private boolean isFileOpen = false;
+    private ErrorLogger errorLogger = ErrorLogger.getInstance();
+
 
 
     // Constructor
@@ -46,6 +48,8 @@ public class FileModel {
     // Class Specific Code
     public void openFile() {
         if (isFileOpen) {
+            errorLogger.logError(new IllegalStateException("File is already open"),
+                    "FileModel.openFile()");
             throw new IllegalStateException("File is already open");
         }
 
@@ -59,12 +63,15 @@ public class FileModel {
             reader = new BufferedReader(new FileReader(filePath));
             isFileOpen = true;
         } catch (FileNotFoundException e) {
+            errorLogger.logError(e, "FileModel.openFile()");
             throw new IllegalArgumentException("File could not be opened: " + e.getMessage());
         }
     }
 
     public void readFile() {
         if (!isFileOpen) {
+            errorLogger.logError(new IllegalStateException("File not open"),
+                    "FileModel.readFile()");
             throw new IllegalStateException("File must be opened before reading");
         }
 
@@ -84,6 +91,7 @@ public class FileModel {
             reader.close();
             isFileOpen = false;
         } catch (IOException e) {
+            errorLogger.logError(e, "FileModel.readFile()");
             throw new IllegalStateException("Error reading file: " + e.getMessage());
         }
     }

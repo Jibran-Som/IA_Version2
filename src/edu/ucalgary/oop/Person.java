@@ -232,22 +232,38 @@ public class Person {
     }
 
     private static boolean isValidPhoneNumberSimpleFormat(String phone) {
-        if (phone == null || phone.length() != 12) {
+        if (phone == null) {
             return false;
         }
 
-        // Check format XXX-XXX-XXXX
-        if (phone.charAt(3) != '-' || phone.charAt(7) != '-') {
-            return false;
+        // Check for XXX-XXX-XXXX format (12 characters)
+        if (phone.length() == 12) {
+            if (phone.charAt(3) != '-' || phone.charAt(7) != '-') {
+                return false;
+            }
+
+            String part1 = phone.substring(0, 3);
+            String part2 = phone.substring(4, 7);
+            String part3 = phone.substring(8, 12);
+
+            return part1.matches("\\d{3}") &&
+                    part2.matches("\\d{3}") &&
+                    part3.matches("\\d{4}");
+        }
+        // Check for XXX-XXXX format (8 characters)
+        else if (phone.length() == 8) {
+            if (phone.charAt(3) != '-') {
+                return false;
+            }
+
+            String part1 = phone.substring(0, 3);
+            String part2 = phone.substring(4, 8);
+
+            return part1.matches("\\d{3}") &&
+                    part2.matches("\\d{4}");
         }
 
-        String part1 = phone.substring(0, 3);
-        String part2 = phone.substring(4, 7);
-        String part3 = phone.substring(8, 12);
-
-        return part1.matches("\\d{3}") &&
-                part2.matches("\\d{3}") &&
-                part3.matches("\\d{4}");
+        return false;
     }
 
 
