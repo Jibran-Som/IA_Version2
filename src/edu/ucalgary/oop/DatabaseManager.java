@@ -1,6 +1,7 @@
 package edu.ucalgary.oop;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,8 +97,13 @@ public class DatabaseManager {
                 // Create the appropriate subclass based on the type
                 switch (type.toLowerCase()) {
                     case "water":
-                        supply = new Water(name, type);
-                        setWaterAllocationDate((Water) supply, supplyId);
+                        Water water = new Water(name, type);
+                        setWaterAllocationDate((Water) water, supplyId);
+                        if (!isWaterExpired(water.getAllocationDate())) {
+                            supply = water;
+                        } else {
+                            continue; // Skip expired water
+                        }
                         break;
                     case "cot":
                         String[] cotSpecs = name.split(" ");
@@ -135,6 +141,61 @@ public class DatabaseManager {
                 if (timestamp != null) {
                     water.setAllocationDate(timestamp.toLocalDateTime().toLocalDate().toString());
                 }
+            }
+        }
+    }
+
+    private boolean isWaterExpired(String allocationDate) {
+        if (allocationDate == null) return false; // Unallocated water doesn't expire
+
+        LocalDate allocation = LocalDate.parse(allocationDate);
+        LocalDate expirationDate = allocation.plusDays(Water.EXPIRATION_DAYS);
+        return LocalDate.now().isAfter(expirationDate);
+    }
+
+    public void deleteExpiredSupplies() throws SQLException {
+        // First get all water supplies with their allocation dates
+        String query = "SELECT s.supply_id, sa.allocation_date FROM Supply s " +
+                "LEFT JOIN SupplyAllocation sa ON s.supply_id = sa.supply_id " +
+                "WHERE s.type = 'water' AND sa.person_id IS NOT NULL " +
+                "ORDER BY sa.allocation_date DESC";
+
+        List<Integer> expiredIds = new ArrayList<>();
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Timestamp timestamp = rs.getTimestamp("allocation_date");
+                if (timestamp != null) {
+                    String allocationDate = timestamp.toLocalDateTime().toLocalDate().toString();
+                    if (isWaterExpired(allocationDate)) {
+                        expiredIds.add(rs.getInt("supply_id"));
+                    }
+                }
+            }
+        }
+
+        // Delete the expired supplies
+        if (!expiredIds.isEmpty()) {
+            String deleteAllocations = "DELETE FROM SupplyAllocation WHERE supply_id = ?";
+            String deleteSupplies = "DELETE FROM Supply WHERE supply_id = ?";
+
+            try (PreparedStatement allocStmt = connection.prepareStatement(deleteAllocations);
+                 PreparedStatement supplyStmt = connection.prepareStatement(deleteSupplies)) {
+
+                for (Integer id : expiredIds) {
+                    // First delete from SupplyAllocation (child table)
+                    allocStmt.setInt(1, id);
+                    allocStmt.addBatch();
+
+                    // Then delete from Supply (parent table)
+                    supplyStmt.setInt(1, id);
+                    supplyStmt.addBatch();
+                }
+
+                allocStmt.executeBatch();
+                supplyStmt.executeBatch();
             }
         }
     }

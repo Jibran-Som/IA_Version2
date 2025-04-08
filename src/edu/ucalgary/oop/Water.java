@@ -2,6 +2,7 @@ package edu.ucalgary.oop;
 
 public class Water extends Supply {
     private String allocationDate;
+    public static final int EXPIRATION_DAYS = 1;
 
 
     public Water(String supplyName, String supplyType) {

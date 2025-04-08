@@ -16,6 +16,10 @@ public class Main {
 
 
 
+        // Incomplete
+
+        //Every method is adequately documented with @param, @return and information about the purpose.
+
 
 
 
