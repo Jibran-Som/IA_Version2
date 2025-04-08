@@ -256,6 +256,64 @@ public class UserView {
 
     }
 
+
+
+    public static void allocateSupplyToPersonAtLocation() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // Show all locations
+            viewAllLocations();
+            System.out.print("\nEnter the ID of the location: ");
+            int locationId = Integer.parseInt(scanner.nextLine());
+
+            // Show occupants at this location
+            ArrayList<Person> occupants = locationController.getOccupantsAtLocation(locationId);
+            if (occupants == null || occupants.isEmpty()) {
+                System.out.println("No occupants found at this location.");
+                return;
+            }
+
+            System.out.println("\nOccupants at this location:");
+            for (Person person : occupants) {
+                System.out.println(person.getPersonId() + ": " +
+                        person.getFirstName() + " " + person.getLastName());
+            }
+
+            System.out.print("\nEnter the ID of the person to allocate to: ");
+            int personId = Integer.parseInt(scanner.nextLine());
+
+            // Show available supplies at this location
+            ArrayList<Supply> supplies = locationController.getSuppliesAtLocation(locationId);
+            if (supplies == null || supplies.isEmpty()) {
+                System.out.println("No supplies found at this location.");
+                return;
+            }
+
+            System.out.println("\nAvailable supplies at this location:");
+            for (Supply supply : supplies) {
+                System.out.println(supply.getSupplyId() + ": " +
+                        supply.getSupplyType() + " - " + supply.getSupplyName());
+            }
+
+            System.out.print("\nEnter the ID of the supply to allocate: ");
+            int supplyId = Integer.parseInt(scanner.nextLine());
+
+            // Perform the allocation
+            locationController.allocateSupplyToPersonAtLocation(supplyId, personId, locationId);
+            System.out.println("Supply successfully allocated to person at this location!");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid numbers.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
     public static void addNewSupply() {
         Scanner scanner = new Scanner(System.in);
 
@@ -568,57 +626,58 @@ public class UserView {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            // Display all supplies
-            viewAllSupplies();
-
-            System.out.print("\nEnter the ID of the supply to allocate: ");
-            int supplyId = Integer.parseInt(scanner.nextLine());
-
-            // Find the supply
-            Supply supplyToAllocate = null;
-            for (Supply supply : supplyController.getAllSupplies()) {
-                if (supply.getSupplyId() == supplyId) {
-                    supplyToAllocate = supply;
-                    break;
-                }
-            }
-
-            if (supplyToAllocate == null) {
-                System.out.println("No supply found with ID: " + supplyId);
-                return;
-            }
-
-            // Ask where to allocate (person or location)
+            // Ask allocation type first
             System.out.println("\nAllocate to:");
             System.out.println("1. Person");
             System.out.println("2. Location");
-            System.out.print("Enter your choice (1-2): ");
+            System.out.println("3. Person at specific location (from location's supplies)");
+            System.out.print("Enter your choice (1-3): ");
             int allocationChoice = Integer.parseInt(scanner.nextLine());
 
+            if (allocationChoice < 1 || allocationChoice > 3) {
+                System.out.println("Invalid choice. Allocation cancelled.");
+                return;
+            }
+
             if (allocationChoice == 1) {
-                // Allocate to person
+                // Option 1: Allocate to person (original code)
+                System.out.println("\nAvailable Supplies:");
+                viewAllSupplies();
+
+                System.out.print("\nEnter the ID of the supply to allocate: ");
+                int supplyId = Integer.parseInt(scanner.nextLine());
+
+                Supply supplyToAllocate = null;
+                for (Supply supply : supplyController.getAllSupplies()) {
+                    if (supply.getSupplyId() == supplyId) {
+                        supplyToAllocate = supply;
+                        break;
+                    }
+                }
+
+                if (supplyToAllocate == null) {
+                    System.out.println("No supply found with ID: " + supplyId);
+                    return;
+                }
+
                 viewAllPersons();
                 System.out.print("\nEnter the ID of the person to allocate to: ");
                 int personId = Integer.parseInt(scanner.nextLine());
 
-                // Check if person exists
                 Person person = personController.getPersonById(personId);
                 if (person == null) {
                     System.out.println("No person found with ID: " + personId);
                     return;
                 }
 
-                // Special handling for Water
                 if (supplyToAllocate instanceof Water) {
                     System.out.print("Enter allocation date (YYYY-MM-DD): ");
                     String allocationDate = scanner.nextLine();
                     ((Water)supplyToAllocate).setAllocationDate(allocationDate);
                 }
 
-                // Allocate supply
-                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), personId, null);
+                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), personId, null, null);
 
-                // If allocated to a DisasterVictim, add to their inventory
                 if (person instanceof DisasterVictim) {
                     ((DisasterVictim)person).addItem(supplyToAllocate);
                 }
@@ -626,15 +685,133 @@ public class UserView {
                 System.out.println("Supply allocated to person successfully!");
 
             } else if (allocationChoice == 2) {
-                // Allocate to location
+                // Option 2: Allocate to location (original code)
+                System.out.println("\nAvailable Unallocated Supplies:");
+                ArrayList<Supply> availableSupplies = new ArrayList<>();
+                for (Supply supply : supplyController.getAllSupplies()) {
+                    if (!supplyController.isSupplyAllocated(supply.getSupplyId())) {
+                        availableSupplies.add(supply);
+                        System.out.printf("%-8s %-15s %-20s%n",
+                                supply.getSupplyId(),
+                                supply.getSupplyType(),
+                                supply.getSupplyName());
+                    }
+                }
+                if (availableSupplies.isEmpty()) {
+                    System.out.println("No unallocated supplies available.");
+                    return;
+                }
+
+                System.out.print("\nEnter the ID of the supply to allocate: ");
+                int supplyId = Integer.parseInt(scanner.nextLine());
+
+                Supply supplyToAllocate = null;
+                for (Supply supply : availableSupplies) {
+                    if (supply.getSupplyId() == supplyId) {
+                        supplyToAllocate = supply;
+                        break;
+                    }
+                }
+
+                if (supplyToAllocate == null) {
+                    System.out.println("No supply found with ID: " + supplyId);
+                    return;
+                }
+
                 viewAllLocations();
                 System.out.print("\nEnter the ID of the location to allocate to: ");
                 int locationId = Integer.parseInt(scanner.nextLine());
 
-                // Check if location exists
                 Location location = locationController.getLocationById(locationId);
                 if (location == null) {
                     System.out.println("No location found with ID: " + locationId);
+                    return;
+                }
+
+                if (supplyToAllocate instanceof Water) {
+                    System.out.print("Enter allocation date (YYYY-MM-DD): ");
+                    String allocationDate = scanner.nextLine();
+                    ((Water)supplyToAllocate).setAllocationDate(allocationDate);
+                }
+
+                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), null, locationId, null);
+                location.addItem(supplyToAllocate);
+
+                System.out.println("Supply allocated to location successfully!");
+
+            } else if (allocationChoice == 3) {
+                // Option 3: Allocate to person at specific location (from location's supplies)
+                System.out.println("\nAvailable Locations:");
+                viewAllLocations();
+
+                System.out.print("\nEnter the ID of the location: ");
+                int locationId = Integer.parseInt(scanner.nextLine());
+
+                Location location = locationController.getLocationById(locationId);
+                if (location == null) {
+                    System.out.println("No location found with ID: " + locationId);
+                    return;
+                }
+
+                // Show supplies at this location
+                System.out.println("\nSupplies available at this location:");
+                ArrayList<Supply> locationSupplies = locationController.getSuppliesAtLocation(locationId);
+                if (locationSupplies.isEmpty()) {
+                    System.out.println("No supplies available at this location.");
+                    return;
+                }
+
+                for (Supply supply : locationSupplies) {
+                    System.out.printf("%-8s %-15s %-20s%n",
+                            supply.getSupplyId(),
+                            supply.getSupplyType(),
+                            supply.getSupplyName());
+                }
+
+                System.out.print("\nEnter the ID of the supply to allocate: ");
+                int supplyId = Integer.parseInt(scanner.nextLine());
+
+                // Find the supply at this location
+                Supply supplyToAllocate = null;
+                for (Supply supply : locationSupplies) {
+                    if (supply.getSupplyId() == supplyId) {
+                        supplyToAllocate = supply;
+                        break;
+                    }
+                }
+
+                if (supplyToAllocate == null) {
+                    System.out.println("No supply found with ID " + supplyId + " at this location.");
+                    return;
+                }
+
+                // Show occupants at this location
+                System.out.println("\nOccupants at this location:");
+                ArrayList<Person> occupants = locationController.getOccupantsAtLocation(locationId);
+                if (occupants.isEmpty()) {
+                    System.out.println("No occupants found at this location.");
+                    return;
+                }
+
+                for (Person person : occupants) {
+                    System.out.println(person.getPersonId() + ": " +
+                            person.getFirstName() + " " + person.getLastName());
+                }
+
+                System.out.print("\nEnter the ID of the person to allocate to: ");
+                int personId = Integer.parseInt(scanner.nextLine());
+
+                // Verify person is at this location
+                boolean personFound = false;
+                for (Person person : occupants) {
+                    if (person.getPersonId() == personId) {
+                        personFound = true;
+                        break;
+                    }
+                }
+
+                if (!personFound) {
+                    System.out.println("Person with ID " + personId + " is not at this location.");
                     return;
                 }
 
@@ -645,14 +822,19 @@ public class UserView {
                     ((Water)supplyToAllocate).setAllocationDate(allocationDate);
                 }
 
-                // Allocate supply
-                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), null, locationId);
-                location.addItem(supplyToAllocate);
+                // Perform the allocation
+                supplyController.allocateSupply(supplyToAllocate.getSupplyId(), personId, null, locationId);
 
-                System.out.println("Supply allocated to location successfully!");
+                // Add to person's inventory if they're a DisasterVictim
+                Person person = personController.getPersonById(personId);
+                if (person instanceof DisasterVictim) {
+                    ((DisasterVictim)person).addItem(supplyToAllocate);
+                }
 
-            } else {
-                System.out.println("Invalid choice. Allocation cancelled.");
+                // Remove from location's supplies
+                location.removeItem(supplyToAllocate);
+
+                System.out.println("Supply successfully allocated from location to person!");
             }
 
         } catch (NumberFormatException e) {
@@ -663,9 +845,6 @@ public class UserView {
             System.out.println("An error occurred: " + e.getMessage());
         }
     }
-
-
-
 
 
 
@@ -706,6 +885,7 @@ public class UserView {
             System.out.println("4. View Location Occupants");
             System.out.println("5. Add Occupant to Location");
             System.out.println("6. Remove Occupant from Location");
+            System.out.println("7. Allocate Supply to Person at Location"); // New option
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -730,6 +910,9 @@ public class UserView {
                         break;
                     case 6:
                         removeOccupantFromLocation();
+                        break;
+                    case 7:
+                        allocateSupplyToPersonAtLocation();
                         break;
                     case 0:
                         stayInMenu = false;

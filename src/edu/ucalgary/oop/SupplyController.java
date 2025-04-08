@@ -2,6 +2,9 @@ package edu.ucalgary.oop;
 
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.Date;
+import java.time.LocalDate;
+
 
 public class SupplyController {
     private ArrayList<Supply> supplyModels;
@@ -124,20 +127,18 @@ public class SupplyController {
     }
 
 
-    public void allocateSupply(int supplyId, Integer personId, Integer locationId)
+    public void allocateSupply(int supplyId, Integer personId, Integer locationId, Integer fromLocationId)
             throws SQLException, IllegalArgumentException {
 
-        // Validate that we're allocating to either a person or location, but not both
+        // Validate allocation parameters
         if (personId == null && locationId == null) {
-            throw new IllegalArgumentException("Must specify either personId or locationId");
+            throw new IllegalArgumentException("Must specify either personId or locationId as allocation target");
         }
         if (personId != null && locationId != null) {
             throw new IllegalArgumentException("Cannot allocate to both person and location simultaneously");
         }
-
-        // Check if supply is already allocated
-        if (databaseManager.isSupplyAllocated(supplyId)) {
-            throw new IllegalArgumentException("Supply is already allocated and cannot be reallocated");
+        if (fromLocationId != null && locationId != null) {
+            throw new IllegalArgumentException("Cannot allocate from and to locations simultaneously");
         }
 
         // Find the supply in our local models
@@ -153,25 +154,36 @@ public class SupplyController {
             throw new IllegalArgumentException("No supply found with ID: " + supplyId);
         }
 
-        // Special handling for PersonalBelonging - can't be allocated to locations
+        // Special handling for PersonalBelonging
         if (supplyToAllocate instanceof PersonalBelonging && locationId != null) {
             throw new IllegalArgumentException("Personal belongings cannot be allocated to locations");
         }
 
-        // Special handling for Water - needs allocation date
+        // Special handling for Water
         if (supplyToAllocate instanceof Water) {
             Water water = (Water) supplyToAllocate;
             if (water.getAllocationDate() == null || water.getAllocationDate().isEmpty()) {
-                throw new IllegalArgumentException("Water allocation requires a valid allocation date");
+                String currentDate = LocalDate.now().toString();
+                water.setAllocationDate(currentDate);
             }
         }
 
         try {
-            // Allocate in the database
+            // Check if we're moving from a location
+            if (fromLocationId != null) {
+                // Verify supply is actually at the source location
+                if (!databaseManager.isSupplyAtLocation(supplyId, fromLocationId)) {
+                    throw new IllegalArgumentException("Supply is not at the specified source location");
+                }
+
+                // Remove from location first
+                databaseManager.removeSupplyFromLocation(supplyId, fromLocationId);
+            }
+
+            // Perform the allocation
             databaseManager.allocateSupply(supplyId, personId, locationId);
 
             // Update local models
-
             refreshSupplies();
 
         } catch (SQLException e) {
@@ -181,14 +193,8 @@ public class SupplyController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    public boolean isSupplyAllocated(int supplyId) throws SQLException {
+        if (databaseManager.isSupplyAllocated(supplyId)) return true;
+        else return false;
+    }
 }

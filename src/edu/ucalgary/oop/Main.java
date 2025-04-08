@@ -18,7 +18,8 @@ public class Main {
 
         // Incomplete
 
-        //Every method is adequately documented with @param, @return and information about the purpose.
+        // Every method is adequately documented with @param, @return and information about the purpose.
+        // Create function that allows it so that I can allocate supply from location to person
 
 
 

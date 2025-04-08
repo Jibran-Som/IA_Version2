@@ -214,6 +214,26 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Checks if a supply is specifically allocated to a person
+     * @param supplyId The ID of the supply to check
+     * @return true if the supply is allocated to a person, false otherwise
+     * @throws SQLException If there's a database error
+     */
+    public boolean isSupplyAllocatedToPerson(int supplyId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE supply_id = ? AND person_id IS NOT NULL";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, supplyId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    }
+
 
 
 
@@ -249,21 +269,61 @@ public class DatabaseManager {
 
     // Allocate
     public void allocateSupply(int supplyId, Integer personId, Integer locationId) throws SQLException {
-        String sql = "INSERT INTO SupplyAllocation (supply_id, person_id, location_id) VALUES (?, ?, ?)";
+        // First check if the supply is already allocated
+        if (isSupplyAllocated(supplyId)) {
+            // If already allocated to a location, update the record
+            if (locationId != null) {
+                String updateSql = "UPDATE SupplyAllocation SET location_id = ?, person_id = NULL WHERE supply_id = ?";
+                try (PreparedStatement pstmt = connection.prepareStatement(updateSql)) {
+                    pstmt.setInt(1, locationId);
+                    pstmt.setInt(2, supplyId);
+                    pstmt.executeUpdate();
+                }
+            }
+            // If already allocated to a person, update the record
+            else if (personId != null) {
+                String updateSql = "UPDATE SupplyAllocation SET person_id = ?, location_id = NULL WHERE supply_id = ?";
+                try (PreparedStatement pstmt = connection.prepareStatement(updateSql)) {
+                    pstmt.setInt(1, personId);
+                    pstmt.setInt(2, supplyId);
+                    pstmt.executeUpdate();
+                }
+            }
+        } else {
+            // Create new allocation record
+            String sql = "INSERT INTO SupplyAllocation (supply_id, person_id, location_id) VALUES (?, ?, ?)";
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, supplyId);
+                if (personId != null) {
+                    pstmt.setInt(2, personId);
+                } else {
+                    pstmt.setNull(2, Types.INTEGER);
+                }
+                if (locationId != null) {
+                    pstmt.setInt(3, locationId);
+                } else {
+                    pstmt.setNull(3, Types.INTEGER);
+                }
+                pstmt.executeUpdate();
+            }
+        }
+    }
 
+    public boolean isSupplyAtLocation(int supplyId, int locationId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE supply_id = ? AND location_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, supplyId);
-            if (personId != null) {
-                pstmt.setInt(2, personId);
-            } else {
-                pstmt.setNull(2, Types.INTEGER);
-            }
-            if (locationId != null) {
-                pstmt.setInt(3, locationId);
-            } else {
-                pstmt.setNull(3, Types.INTEGER);
-            }
+            pstmt.setInt(2, locationId);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        }
+    }
 
+    public void removeSupplyFromLocation(int supplyId, int locationId) throws SQLException {
+        String sql = "DELETE FROM SupplyAllocation WHERE supply_id = ? AND location_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, supplyId);
+            pstmt.setInt(2, locationId);
             pstmt.executeUpdate();
         }
     }
@@ -299,6 +359,8 @@ public class DatabaseManager {
         }
         return supplies;
     }
+
+
 
 
 

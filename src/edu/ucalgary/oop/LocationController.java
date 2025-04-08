@@ -158,4 +158,67 @@ public class LocationController {
         return null;
     }
 
+
+    /**
+     * Allocates a supply to a person if they are currently at this location
+     * @param supplyId The ID of the supply to allocate
+     * @param personId The ID of the person to allocate to
+     * @throws SQLException If there's a database error
+     * @throws IllegalArgumentException If the person is not at this location or if the supply is already allocated
+     */
+    public void allocateSupplyToPersonAtLocation(int supplyId, int personId, int locationId)
+            throws SQLException, IllegalArgumentException {
+
+        // Verify the person is at this location
+        ArrayList<Person> occupants = getOccupantsAtLocation(locationId);
+        boolean personFound = false;
+
+        for (Person person : occupants) {
+            if (person.getPersonId() == personId) {
+                personFound = true;
+                break;
+            }
+        }
+
+        if (!personFound) {
+            throw new IllegalArgumentException("Person with ID " + personId +
+                    " is not currently at location " + locationId);
+        }
+
+        // Check if supply is already allocated
+        if (databaseManager.isSupplyAllocatedToPerson(supplyId)) {
+            throw new IllegalArgumentException("Supply with ID " + supplyId + " is already allocated");
+        }
+
+        // Get the supply to verify it exists
+        Supply supplyToAllocate = null;
+        for (Supply supply : databaseManager.getAllSupplies()) {
+            if (supply.getSupplyId() == supplyId) {
+                supplyToAllocate = supply;
+                break;
+            }
+        }
+
+        if (supplyToAllocate == null) {
+            throw new IllegalArgumentException("No supply found with ID: " + supplyId);
+        }
+
+        // Special handling for Water - needs allocation date
+        if (supplyToAllocate instanceof Water) {
+            // Beta
+        }
+
+        // Allocate the supply
+        databaseManager.allocateSupply(supplyId, personId, null);
+
+        // If allocated to a DisasterVictim, add to their inventory
+        Person person = databaseManager.getPersonById(personId);
+        if (person instanceof DisasterVictim) {
+            ((DisasterVictim)person).addItem(supplyToAllocate);
+        }
+
+        // Refresh local models
+        refreshLocations();
+    }
+
 }
