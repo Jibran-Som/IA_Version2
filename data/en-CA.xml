@@ -14,6 +14,41 @@
 </translation>
 
 <translation>
+  <key>program_title</key>
+  <value>Disaster Victim Information System</value>
+</translation>
+
+<translation>
+  <key>location_detail</key>
+  <value>Location Details</value>
+</translation>
+
+<translation>
+  <key>person_detail</key>
+  <value>Person Details</value>
+</translation>
+
+<translation>
+  <key>supply_detail</key>
+  <value>Supply Details</value>
+</translation>
+
+<translation>
+  <key>inquiry_detail</key>
+  <value>Inquiry Details</value>
+</translation>
+
+<translation>
+  <key>medical_detail</key>
+  <value>Medical Details</value>
+</translation>
+
+<translation>
+  <key>exit</key>
+  <value>Exit</value>
+</translation>
+
+<translation>
   <key>input_firstname</key>
   <value>Enter the person's first name:</value>
 </translation>

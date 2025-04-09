@@ -14,9 +14,6 @@ public class Water extends Supply {
     }
 
     public void setAllocationDate(String allocationDate) {
-        if (!isValidDateFormat(allocationDate)) {
-            throw new IllegalArgumentException("Invalid date format. Expected format: YYYY-MM-DD");
-        }
         this.allocationDate = allocationDate;
     }
 

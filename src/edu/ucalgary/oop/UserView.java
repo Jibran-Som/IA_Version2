@@ -69,13 +69,13 @@ public class UserView {
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("\nDisaster Victim Information System\n");
-            System.out.println("1. Location Details");
-            System.out.println("2. Person Details");
-            System.out.println("3. Supply Details");
-            System.out.println("4. Inquiry Details");
-            System.out.println("5. Medical Details");
-            System.out.println("0. Exit");
+            System.out.println("\n" + translationManager.getTranslation("program_title") + "\n");
+            System.out.println("1. " + translationManager.getTranslation("location_detail"));
+            System.out.println("2. " + translationManager.getTranslation("person_detail"));
+            System.out.println("3. " + translationManager.getTranslation("supply_detail"));
+            System.out.println("4. " + translationManager.getTranslation("inquiry_detail"));
+            System.out.println("5. " + translationManager.getTranslation("medical_detail"));
+            System.out.println("0. " + translationManager.getTranslation("exit"));
             System.out.print("\nEnter your choice: ");
 
             try {
@@ -337,45 +337,52 @@ public class UserView {
                 return;  // This exits the method and returns to the calling menu
             }
 
-            System.out.print("Enter supply name: ");
-            String name = scanner.nextLine();
+            //System.out.print("Enter supply name: ");
+            //String name = scanner.nextLine();
 
-            System.out.print("Enter supply type (general category): ");
-            String supplyType = scanner.nextLine();
 
             Supply newSupply;
 
             switch (typeChoice) {
                 case 1: // Blanket
-                    newSupply = new Blanket(name, supplyType);
+                    newSupply = new Blanket(null, "blanket");
                     break;
 
                 case 2: // Cot
-                    System.out.print("Enter room location: ");
-                    String roomLocation = scanner.nextLine();
-
                     System.out.print("Enter grid location: ");
                     String gridLocation = scanner.nextLine();
 
-                    newSupply = new Cot(name, supplyType, roomLocation, gridLocation);
+                    System.out.print("Enter room location: ");
+                    String roomLocation = scanner.nextLine();
+
+
+                    newSupply = new Cot(roomLocation + " " + gridLocation, "cot", roomLocation, gridLocation);
                     break;
 
                 case 3: // Personal Belonging
                     System.out.print("Enter item description: ");
                     String description = scanner.nextLine();
 
-                    newSupply = new PersonalBelonging(name, supplyType, description);
+                    newSupply = new PersonalBelonging(description, "personal item", description);
                     break;
 
                 case 4: // Water
-                    newSupply = new Water(name, supplyType);
+                    newSupply = new Water(null, "water");
 
                     System.out.print("Enter allocation date (YYYY-MM-DD): ");
                     String allocationDate = scanner.nextLine();
-                    ((Water)newSupply).setAllocationDate(allocationDate);
+                    if(allocationDate.isEmpty()) {
+                        ((Water)newSupply).setAllocationDate(null);
+                    }else {
+                        ((Water) newSupply).setAllocationDate(allocationDate);
+                    }
                     break;
 
                 default:
+                    System.out.print("Enter supply type (general category): ");
+                    String supplyType = scanner.nextLine();
+                    System.out.print("Enter supply comments: ");
+                    String name = scanner.nextLine();
                     newSupply = new Supply(name, supplyType);
                     break;
 
@@ -642,7 +649,21 @@ public class UserView {
             if (allocationChoice == 1) {
                 // Option 1: Allocate to person (original code)
                 System.out.println("\nAvailable Supplies:");
-                viewAllSupplies();
+                System.out.println("\nAvailable Unallocated Supplies:");
+                ArrayList<Supply> availableSupplies = new ArrayList<>();
+                for (Supply supply : supplyController.getAllSupplies()) {
+                    if (!supplyController.isSupplyAllocated(supply.getSupplyId())) {
+                        availableSupplies.add(supply);
+                        System.out.printf("%-8s %-15s %-20s%n",
+                                supply.getSupplyId(),
+                                supply.getSupplyType(),
+                                supply.getSupplyName());
+                    }
+                }
+                if (availableSupplies.isEmpty()) {
+                    System.out.println("No unallocated supplies available.");
+                    return;
+                }
 
                 System.out.print("\nEnter the ID of the supply to allocate: ");
                 int supplyId = Integer.parseInt(scanner.nextLine());
@@ -660,13 +681,18 @@ public class UserView {
                     return;
                 }
 
-                viewAllPersons();
+                viewDisasterVictims();
                 System.out.print("\nEnter the ID of the person to allocate to: ");
                 int personId = Integer.parseInt(scanner.nextLine());
 
                 Person person = personController.getPersonById(personId);
                 if (person == null) {
                     System.out.println("No person found with ID: " + personId);
+                    return;
+                }
+
+                if(!(person instanceof DisasterVictim)){
+                    System.out.println("Person is not a Disaster Victim");
                     return;
                 }
 
@@ -857,6 +883,8 @@ public class UserView {
 
 
 
+
+
     // Person
 
 
@@ -885,7 +913,6 @@ public class UserView {
             System.out.println("4. View Location Occupants");
             System.out.println("5. Add Occupant to Location");
             System.out.println("6. Remove Occupant from Location");
-            System.out.println("7. Allocate Supply to Person at Location"); // New option
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -910,9 +937,6 @@ public class UserView {
                         break;
                     case 6:
                         removeOccupantFromLocation();
-                        break;
-                    case 7:
-                        allocateSupplyToPersonAtLocation();
                         break;
                     case 0:
                         stayInMenu = false;
@@ -1154,7 +1178,8 @@ public class UserView {
                         break;
                     case 5:
                         viewMedicalRecordsAtLocation();
-                        break;*/
+                        break;
+                    */
                     case 0:
                         stayInMenu = false;
                         break;
@@ -1443,6 +1468,7 @@ public class UserView {
             System.out.println("4. View Disaster Victims");
             System.out.println("5. Add Disaster Victim");
             System.out.println("6. Convert to Disaster Victim");
+            System.out.println("7. Add/Change Family Group");
             System.out.println("0. Back to Main Menu");
             System.out.print("\nEnter your choice: ");
 
@@ -1467,6 +1493,10 @@ public class UserView {
                         break;
                     case 6:
                         convertToDisasterVictim();
+                        break;
+                    case 7:
+                        changePersonFamilyGroup();
+                        break;
                     case 0:
                         stayInMenu = false;
                         break;
@@ -1626,6 +1656,8 @@ public class UserView {
                 case 6:
                     person.setComments(newValue);
                     break;
+                case 7:
+                    // person.setComments(newValue);
                 default:
                     System.out.println("Invalid field number");
                     return;
@@ -1663,10 +1695,10 @@ public class UserView {
 
     // Disaster Victim specific methods
     public static void viewDisasterVictims() {
-        System.out.println("\n--------------------------------------------------------------------------------------------------------");
+        System.out.println("\n----------------------------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
-                "ID", "FIRST NAME", "LAST NAME", "DOB", "GENDER", "PHONE", "INVENTORY ID");
-        System.out.println("--------------------------------------------------------------------------------------------------------");
+                "ID", "FIRST NAME", "LAST NAME", "DOB", "GENDER", "PHONE", "INVENTORY SIZE");
+        System.out.println("----------------------------------------------------------------------------------------------------------");
 
         for (Person person : personController.getAllPeople()) {
             if (person instanceof DisasterVictim) {
@@ -1682,7 +1714,7 @@ public class UserView {
             }
         }
 
-        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------");
     }
 
     public static void addDisasterVictim() {
@@ -1751,6 +1783,113 @@ public class UserView {
         }
     }
 
+    public static void changePersonFamilyGroup() {
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            // First show all people
+            viewAllPersons();
+            System.out.print("\nEnter ID of person to update family group: ");
+            int personId = Integer.parseInt(scanner.nextLine());
+
+            Person person = personController.getPersonById(personId);
+            if (person == null) {
+                System.out.println("No person found with ID: " + personId);
+                return;
+            }
+
+            // Show current family group if any
+            if (person.getFamilyGroup() != null) {
+                System.out.println("\nCurrent Family Group:");
+                System.out.println("ID: " + person.getFamilyGroup().getFamilyGroupId());
+                System.out.println("Members:");
+                for (Person member : person.getFamilyGroup().getMembers()) {
+                    System.out.println("  " + member.getPersonId() + ": " +
+                            member.getFirstName() + " " + member.getLastName());
+                }
+            } else {
+                System.out.println("\nThis person is not currently in a family group.");
+            }
+
+            // Show options
+            System.out.println("\nOptions:");
+            System.out.println("1. Add to existing family group");
+            System.out.println("2. Create new family group");
+            System.out.println("3. Remove from current family group");
+            System.out.print("Enter your choice (1-3): ");
+            int choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+                case 1: // Add to existing family group
+                    // Show available family groups
+                    System.out.println("\nAvailable Family Groups:");
+                    ArrayList<FamilyGroup> familyGroups = personController.getAllFamilyGroups();
+                    for (FamilyGroup group : familyGroups) {
+                        System.out.println("ID: " + group.getFamilyGroupId() +
+                                " - Members: " + group.getMembers().size());
+                    }
+
+                    System.out.print("Enter family group ID to add to: ");
+                    int familyId = Integer.parseInt(scanner.nextLine());
+
+                    try {
+                        personController.addPersonToFamilyGroup(personId, familyId);
+                        System.out.println("Person added to family group successfully");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 2: // Create new family group
+                    System.out.print("\nEnter IDs of other family members including original chosen (comma separated): ");
+                    String[] memberIds = scanner.nextLine().split(",");
+                    ArrayList<Person> members = new ArrayList<>();
+                    members.add(person); // Include the current person
+
+                    for (String idStr : memberIds) {
+                        try {
+                            int id = Integer.parseInt(idStr.trim());
+                            Person member = personController.getPersonById(id);
+                            if (member != null) {
+                                members.add(member);
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Invalid ID: " + idStr);
+                        }
+                    }
+
+                    try {
+                        FamilyGroup newFamily = personController.createFamilyGroup(members);
+                        System.out.println("New family group created with ID: " + newFamily.getFamilyGroupId());
+                    } catch (Exception e) {
+                        System.out.println("Error creating family group: " + e.getMessage());
+                    }
+                    break;
+
+                case 3: // Remove from current family group
+                    try {
+                        personController.removePersonFromFamilyGroup(personId);
+                        System.out.println("Person removed from family group");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter valid numbers.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
 
 
 

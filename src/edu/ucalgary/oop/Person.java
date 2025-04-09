@@ -129,9 +129,6 @@ public class Person {
     }
 
     public void setFamilyGroup(FamilyGroup familyGroup) {
-        if (familyGroup == null) {
-            throw new IllegalArgumentException("FamilyGroup cannot be null");
-        }
         this.familyGroup = familyGroup;
 
     }

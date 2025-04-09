@@ -14,7 +14,13 @@ public class DatabaseManager {
     private final String USER = "oop";
     private final String PASS = "ucalgary";
 
-    // Constructor
+    /**
+     * Constructor for the DatabaseManager class.
+     * Attempts to establish a connection to the database.
+     * If the connection fails, it logs a fatal error and throws an SQLException to indicate the failure.
+     *
+     * @throws SQLException If a database connection cannot be established.
+     */
     public DatabaseManager() throws SQLException {
         try {
             connect();
@@ -29,7 +35,12 @@ public class DatabaseManager {
 
         }
     }
-    // Class Specific Code
+
+    /**
+     * Establishes a connection to the database using the provided database URL, username, and password.
+     *
+     * @throws SQLException If a connection to the database cannot be established.
+     */
     private void connect() throws SQLException {
         try {
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -39,14 +50,28 @@ public class DatabaseManager {
         }
     }
 
-    // Close the database connection
+    /**
+     * Closes the database connection if it is open.
+     * Checks if the connection is not null and is currently open before attempting to close it.
+     * If the connection is already closed or null, no action is taken.
+     * Mainly used for personal testing and not actual application.
+     *
+     * @throws SQLException If an error occurs while closing the connection.
+     */
     public void close() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
     }
 
-    // Singleton
+
+    /**
+     * Retrieves the singleton instance of the DatabaseManager.
+     * If the instance does not already exist, it creates a new one.
+     *
+     * @return The singleton instance of the DatabaseManager.
+     * @throws SQLException If the database connection cannot be established when creating the instance.
+     */
     public static synchronized DatabaseManager getInstance() throws SQLException {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -64,6 +89,16 @@ public class DatabaseManager {
 
     // Code for Supply
 
+
+    /**
+     * Adds a new supply to the database.
+     * Inserts a new record into the "Supply" table with the supply type and comments (using supply name as comments).
+     * If the insertion is successful, the method retrieves the generated supply ID.
+     * Throws an SQLException if the insertion fails or no ID is returned.
+     *
+     * @param supply The Supply object containing the data to be inserted.
+     * @throws SQLException If an error occurs while inserting the supply or if no ID is returned after insertion.
+     */
     public void addSupply(Supply supply) throws SQLException {
         String sql = "INSERT INTO Supply (type, comments) VALUES (?, ?) RETURNING supply_id";
 
@@ -80,8 +115,18 @@ public class DatabaseManager {
         }
     }
 
-    // Getter
+
+
+    /**
+     * Retrieves all supplies from the database and maps them to their corresponding Supply objects.
+     * The method fetches all records from the "Supply" table, and for each supply, it determines its type
+     * to instantiate the appropriate subclass.
+     *
+     * @return A list of Supply objects corresponding to the records in the "Supply" table.
+     * @throws SQLException If an error occurs while querying the database or processing the result set.
+     */
     public List<Supply> getAllSupplies() throws SQLException {
+        deleteExpiredSupplies();
         List<Supply> supplies = new ArrayList<>();
         String sql = "SELECT * FROM Supply";
 
@@ -102,7 +147,7 @@ public class DatabaseManager {
                         if (!isWaterExpired(water.getAllocationDate())) {
                             supply = water;
                         } else {
-                            continue; // Skip expired water
+                            continue;
                         }
                         break;
                     case "cot":
@@ -127,6 +172,15 @@ public class DatabaseManager {
         return supplies;
     }
 
+
+    /**
+     * Retrieves the most recent allocation date for a specific water supply from the database
+     * and sets it on the provided Water object.
+     *
+     * @param water The Water object to which the allocation date will be set.
+     * @param supplyId The ID of the supply (water) for which the allocation date is being retrieved.
+     * @throws SQLException If an error occurs while querying the database or processing the result.
+     */
     private void setWaterAllocationDate(Water water, int supplyId) throws SQLException {
         String sql = "SELECT allocation_date FROM SupplyAllocation " +
                 "WHERE supply_id = ? AND person_id IS NOT NULL " +
@@ -145,6 +199,14 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * Checks whether the water supply has expired based on its allocation date.
+     * The method compares the current date with the expiration date time.
+     *
+     * @param allocationDate The allocation date of the water supply, or null if unallocated.
+     * @return true if the water has expired, false otherwise.
+     */
     private boolean isWaterExpired(String allocationDate) {
         if (allocationDate == null) return false; // Unallocated water doesn't expire
 
@@ -153,8 +215,13 @@ public class DatabaseManager {
         return LocalDate.now().isAfter(expirationDate);
     }
 
+
+    /**
+     * Deletes expired water supplies from the database.
+     *
+     * @throws SQLException If an error occurs while querying the database or deleting the expired supplies.
+     */
     public void deleteExpiredSupplies() throws SQLException {
-        // First get all water supplies with their allocation dates
         String query = "SELECT s.supply_id, sa.allocation_date FROM Supply s " +
                 "LEFT JOIN SupplyAllocation sa ON s.supply_id = sa.supply_id " +
                 "WHERE s.type = 'water' AND sa.person_id IS NOT NULL " +
@@ -200,6 +267,18 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * Checks if a supply has been allocated to a person.
+     * This method queries the "SupplyAllocation" table to count the number of allocations
+     * for a specific supply ID. If the count is greater than 0, it indicates that the supply
+     * has been allocated to a person, and the method returns true. Otherwise, it returns false.
+     *
+     * @param supplyId The ID of the supply to check for allocation.
+     * @return true if the supply has been allocated, false otherwise.
+     * @throws SQLException If an error occurs while querying the database.
+     */
+
     public boolean isSupplyAllocated(int supplyId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE supply_id = ?";
 
@@ -216,6 +295,9 @@ public class DatabaseManager {
 
     /**
      * Checks if a supply is specifically allocated to a person
+     * Used only for testing. Was the
+     *
+     *
      * @param supplyId The ID of the supply to check
      * @return true if the supply is allocated to a person, false otherwise
      * @throws SQLException If there's a database error
@@ -237,7 +319,15 @@ public class DatabaseManager {
 
 
 
-    // Updater
+    /**
+     * Updates the details of an existing supply in the database.
+     * This method updates the `type` and `comments` (using the supply name) of a supply record
+     * in the "Supply" table
+     *
+     * @param supply The Supply object containing the updated data.
+     * @throws SQLException If an error occurs while updating the supply or if no rows are affected.
+     */
+
     public void updateSupply(Supply supply) throws SQLException {
         String sql = "UPDATE Supply SET type = ?, comments = ? WHERE supply_id = ?";
 
@@ -253,7 +343,14 @@ public class DatabaseManager {
         }
     }
 
-    // Deleter
+    /**
+     * Deletes a supply record from the database.
+     * This method removes a supply record from the "Supply" table based on the given `supplyId`.
+     * Mainly used for type water.
+     *
+     * @param supplyId The ID of the supply to be deleted.
+     * @throws SQLException If an error occurs while deleting the supply or if no rows are affected.
+     */
     public void deleteSupply(int supplyId) throws SQLException {
         String sql = "DELETE FROM Supply WHERE supply_id = ?";
 
@@ -267,7 +364,19 @@ public class DatabaseManager {
         }
     }
 
-    // Allocate
+
+    /**
+     * Allocates a supply to either a person or a location.
+     * This method checks if the supply is already allocated:
+     * - If it is already allocated, the method updates the existing allocation record
+     *   by assigning the supply to either a person or a location (but not both at the same time).
+     * - If the supply is not already allocated, a new allocation record is created.
+     *
+     * @param supplyId The ID of the supply to be allocated.
+     * @param personId The ID of the person to whom the supply is allocated, or null if allocating to a location.
+     * @param locationId The ID of the location to which the supply is allocated, or null if allocating to a person.
+     * @throws SQLException If an error occurs while querying or updating the database.
+     */
     public void allocateSupply(int supplyId, Integer personId, Integer locationId) throws SQLException {
         // First check if the supply is already allocated
         if (isSupplyAllocated(supplyId)) {
@@ -309,6 +418,16 @@ public class DatabaseManager {
         }
     }
 
+
+    /**
+     * Checks if a supply is currently allocated to a specific location.
+     * Used for allocating supplies from locations to individuals.
+     *
+     * @param supplyId The ID of the supply to check.
+     * @param locationId The ID of the location to check.
+     * @return true if the supply is allocated to the specified location, false otherwise.
+     * @throws SQLException If an error occurs while querying the database.
+     */
     public boolean isSupplyAtLocation(int supplyId, int locationId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE supply_id = ? AND location_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -319,6 +438,14 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Removes a supply from a specific location.
+     * Used for allocating supplies from locations to individuals.
+     *
+     * @param supplyId The ID of the supply to remove from the location.
+     * @param locationId The ID of the location from which the supply should be removed.
+     * @throws SQLException If an error occurs while querying or updating the database.
+     */
     public void removeSupplyFromLocation(int supplyId, int locationId) throws SQLException {
         String sql = "DELETE FROM SupplyAllocation WHERE supply_id = ? AND location_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -329,7 +456,14 @@ public class DatabaseManager {
     }
 
 
-    // Getter for Location and DV
+    /**
+     * Retrieves a list of supplies allocated to a specific person or location.
+     *
+     * @param personId The ID of the person to whom the supplies are allocated, or null if querying by location.
+     * @param locationId The ID of the location to which the supplies are allocated, or null if querying by person.
+     * @return A list of `Supply` objects allocated to the specified person or location.
+     * @throws SQLException If an error occurs while querying the database.
+     */
     public List<Supply> getSuppliesAllocatedTo(Integer personId, Integer locationId) throws SQLException {
         List<Supply> supplies = new ArrayList<>();
         String sql = "SELECT s.* FROM Supply s JOIN SupplyAllocation sa ON s.supply_id = sa.supply_id WHERE ";
@@ -374,21 +508,36 @@ public class DatabaseManager {
 
 
 
-// Code for Location
-public void addLocation(Location location) throws SQLException {
-    String sql = "INSERT INTO Location (name, address) VALUES (?, ?) RETURNING location_id";
+    // Code for Location
 
-    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-        pstmt.setString(1, location.getLocationName());
-        pstmt.setString(2, location.getLocationAddress());
 
-        ResultSet rs = pstmt.executeQuery();
-        if (rs.next()) {
-            location.setLocationId(rs.getInt("location_id"));
+    /**
+     * Adds a new location to the database.
+     *
+     * @param location The `Location` object containing the details to be inserted.
+     * @throws SQLException If an error occurs while inserting the location into the database or retrieving the generated ID.
+     */
+    public void addLocation(Location location) throws SQLException {
+        String sql = "INSERT INTO Location (name, address) VALUES (?, ?) RETURNING location_id";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, location.getLocationName());
+            pstmt.setString(2, location.getLocationAddress());
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                location.setLocationId(rs.getInt("location_id"));
+            }
         }
     }
-}
 
+
+    /**
+     * Retrieves a list of all locations from the database.
+     *
+     * @return A list of `Location` objects containing the details of all locations in the database.
+     * @throws SQLException If an error occurs while querying the database.
+     */
     public List<Location> getAllLocations() throws SQLException {
         List<Location> locations = new ArrayList<>();
         String sql = "SELECT * FROM Location";
@@ -408,6 +557,15 @@ public void addLocation(Location location) throws SQLException {
         return locations;
     }
 
+
+    /**
+     * Updates the details of an existing location in the database.
+     *
+     * @param location The `Location` object containing the updated details.
+     * @throws SQLException If an error occurs while updating the location in the database,
+     *                      or if no rows are affected (i.e., the specified location does not exist).
+     */
+
     public void updateLocation(Location location) throws SQLException {
         String sql = "UPDATE Location SET name = ?, address = ? WHERE location_id = ?";
 
@@ -423,6 +581,14 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+
+    /**
+     * Deletes a location from the database.
+     * Really only created for basic tests.
+     *
+     * @param locationId The `location_id` of the location to be deleted.
+     * @throws SQLException If an error occurs while deleting the location from the database,
+     */
     public void deleteLocation(int locationId) throws SQLException {
         String sql = "DELETE FROM Location WHERE location_id = ?";
 
@@ -436,6 +602,13 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+    /**
+     * Retrieves a list of persons currently occupying a specific location.
+     *
+     * @param locationId The ID of the location for which occupants are to be retrieved.
+     * @return A list of `Person` objects representing the occupants at the specified location.
+     * @throws SQLException If an error occurs while querying the database.
+     */
     public List<Person> getOccupantsAtLocation(int locationId) throws SQLException {
         List<Person> occupants = new ArrayList<>();
         String sql = "SELECT p.* FROM Person p JOIN PersonLocation pl ON p.person_id = pl.person_id WHERE pl.location_id = ?";
@@ -456,6 +629,16 @@ public void addLocation(Location location) throws SQLException {
         return occupants;
     }
 
+
+    /**
+     * Adds a person to a specific location by creating an entry in the `PersonLocation` table.
+     * This method inserts a record into the `PersonLocation` table that associates the specified
+     * `person_id` with a `location_id`, effectively assigning the person to that location.
+     *
+     * @param personId The ID of the person to be assigned to the location.
+     * @param locationId The ID of the location where the person is to be assigned.
+     * @throws SQLException If an error occurs while inserting the record into the database.
+     */
     public void addPersonToLocation(int personId, int locationId) throws SQLException {
         String sql = "INSERT INTO PersonLocation (person_id, location_id) VALUES (?, ?)";
 
@@ -467,6 +650,15 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+    /**
+     * Removes a person from a specific location by deleting the corresponding entry from
+     * the `PersonLocation` table. This method will delete the record that associates the given
+     * `person_id` with a `location_id`, effectively disassociating the person from that location.
+     *
+     * @param personId The ID of the person to be removed from the location.
+     * @param locationId The ID of the location from which the person is to be removed.
+     * @throws SQLException If an error occurs while deleting the record from the database or if no rows are affected.
+     */
     public void removePersonFromLocation(int personId, int locationId) throws SQLException {
         String sql = "DELETE FROM PersonLocation WHERE person_id = ? AND location_id = ?";
 
@@ -497,6 +689,13 @@ public void addLocation(Location location) throws SQLException {
 
     // MedicalRecord
 
+
+    /**
+     * Adds a new medical record to the database.
+     *
+     * @param record The `MedicalRecord` object containing the details of the treatment to be added.
+     * @throws SQLException If an error occurs while inserting the record into the database.
+     */
     public void addMedicalRecord(MedicalRecord record) throws SQLException {
         String sql = "INSERT INTO MedicalRecord (location_id, person_id, date_of_treatment, treatment_details) " +
                 "VALUES (?, ?, ?::timestamp, ?) RETURNING medical_record_id";
@@ -514,6 +713,14 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+    /**
+     * Retrieves all medical records from the database, including information about the
+     * person associated with the record, the location where the treatment occurred,
+     * and the details of the treatment. This method returns a list of `MedicalRecord` objects.
+     *
+     * @return A list of all `MedicalRecord` objects
+     * @throws SQLException If an error occurs while querying the database.
+     */
     public List<MedicalRecord> getAllMedicalRecords() throws SQLException {
         List<MedicalRecord> records = new ArrayList<>();
         String sql = "SELECT mr.*, p.first_name, p.last_name, l.name as location_name, l.address as location_address " +
@@ -555,6 +762,14 @@ public void addLocation(Location location) throws SQLException {
     }
 
 
+    /**
+     * Updates an existing medical record in the database. This method modifies the details
+     * of a specific medical record, including the location, person, date of treatment,
+     * and treatment details, based on the provided `MedicalRecord` object.
+     *
+     * @param record The `MedicalRecord` object containing the updated information.
+     * @throws SQLException If an error occurs while executing the update query or if no rows are affected.
+     */
     public void updateMedicalRecord(MedicalRecord record) throws SQLException {
         String sql = "UPDATE MedicalRecord SET location_id = ?, person_id = ?, " +
                 "date_of_treatment = ?, treatment_details = ? " +
@@ -574,6 +789,14 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+
+    /**
+     * Deletes a medical record from the database based on the provided medical record ID.
+     * Mainly used for tests.
+     *
+     * @param medicalRecordId The ID of the medical record to be deleted.
+     * @throws SQLException If an error occurs while executing the delete query or if no rows are affected (i.e., the record does not exist).
+     */
     public void deleteMedicalRecord(int medicalRecordId) throws SQLException {
         String sql = "DELETE FROM MedicalRecord WHERE medical_record_id = ?";
 
@@ -587,6 +810,15 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+    /**
+     * Retrieves all medical records associated with a specific person from the database.
+     * This method queries the `MedicalRecord` table, joins it with the `Location` table to get location details,
+     * and returns a list of `MedicalRecord` objects that are linked to the specified person ID.
+     *
+     * @param personId The ID of the person whose medical records are to be retrieved.
+     * @return A list of `MedicalRecord` objects associated with the specified person.
+     * @throws SQLException If an error occurs while executing the SQL query or processing the results.
+     */
     public List<MedicalRecord> getMedicalRecordsForPerson(int personId) throws SQLException {
         List<MedicalRecord> records = new ArrayList<>();
         String sql = "SELECT mr.*, l.name as location_name, l.address as location_address " +
@@ -624,7 +856,14 @@ public void addLocation(Location location) throws SQLException {
         return records;
     }
 
-    // In DatabaseManager.java - update getMedicalRecordsAtLocation
+
+    /**
+     * Retrieves all medical records associated with a specific location from the database.
+     *
+     * @param locationId The ID of the location whose medical records are to be retrieved.
+     * @return A list of `MedicalRecord` objects associated with the specified location.
+     * @throws SQLException If an error occurs while executing the SQL query or processing the results.
+     */
     public List<MedicalRecord> getMedicalRecordsAtLocation(int locationId) throws SQLException {
         List<MedicalRecord> records = new ArrayList<>();
         String sql = "SELECT mr.*, p.first_name, p.last_name, l.name as location_name, l.address as location_address " +
@@ -676,12 +915,15 @@ public void addLocation(Location location) throws SQLException {
 
 
 
-    //Person
-    // In DatabaseManager.java
+    // Code for Person
 
-    // Person-related methods
-// In DatabaseManager.java
-
+    /**
+     * Retrieves a list of all people from the database, including information about their supplies if they are disaster victims.
+     * If a person is a disaster victim, their allocated supplies are also fetched and added to their personal inventory.
+     *
+     * @return A list of `Person` objects, potentially including `DisasterVictim` objects if applicable.
+     * @throws SQLException If there is an error executing the database queries.
+     */
     public List<Person> getAllPeople() throws SQLException {
         List<Person> people = new ArrayList<>();
 
@@ -749,6 +991,12 @@ public void addLocation(Location location) throws SQLException {
         return people;
     }
 
+    /**
+     * Retrieves a map of person IDs that have supplies allocated to them.
+     *
+     * @return A map where the key is a person ID and the value is `true` if the person has supplies allocated.
+     * @throws SQLException If there is an error executing the SQL query.
+     */
     private Map<Integer, Boolean> getPeopleWithSuppliesMap() throws SQLException {
         Map<Integer, Boolean> result = new HashMap<>();
         String sql = "SELECT DISTINCT person_id FROM SupplyAllocation WHERE person_id IS NOT NULL";
@@ -761,6 +1009,14 @@ public void addLocation(Location location) throws SQLException {
         }
         return result;
     }
+
+    /**
+     * Retrieves a person via ID from database.
+     * First database function created, largely a test functions.
+     *
+     * @return a person object
+     * @throws SQLException If there is an error executing the SQL query.
+     */
     public Person getPersonById(int personId) throws SQLException {
         String sql = "SELECT * FROM Person WHERE person_id = ?";
 
@@ -827,6 +1083,14 @@ public void addLocation(Location location) throws SQLException {
         return null;
     }
 
+
+    /**
+     * Checks whether a person has any supplies allocated to them.
+     *
+     * @param personId The ID of the person to check for supply allocations.
+     * @return true if the person has one or more supplies allocated; false otherwise.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     private boolean checkIfPersonHasSupplies(int personId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM SupplyAllocation WHERE person_id = ?";
 
@@ -837,7 +1101,14 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
-    // New helper method to get FamilyGroup by ID
+    /**
+     * Helper method that retrieves a family group based on the given family group ID
+     *
+     * @param familyGroupId The ID of the family group to retrieve.
+     * @return A FamilyGroup object containing the list of people in the family group,
+     *         or null if no members are found for the given family group ID.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     private FamilyGroup getFamilyGroupById(int familyGroupId) throws SQLException {
         String sql = "SELECT * FROM Person WHERE family_group = ?";
         List<Person> members = new ArrayList<>();
@@ -867,7 +1138,12 @@ public void addLocation(Location location) throws SQLException {
 
 
 
-
+    /**
+     * Adds a new person to the database.
+     *
+     * @param person The person object containing the details to be inserted.
+     * @throws SQLException if there is an error executing the SQL query.
+     */
     public void addPerson(Person person) throws SQLException {
         String sql = "INSERT INTO Person (first_name, last_name, date_of_birth, gender, comments, phone_number, family_group) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING person_id";
@@ -901,6 +1177,12 @@ public void addLocation(Location location) throws SQLException {
     }
 
 
+    /**
+     * Updates the details of an existing person in the database.
+     *
+     * @param person The person object containing the updated details.
+     * @throws SQLException if there is an error executing the SQL query or if no rows are affected.
+     */
     public void updatePerson(Person person) throws SQLException {
         String sql = "UPDATE Person SET first_name = ?, last_name = ?, date_of_birth = ?, " +
                 "gender = ?, comments = ?, phone_number = ?, family_group = ? " +
@@ -936,6 +1218,13 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+
+    /**
+     * Deletes a person and all their related records from the database.
+     *
+     * @param personId The ID of the person to be deleted.
+     * @throws SQLException if any error occurs during the database operations.
+     */
     public void deletePerson(int personId) throws SQLException {
         // First delete dependent records to maintain referential integrity
         String[] deleteQueries = {
@@ -975,8 +1264,24 @@ public void addLocation(Location location) throws SQLException {
 
 
 
-    // Add these methods to DatabaseManager.java
 
+
+
+
+
+    // Code for Inquiry
+
+
+    /**
+     * Retrieves all inquiries from the database, along with related information such as the inquirer,
+     * the person they are seeking, the location of the inquiry, and the date of the inquiry.
+     *
+     * This method performs a JOIN operation between the Inquiry, Person, and Location tables to
+     * gather all the relevant information.
+     *
+     * @return a list of all inquiries with their associated details.
+     * @throws SQLException if any error occurs while accessing the database.
+     */
     public List<Inquiry> getAllInquiries() throws SQLException {
         List<Inquiry> inquiries = new ArrayList<>();
         String sql = "SELECT i.*, " +
@@ -1032,6 +1337,20 @@ public void addLocation(Location location) throws SQLException {
         return inquiries;
     }
 
+
+
+
+    /**
+     * Retrieves a single inquiry from the database based on the inquiry ID, along with related details
+     * such as the inquirer, the missing person, the location of the inquiry, and the date of the inquiry.
+     * This method performs a JOIN operation between the Inquiry, Person, and Location tables.
+     *
+     * Mainly used to practice JOIN for queries and seeing there outputs.
+     *
+     * @param inquiryId the unique identifier of the inquiry to be fetched.
+     * @return the Inquiry object corresponding to the given inquiry ID, or null if no inquiry is found.
+     * @throws SQLException if any error occurs while accessing the database.
+     */
     public Inquiry getInquiryById(int inquiryId) throws SQLException {
         String sql = "SELECT i.*, " +
                 "p1.first_name as inquirer_first, p1.last_name as inquirer_last, " +
@@ -1088,6 +1407,13 @@ public void addLocation(Location location) throws SQLException {
         return null;
     }
 
+    /**
+     * Adds a new inquiry to the database. This method inserts a record into the Inquiry table, including
+     * the inquirer, missing person, location, date of the inquiry, and comments.
+     *
+     * @param inquiry the Inquiry object containing all the necessary details to be added.
+     * @throws SQLException if any error occurs during database interaction.
+     */
     public void addInquiry(Inquiry inquiry) throws SQLException {
         String sql = "INSERT INTO Inquiry (inquirer_id, seeking_id, location_id, date_of_inquiry, comments) " +
                 "VALUES (?, ?, ?, ?::timestamp, ?) RETURNING inquiry_id";
@@ -1106,6 +1432,12 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+    /**
+     * Updates an existing inquiry in the database.
+     *
+     * @param inquiry the Inquiry object containing the updated details for the inquiry.
+     * @throws SQLException if any error occurs during database interaction.
+     */
     public void updateInquiry(Inquiry inquiry) throws SQLException {
         String sql = "UPDATE Inquiry SET inquirer_id = ?, seeking_id = ?, location_id = ?, " +
                 "date_of_inquiry = ?::timestamp, comments = ? " +
@@ -1126,6 +1458,14 @@ public void addLocation(Location location) throws SQLException {
         }
     }
 
+
+    /**
+     * Deletes an inquiry from the database based on its inquiryId. This method removes the record
+     * from the Inquiry table where the inquiry_id matches the provided value.
+     *
+     * @param inquiryId the unique identifier of the inquiry to be deleted.
+     * @throws SQLException if any error occurs during database interaction or if no rows are affected.
+     */
     public void deleteInquiry(int inquiryId) throws SQLException {
         String sql = "DELETE FROM Inquiry WHERE inquiry_id = ?";
 

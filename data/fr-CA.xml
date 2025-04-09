@@ -1,0 +1,59 @@
+<translation>
+    <key>gender_man</key>
+    <value>Homme</value>
+</translation>
+
+<translation>
+    <key>gender_woman</key>
+    <value>Femme</value>
+</translation>
+
+<translation>
+    <key>gender_nb</key>
+    <value>Non binaire</value>
+</translation>
+
+<translation>
+    <key>program_title</key>
+    <value>Système d'information sur les victimes de catastrophes</value>
+</translation>
+
+<translation>
+    <key>location_detail</key>
+    <value>Détails de l'emplacement</value>
+</translation>
+
+<translation>
+    <key>person_detail</key>
+    <value>Détails de la Personne</value>
+</translation>
+
+<translation>
+    <key>supply_detail</key>
+    <value>Détails de l'approvisionnement</value>
+</translation>
+
+<translation>
+    <key>inquiry_detail</key>
+    <value>Détails de la demande</value>
+</translation>
+
+<translation>
+    <key>medical_detail</key>
+    <value>Détails médicaux</value>
+</translation>
+
+<translation>
+    <key>exit</key>
+    <value>Sortie</value>
+</translation>
+
+<translation>
+    <key>input_firstname</key>
+    <value>Entrez le prénom de la personne:</value>
+</translation>
+
+<translation>
+    <key>report_person</key>
+    <value>%s est entré dans l’installation %s le %s.</value>
+</translation>

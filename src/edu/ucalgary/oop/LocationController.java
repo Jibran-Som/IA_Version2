@@ -161,6 +161,7 @@ public class LocationController {
 
     /**
      * Allocates a supply to a person if they are currently at this location
+     *
      * @param supplyId The ID of the supply to allocate
      * @param personId The ID of the person to allocate to
      * @throws SQLException If there's a database error

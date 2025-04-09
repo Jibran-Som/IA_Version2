@@ -8,7 +8,9 @@ public class ErrorLogger {
     private static final String LOG_FILE_PATH = "data/errorlog.txt";
     private static ErrorLogger instance;
 
-    // Private constructor for singleton pattern
+    /**
+     * Private constructor to ensure that the ErrorLogger can only be instantiated from within the class.
+     */
     private ErrorLogger() {
         // Ensure the data directory exists
         File dataDir = new File("data");
@@ -17,7 +19,11 @@ public class ErrorLogger {
         }
     }
 
-    // Singleton instance getter
+    /**
+     * Returns the singleton instance of the ErrorLogger.
+     *
+     * @return The singleton instance of ErrorLogger.
+     */
     public static synchronized ErrorLogger getInstance() {
         if (instance == null) {
             instance = new ErrorLogger();
@@ -25,7 +31,12 @@ public class ErrorLogger {
         return instance;
     }
 
-
+    /**
+     * Logs recoverable error details to a log file.
+     *
+     * @param exception The exception to be logged, containing the error details (type, message, stack trace).
+     * @param context A description of the context in which the error occurred, typically the method or class name.
+     */
     public synchronized void logError(Exception exception, String context) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(LOG_FILE_PATH, true))) {
             // Format timestamp
@@ -50,6 +61,13 @@ public class ErrorLogger {
     }
 
 
+    /**
+     * Logs a fatal error and displays an error message to the user.
+     *
+     * @param exception The exception to be logged, including details like type, message, and stack trace.
+     * @param context A description of the context in which the error occurred (e.g., method name or class).
+     * @param userMessage A message explaining the fatal error, to be displayed to the user.
+     */
     public void logFatalError(Exception exception, String context, String userMessage) {
         // Log the error
         logError(exception, context);
