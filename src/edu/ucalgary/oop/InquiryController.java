@@ -8,6 +8,8 @@ public class InquiryController {
     private DatabaseManager databaseManager;
     private PersonController personController;
     private LocationController locationController;
+    private static int inquiryIdCounter;
+
 
     // Constructor
     public InquiryController() {
@@ -42,6 +44,7 @@ public class InquiryController {
             ArrayList<Inquiry> inquiries = (ArrayList<Inquiry>) databaseManager.getAllInquiries();
             this.inquiryModels.clear();
             this.inquiryModels.addAll(inquiries);
+            initializeIdCounter();
         } catch (SQLException e) {
             System.err.println("Error loading inquiries from database: " + e.getMessage());
             throw e;
@@ -59,11 +62,16 @@ public class InquiryController {
             throw new IllegalArgumentException("Inquiry cannot be null");
         }
 
+        if(inquiryIdCounter <= 0) {
+            inquiry.setInquiryId(generateInquiryId());
+        }
+
         try {
             databaseManager.addInquiry(inquiry);
             this.inquiryModels.add(inquiry);
         } catch (SQLException e) {
             System.err.println("Error adding inquiry: " + e.getMessage());
+            inquiryIdCounter--;
             throw e;
         }
     }
@@ -179,4 +187,17 @@ public class InquiryController {
 
         return new Inquiry(inquirer, missingPerson, date, info, location);
     }
+
+
+    private void initializeIdCounter() throws SQLException {
+        int maxId = databaseManager.getLargestInquiryId();
+        inquiryIdCounter = maxId + 1;
+    }
+
+    public int generateInquiryId() {
+        return inquiryIdCounter++;
+    }
+
+
+
 }

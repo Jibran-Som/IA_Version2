@@ -12,8 +12,7 @@ public class Person {
     private FamilyGroup familyGroup;
     private String gender;
     private ArrayList<MedicalRecord> medicalRecords;
-    private int personId = createPersonId();
-    private static int counter = 10;
+    private int personId;
 
     // Constructors
     public Person(String firstName, String lastName) {
@@ -264,9 +263,6 @@ public class Person {
     }
 
 
-    private int createPersonId() {
-        return counter++;
-    }
 
 
 }

@@ -1,10 +1,11 @@
 package edu.ucalgary.oop;
 
+import java.sql.SQLException;
+
 public class Supply {
     private String supplyName;
     private String supplyType;
-    private int supplyId = createSupplyId();
-    private static int counter = 100;
+    private int supplyId;
 
 
     // Constructor
@@ -60,11 +61,6 @@ public class Supply {
 
 
 
-    // Private Code for Checking or Initialization
-
-    private int createSupplyId() {
-        return counter++;
-    }
 
 
 

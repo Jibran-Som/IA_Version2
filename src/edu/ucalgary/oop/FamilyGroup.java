@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class FamilyGroup {
     private ArrayList<Person> members;
     private int familyGroupId = createFamilyGroupId();
-    private static int counter = 10;
+    private static int counter = 100;
 
     /**
      * Constructs a FamilyGroup with a list of members.

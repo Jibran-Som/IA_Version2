@@ -11,7 +11,12 @@ public class FileModel {
 
 
 
-    // Constructor
+    /**
+     * Constructs a new FileModel object with the specified file path and content.
+     *
+     * @param filePath The path to the file, either for reading or writing.
+     * @param fileContent The content of the file to be read or written.
+     */
     public FileModel(String filePath, String fileContent) {
         this.filePath = filePath;
         this.fileContent = fileContent;
@@ -19,11 +24,22 @@ public class FileModel {
 
 
 
-    // Getters
+    /**
+     * Returns the path of the file associated with this FileModel.
+     *
+     * @return The file path as a String.
+     */
     public String getFilePath() {
         return filePath;
     }
 
+
+    /**
+     * Returns the content of the file
+     * Used predominately for debugging
+     *
+     * @return The content of the file as a String.
+     */
     public String getFileContent() {
         return fileContent;
     }
@@ -34,10 +50,22 @@ public class FileModel {
 
     // Setters
 
+    /**
+     * Sets the file path for this FileModel.
+     * Mainly used for debugging
+     *
+     * @param filePath The path to the file, which can be an absolute or relative path.
+     */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
+
+    /**
+     * Sets the content of the file for this FileModel.
+     *
+     * @param fileContent The content of the file as a String.
+     */
     public void setFileContent(String fileContent) {
         this.fileContent = fileContent;
     }
@@ -45,7 +73,13 @@ public class FileModel {
 
 
 
-    // Class Specific Code
+    /**
+     * Opens the file for reading.
+     *
+     * @throws IllegalStateException If the file is already open.
+     * @throws IllegalArgumentException If the file does not exist or the path is invalid, or if
+     *                                  the file cannot be opened.
+     */
     public void openFile() {
         if (isFileOpen) {
             errorLogger.logError(new IllegalStateException("File is already open"),
@@ -68,6 +102,12 @@ public class FileModel {
         }
     }
 
+    /**
+     * Reads the content of the file.
+     *
+     * @throws IllegalStateException If the file is not open when attempting to read.
+     * @throws IllegalStateException If an error occurs while reading the file.
+     */
     public void readFile() {
         if (!isFileOpen) {
             errorLogger.logError(new IllegalStateException("File not open"),
@@ -96,6 +136,14 @@ public class FileModel {
         }
     }
 
+    /**
+     * Closes the currently open file.
+     * This function was made separate from readFile as it was having issues at the time of development.
+     * This function was purely created in case of readFile closing failure which occured a lot in beta.
+     *
+     * @throws IllegalStateException If no file is currently open when attempting to close.
+     * @throws IllegalStateException If an error occurs while closing the file.
+     */
     public void closeFile() {
         if (!isFileOpen) {
             throw new IllegalStateException("No file is currently open");

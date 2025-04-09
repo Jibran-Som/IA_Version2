@@ -17,8 +17,6 @@ public class UserView {
 
 
 
-
-
     // Constructor
     public UserView() {
         Scanner scanner = new Scanner(System.in);

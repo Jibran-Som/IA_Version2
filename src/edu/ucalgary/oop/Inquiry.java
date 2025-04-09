@@ -11,9 +11,21 @@ public class Inquiry {
     private String infoProvided;
     private Location lastKnownLocation;
     private int inquiryId;
-    private static int counter = 100;
 
-    // Constructor
+    /**
+     * Constructor to create a new Inquiry instance.
+     *
+     * This constructor initializes an Inquiry with the provided details, including the inquirer,
+     * missing person, date of inquiry, information provided, and last known location. The inquiry
+     * ID is automatically generated using the `createInquiryID` method to ensure a unique identifier
+     * for each inquiry.
+     *
+     * @param inquirer The person making the inquiry.
+     * @param missingPerson The person who is missing (disaster victim).
+     * @param dateOfInquiry The date when the inquiry was made.
+     * @param infoProvided Information provided about the missing person.
+     * @param lastKnownLocation The last known location of the missing person.
+     */
     public Inquiry(Person inquirer, DisasterVictim missingPerson, String dateOfInquiry,
                    String infoProvided, Location lastKnownLocation) {
         setInquirer(inquirer);
@@ -21,10 +33,18 @@ public class Inquiry {
         setDateOfInquiry(dateOfInquiry);
         setInfoProvided(infoProvided);
         setLastKnownLocation(lastKnownLocation);
-        this.inquiryId = createInquiryID();
     }
 
-    // Overloaded constructor for database loading
+    /**
+     * Constructor to create a new Inquiry instance with a specified inquiry ID.
+     *
+     * @param inquiryId The unique identifier for the inquiry.
+     * @param inquirer The person making the inquiry.
+     * @param missingPerson The person who is missing (disaster victim).
+     * @param dateOfInquiry The date when the inquiry was made.
+     * @param infoProvided Information provided about the missing person.
+     * @param lastKnownLocation The last known location of the missing person.
+     */
     public Inquiry(int inquiryId, Person inquirer, DisasterVictim missingPerson,
                    String dateOfInquiry, String infoProvided, Location lastKnownLocation) {
         this(inquirer, missingPerson, dateOfInquiry, infoProvided, lastKnownLocation);
@@ -93,14 +113,8 @@ public class Inquiry {
     }
 
     public void setInquiryId(int inquiryId) {
-        if (inquiryId < 0) {
-            throw new IllegalArgumentException("Inquiry ID cannot be negative");
-        }
         this.inquiryId = inquiryId;
-        // Update counter if needed to prevent ID conflicts
-        if (inquiryId >= counter) {
-            counter = inquiryId + 1;
-        }
+
     }
 
     // Helper methods
@@ -163,7 +177,7 @@ public class Inquiry {
                 infoProvided.replace(",", "\\,")); // Escape commas in info
     }
 
-    // Equality check based on ID
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -182,7 +196,4 @@ public class Inquiry {
         return getSummary();
     }
 
-    private int createInquiryID() {
-        return counter++;
-    }
 }

@@ -8,7 +8,9 @@ import java.time.LocalDate;
 
 public class SupplyController {
     private ArrayList<Supply> supplyModels;
-    private DatabaseManager databaseManager;
+    private static DatabaseManager databaseManager;
+    private static int supplyIdCounter;
+
 
     // Constructor
     public SupplyController() {
@@ -40,6 +42,7 @@ public class SupplyController {
             ArrayList<Supply> supplies = (ArrayList<Supply>) databaseManager.getAllSupplies();
             this.supplyModels.clear();
             this.supplyModels.addAll(supplies);
+            initializeIdCounter();
         } catch (SQLException e) {
             System.err.println("Error loading supplies from database: " + e.getMessage());
             throw e;
@@ -57,14 +60,21 @@ public class SupplyController {
             throw new IllegalArgumentException("Supply cannot be null");
         }
 
+        // Set the ID before adding to database
+        if (supply.getSupplyId() <= 0) { // Assuming 0 or negative means unset
+            supply.setSupplyId(generateSupplyId());
+        }
+
         try {
             databaseManager.addSupply(supply);
-            this.supplyModels.add(supply); // Add to local model
+            this.supplyModels.add(supply);
         } catch (SQLException e) {
-            System.err.println("Error adding supply: " + e.getMessage());
+            // If add fails, decrement counter to reuse the ID
+            supplyIdCounter--;
             throw e;
         }
     }
+
 
     // Update existing supply
     public void updateSupply(Supply supply) throws SQLException {
@@ -197,4 +207,56 @@ public class SupplyController {
         if (databaseManager.isSupplyAllocated(supplyId)) return true;
         else return false;
     }
+
+
+
+    /**
+     * Gets the largest supply ID currently in use in the database
+     *
+     * @return The largest supply ID
+     * @throws SQLException If there's a database error
+     */
+    public static int getLargestSupplyId() throws SQLException {
+        try {
+            return databaseManager.getLargestSupplyId();
+        } catch (SQLException e) {
+            System.err.println("Error getting largest supply ID: " + e.getMessage());
+            throw e;
+        }
+    }
+
+
+
+    /**
+     * Checks if a supply ID exists in the database
+     *
+     * @param supplyId The ID to check
+     * @return true if the ID exists, false otherwise
+     * @throws SQLException If there's a database error
+     */
+    public boolean supplyIdExists(int supplyId) throws SQLException {
+        try {
+            for (Supply supply : supplyModels) {
+                if (supply.getSupplyId() == supplyId) {
+                    return true;
+                }
+            }
+            return databaseManager.getLargestSupplyId() >= supplyId;
+        } catch (SQLException e) {
+            System.err.println("Error checking supply ID existence: " + e.getMessage());
+            throw e;
+        }
+    }
+
+
+    private void initializeIdCounter() throws SQLException {
+        int maxId = databaseManager.getLargestSupplyId();
+        supplyIdCounter = maxId + 1;
+    }
+
+    public int generateSupplyId() {
+        return supplyIdCounter++;
+    }
+
+
 }

@@ -5,8 +5,7 @@ public class MedicalRecord {
     private Location location;
     private String treatmentDetails;
     private String dateOfTreatment;
-    private int medicalRecordId = createMedicalRecordId();
-    private static int counter = 100;
+    private int medicalRecordId;
 
 
     // Constructor
@@ -137,9 +136,10 @@ public class MedicalRecord {
         }
     }
 
-    private static int createMedicalRecordId() {
-        return counter++;
-    }
+
+
+
+
 
 
 }

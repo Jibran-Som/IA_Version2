@@ -7,6 +7,8 @@ import java.util.List;
 public class MedicalRecordController {
     private ArrayList<MedicalRecord> medicalRecordModels;
     private DatabaseManager databaseManager;
+    private static int medicalRecordIdCounter;
+
 
     // Constructor
     public MedicalRecordController() {
@@ -35,6 +37,7 @@ public class MedicalRecordController {
             ArrayList<MedicalRecord> records = (ArrayList<MedicalRecord>) databaseManager.getAllMedicalRecords();
             this.medicalRecordModels.clear();
             this.medicalRecordModels.addAll(records);
+            initializeIdCounter();
         } catch (SQLException e) {
             System.err.println("Error loading medical records from database: " + e.getMessage());
             throw e;
@@ -52,11 +55,16 @@ public class MedicalRecordController {
             throw new IllegalArgumentException("Medical record cannot be null");
         }
 
+        if(record.getMedicalRecordId() <= 0) {
+            record.setMedicalRecordId(generateMedicalRecordId());
+        }
+
         try {
             databaseManager.addMedicalRecord(record);
             this.medicalRecordModels.add(record);
         } catch (SQLException e) {
             System.err.println("Error adding medical record: " + e.getMessage());
+            medicalRecordIdCounter--;
             throw e;
         }
     }
@@ -119,5 +127,16 @@ public class MedicalRecordController {
     // Refresh records from database
     public void refreshMedicalRecords() throws SQLException {
         populateMedicalRecordsFromDatabase();
+    }
+
+
+
+    private void initializeIdCounter() throws SQLException {
+        int maxId = databaseManager.getLargestMedicalRecordId();
+        medicalRecordIdCounter = maxId + 1;
+    }
+
+    public int generateMedicalRecordId() {
+        return medicalRecordIdCounter++;
     }
 }

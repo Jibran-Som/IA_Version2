@@ -9,6 +9,8 @@ import java.util.Map;
 public class PersonController {
     private ArrayList<Person> personModels;
     private DatabaseManager databaseManager;
+    private static int personIdCounter;
+
 
     public PersonController() {
         try {
@@ -25,6 +27,7 @@ public class PersonController {
             ArrayList<Person> people = (ArrayList<Person>) databaseManager.getAllPeople();
             this.personModels.clear();
             this.personModels.addAll(people);
+            initializeIdCounter();
         } catch (SQLException e) {
             System.err.println("Error loading people from database: " + e.getMessage());
             throw e;
@@ -36,8 +39,22 @@ public class PersonController {
     }
 
     public void addPerson(Person person) throws SQLException {
-        databaseManager.addPerson(person);
-        this.personModels.add(person);
+        if (person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+
+        // Set the ID before adding to database
+        if (person.getPersonId() <= 0) { // Assuming 0 or negative means unset
+            person.setPersonId(generatePersonId());
+        }
+
+        try {
+            databaseManager.addPerson(person);
+            this.personModels.add(person);
+        } catch (SQLException e) {
+            personIdCounter--;
+            throw e;
+        }
     }
 
     public void updatePerson(Person person) throws SQLException {
@@ -249,6 +266,7 @@ public class PersonController {
 
     /**
      * Deletes a family group and removes all members from it
+     *
      * @param familyGroupId ID of family group to delete
      * @throws SQLException If there's a database error
      */
@@ -264,4 +282,17 @@ public class PersonController {
             databaseManager.updatePerson(member);
         }
     }
+
+    private void initializeIdCounter() throws SQLException {
+        int maxId = databaseManager.getLargestPersonId();
+        personIdCounter = maxId + 1;
+    }
+
+    public int generatePersonId() {
+        return personIdCounter++;
+    }
+
+
+
+
 }

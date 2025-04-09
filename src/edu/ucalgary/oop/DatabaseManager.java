@@ -1480,4 +1480,55 @@ public class DatabaseManager {
     }
 
 
+
+
+
+
+
+
+    // ID management
+
+    public int getLargestPersonId() throws SQLException {
+        return getLargestIdFromTable("Person", "person_id");
+    }
+
+    public int getLargestLocationId() throws SQLException {
+        return getLargestIdFromTable("Location", "location_id");
+    }
+
+    public int getLargestInquiryId() throws SQLException {
+        return getLargestIdFromTable("Inquiry", "inquiry_id");
+    }
+
+    /**
+     * Gets the largest supply ID currently in the database
+     *
+     * @return The largest supply ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
+    public int getLargestSupplyId() throws SQLException {
+        return getLargestIdFromTable("Supply", "supply_id");
+    }
+
+    public int getLargestMedicalRecordId() throws SQLException {
+        return getLargestIdFromTable("MedicalRecord", "medical_record_id");
+    }
+
+    private int getLargestIdFromTable(String tableName, String idColumn) throws SQLException {
+        String query = "SELECT MAX(" + idColumn + ") AS max_id FROM " + tableName;
+
+        try (
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                return rs.getInt("max_id");
+            }
+            return 0; // Return 0 if table is empty
+        }
+    }
+
+
+
+
 }

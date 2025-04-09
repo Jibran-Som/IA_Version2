@@ -6,6 +6,8 @@ import java.sql.SQLException;
 public class LocationController {
     private ArrayList<Location> locationModels;
     private DatabaseManager databaseManager;
+    private static int locationIdCounter;
+
 
     // Constructor
     public LocationController() {
@@ -34,6 +36,7 @@ public class LocationController {
             ArrayList<Location> locations = (ArrayList<Location>) databaseManager.getAllLocations();
             this.locationModels.clear();
             this.locationModels.addAll(locations);
+            initializeIdCounter();
         } catch (SQLException e) {
             System.err.println("Error loading locations from database: " + e.getMessage());
             throw e;
@@ -51,11 +54,16 @@ public class LocationController {
             throw new IllegalArgumentException("Location cannot be null");
         }
 
+        if(location.getLocationId() <= 0){
+            location.setLocationId(generateLocationId());
+        }
+
         try {
             databaseManager.addLocation(location);
             this.locationModels.add(location); // Add to local model
         } catch (SQLException e) {
             System.err.println("Error adding location: " + e.getMessage());
+            locationIdCounter--;
             throw e;
         }
     }
@@ -222,4 +230,16 @@ public class LocationController {
         refreshLocations();
     }
 
+
+
+
+
+    private void initializeIdCounter() throws SQLException {
+        int maxId = databaseManager.getLargestLocationId();
+        locationIdCounter = maxId + 1;
+    }
+
+    public int generateLocationId() {
+        return locationIdCounter++;
+    }
 }

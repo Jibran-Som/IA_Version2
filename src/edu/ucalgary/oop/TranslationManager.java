@@ -33,7 +33,7 @@ public class TranslationManager {
                 try {
                     fileModel.closeFile();
                 } catch (Exception e) {
-                    // Ignore close errors
+                    // Test
                 }
             }
         }
