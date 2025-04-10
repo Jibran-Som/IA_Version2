@@ -1,8 +1,14 @@
+/**
+ * MedicalRecord.java
+ * Version: 4.0
+ * Author: Jibran Somroo
+ * Date: April 9, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MedicalRecordController {
     private ArrayList<MedicalRecord> medicalRecordModels;
@@ -10,7 +16,11 @@ public class MedicalRecordController {
     private static int medicalRecordIdCounter;
 
 
-    // Constructor
+    /**
+     * Initializes the MedicalRecordController, setting up the database manager
+     *
+     * @throws RuntimeException if there is an error initializing the controller or populating the medical records.
+     */
     public MedicalRecordController() {
         try {
             this.databaseManager = DatabaseManager.getInstance();
@@ -21,17 +31,21 @@ public class MedicalRecordController {
         }
     }
 
-    // Constructor with dependency injection for testing
-    public MedicalRecordController(DatabaseManager databaseManager) throws SQLException {
-        if (databaseManager == null) {
-            throw new IllegalArgumentException("DatabaseManager cannot be null");
-        }
-        this.databaseManager = databaseManager;
-        this.medicalRecordModels = new ArrayList<>();
-        populateMedicalRecordsFromDatabase();
+
+    /**
+     * Initializes the MedicalRecordController, meant for MedicalRecordControllerTest
+     *
+     */
+    public MedicalRecordController(int test) {
+            this.medicalRecordModels = new ArrayList<>();
+
     }
 
-    // Populate models from database
+    /**
+     * Populates the medical record models by loading all medical records from the database.
+     *
+     * @throws SQLException if an error occurs while fetching the medical records from the database.
+     */
     private void populateMedicalRecordsFromDatabase() throws SQLException {
         try {
             ArrayList<MedicalRecord> records = (ArrayList<MedicalRecord>) databaseManager.getAllMedicalRecords();
@@ -44,12 +58,31 @@ public class MedicalRecordController {
         }
     }
 
-    // Get all medical records
+    /**
+     * Retrieves a copy of the list of all medical records currently in the system.
+     *
+     * @return A new ArrayList containing all the medical records.
+     */
     public ArrayList<MedicalRecord> getAllMedicalRecords() {
         return new ArrayList<>(this.medicalRecordModels);
     }
 
-    // Add new medical record
+    /**
+     * Retrieves a list of all medical records currently in the system.
+     *
+     * @return A ArrayList containing all the medical records.
+     */
+    public ArrayList<MedicalRecord> getAllMedicalRecordsTest() {
+        return this.medicalRecordModels;
+    }
+
+    /**
+     * Adds a new medical record to the database.
+     *
+     * @param record The medical record to be added.
+     * @throws IllegalArgumentException if the provided medical record is null.
+     * @throws SQLException if there is an error when interacting with the database while adding the medical record.
+     */
     public void addMedicalRecord(MedicalRecord record) throws SQLException {
         if (record == null) {
             throw new IllegalArgumentException("Medical record cannot be null");
@@ -69,7 +102,13 @@ public class MedicalRecordController {
         }
     }
 
-    // Update existing medical record
+    /**
+     * Updates an existing medical record in the system.
+     *
+     * @param record The medical record to be updated.
+     * @throws IllegalArgumentException if the provided medical record is null.
+     * @throws SQLException if there is an error when interacting with the database while updating the medical record.
+     */
     public void updateMedicalRecord(MedicalRecord record) throws SQLException {
         if (record == null) {
             throw new IllegalArgumentException("Medical record cannot be null");
@@ -90,18 +129,13 @@ public class MedicalRecordController {
         }
     }
 
-    // Delete medical record
-    public void deleteMedicalRecord(int medicalRecordId) throws SQLException {
-        try {
-            databaseManager.deleteMedicalRecord(medicalRecordId);
-            medicalRecordModels.removeIf(r -> r.getMedicalRecordId() == medicalRecordId);
-        } catch (SQLException e) {
-            System.err.println("Error deleting medical record: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    // Get medical records for a specific person
+    /**
+     * Retrieves all medical records associated with a specific person.
+     *
+     * @param personId The ID of the person for whom the medical records are being retrieved.
+     * @return A list of medical records associated with the person.
+     * @throws SQLException if there is an error while interacting with the database.
+     */
     public ArrayList<MedicalRecord> getMedicalRecordsForPerson(int personId) throws SQLException {
         try {
             return (ArrayList<MedicalRecord>) databaseManager.getMedicalRecordsForPerson(personId);
@@ -111,7 +145,13 @@ public class MedicalRecordController {
         }
     }
 
-    // Get medical records at a specific location
+    /**
+     * Retrieves all medical records associated with a specific location.
+     *
+     * @param locationId The ID of the location for which the medical records are being retrieved.
+     * @return A list of medical records associated with the location.
+     * @throws SQLException if there is an error while interacting with the database.
+     */
     public ArrayList<MedicalRecord> getMedicalRecordsAtLocation(int locationId) throws SQLException {
         try {
             return (ArrayList<MedicalRecord>) databaseManager.getMedicalRecordsAtLocation(locationId);
@@ -124,18 +164,33 @@ public class MedicalRecordController {
 
 
 
-    // Refresh records from database
+    /**
+     * Refreshes the list of medical records by reloading data from the database.
+     * Note: Mainly used during the early development if this code.
+     *
+     * @throws SQLException if there is an error while fetching the medical records from the database.
+     */
     public void refreshMedicalRecords() throws SQLException {
         populateMedicalRecordsFromDatabase();
     }
 
 
 
+    /**
+     * Initializes the medical record ID counter by retrieving the largest existing medical record ID from the database.
+     *
+     * @throws SQLException if there is an error retrieving the largest medical record ID from the database.
+     */
     private void initializeIdCounter() throws SQLException {
         int maxId = databaseManager.getLargestMedicalRecordId();
         medicalRecordIdCounter = maxId + 1;
     }
 
+    /**
+     * Generates a new medical record ID by adding 1 to medicalRecordIdCounter
+     *
+     * @return The next available medical record ID.
+     */
     public int generateMedicalRecordId() {
         return medicalRecordIdCounter++;
     }

@@ -1,3 +1,10 @@
+/**
+ * InquiryController.java
+ * Version: 3.0
+ * Author: Jibran Somroo
+ * Date: April 9, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.ArrayList;
@@ -6,17 +13,18 @@ import java.sql.SQLException;
 public class InquiryController {
     private ArrayList<Inquiry> inquiryModels;
     private DatabaseManager databaseManager;
-    private PersonController personController;
-    private LocationController locationController;
     private static int inquiryIdCounter;
 
 
-    // Constructor
+    /**
+     * Constructs an InquiryController object and initializes its dependencies
+     *
+     * @throws RuntimeException if there is a failure in initializing the InquiryController,
+     */
     public InquiryController() {
         try {
             this.databaseManager = DatabaseManager.getInstance();
-            this.personController = new PersonController();
-            this.locationController = new LocationController();
+
             this.inquiryModels = new ArrayList<>();
             populateInquiriesFromDatabase();
         } catch (SQLException e) {
@@ -24,21 +32,23 @@ public class InquiryController {
         }
     }
 
-    // Constructor with dependency injection for testing
-    public InquiryController(DatabaseManager databaseManager,
-                             PersonController personController,
-                             LocationController locationController) throws SQLException {
-        if (databaseManager == null || personController == null || locationController == null) {
-            throw new IllegalArgumentException("Dependencies cannot be null");
-        }
-        this.databaseManager = databaseManager;
-        this.personController = personController;
-        this.locationController = locationController;
-        this.inquiryModels = new ArrayList<>();
-        populateInquiriesFromDatabase();
+
+    /**
+     * Constructs an InquiryController for InquiryControllerTest
+     *
+     */
+    public InquiryController(int test) {
+            this.inquiryModels = new ArrayList<>();
+
     }
 
-    // Populate inquiryModels from database
+
+
+    /**
+     * Populates the inquiryModels list by loading inquiries from the database.
+     *
+     * @throws SQLException if there is an error accessing the database while retrieving the inquiries.
+     */
     private void populateInquiriesFromDatabase() throws SQLException {
         try {
             ArrayList<Inquiry> inquiries = (ArrayList<Inquiry>) databaseManager.getAllInquiries();
@@ -51,12 +61,31 @@ public class InquiryController {
         }
     }
 
-    // Getter for all inquiries
+    /**
+     * Retrieves a copy of the list of all inquiries.
+     *
+     * @return A new ArrayList containing all Inquiry objects.
+     */
     public ArrayList<Inquiry> getAllInquiries() {
         return new ArrayList<>(this.inquiryModels);
     }
 
-    // Add new inquiry
+    /**
+     * Retrieves a list of all inquiries.
+     *
+     * @return A ArrayList containing all Inquiry objects.
+     */
+    public ArrayList<Inquiry> getAllInquiriesTest() {
+        return this.inquiryModels;
+    }
+
+    /**
+     * Adds a new inquiry to the system and stores it in the database.
+     *
+     * @param inquiry The Inquiry object to be added.
+     * @throws IllegalArgumentException if the provided inquiry is null.
+     * @throws SQLException if there is an error adding the inquiry to the database.
+     */
     public void addInquiry(Inquiry inquiry) throws SQLException {
         if (inquiry == null) {
             throw new IllegalArgumentException("Inquiry cannot be null");
@@ -76,7 +105,14 @@ public class InquiryController {
         }
     }
 
-    // Update existing inquiry
+
+    /**
+     * Updates an existing inquiry in the system and the database.
+     *
+     * @param inquiry The Inquiry object to be updated.
+     * @throws IllegalArgumentException if the provided inquiry is null.
+     * @throws SQLException if there is an error updating the inquiry in the database.
+     */
     public void updateInquiry(Inquiry inquiry) throws SQLException {
         if (inquiry == null) {
             throw new IllegalArgumentException("Inquiry cannot be null");
@@ -97,7 +133,12 @@ public class InquiryController {
         }
     }
 
-    // Delete inquiry
+    /**
+     * Deletes an inquiry from the system and the database.
+     *
+     * @param inquiryId The ID of the inquiry to be deleted.
+     * @throws SQLException if there is an error deleting the inquiry from the database.
+     */
     public void deleteInquiry(int inquiryId) throws SQLException {
         try {
             databaseManager.deleteInquiry(inquiryId);
@@ -108,16 +149,20 @@ public class InquiryController {
         }
     }
 
-    // Get inquiry by ID
+    /**
+     * Retrieves an inquiry by its ID.
+     *
+     * @param inquiryId The ID of the inquiry to be retrieved.
+     * @return The Inquiry object corresponding to the given inquiry ID.
+     * @throws SQLException if there is an error retrieving the inquiry from the database.
+     */
     public Inquiry getInquiryById(int inquiryId) throws SQLException {
-        // Check local models first
         for (Inquiry inquiry : inquiryModels) {
             if (inquiry.getInquiryId() == inquiryId) {
                 return inquiry;
             }
         }
 
-        // If not found locally, try database
         try {
             return databaseManager.getInquiryById(inquiryId);
         } catch (SQLException e) {
@@ -126,8 +171,14 @@ public class InquiryController {
         }
     }
 
-    // Get inquiries by inquirer
-    public ArrayList<Inquiry> getInquiriesByInquirer(int personId) throws SQLException {
+    /**
+     * Retrieves a list of inquiries associated with a specific inquirer.
+     * Note: Created to make sure that 1 person can make more than 1 inquiry.
+     *
+     * @param personId The ID of the person (inquirer) whose inquiries are to be retrieved.
+     * @return An ArrayList of Inquiry objects associated with the given inquirer.
+     */
+    public ArrayList<Inquiry> getInquiriesByInquirer(int personId){
         ArrayList<Inquiry> results = new ArrayList<>();
         for (Inquiry inquiry : inquiryModels) {
             if (inquiry.getInquirer().getPersonId() == personId) {
@@ -137,8 +188,15 @@ public class InquiryController {
         return results;
     }
 
-    // Get inquiries by missing person
-    public ArrayList<Inquiry> getInquiriesByMissingPerson(int personId) throws SQLException {
+    /**
+     * Retrieves a list of inquiries associated with a specific disaster victim.
+     * Note: This was more of a quality check to ensure that DisasterVictim could
+     * have multiple inquires about them
+     *
+     * @param personId The ID of the missing person whose associated inquiries are to be retrieved.
+     * @return An ArrayList of Inquiry objects associated with the given missing person.
+     */
+    public ArrayList<Inquiry> getInquiriesByMissingPerson(int personId){
         ArrayList<Inquiry> results = new ArrayList<>();
         for (Inquiry inquiry : inquiryModels) {
             if (inquiry.getMissingPerson().getPersonId() == personId) {
@@ -148,52 +206,33 @@ public class InquiryController {
         return results;
     }
 
-    // Get inquiries by location
-    public ArrayList<Inquiry> getInquiriesByLocation(int locationId) throws SQLException {
-        ArrayList<Inquiry> results = new ArrayList<>();
-        for (Inquiry inquiry : inquiryModels) {
-            if (inquiry.getLastKnownLocation().getLocationId() == locationId) {
-                results.add(inquiry);
-            }
-        }
-        return results;
-    }
-
-    // Refresh from database
+    /**
+     * Refreshes the list of inquiries by reloading them from the database.
+     * Note: Exists due to various updating errors in early development.
+     *
+     * @throws SQLException if there is an error accessing the database while reloading the inquiries.
+     */
     public void refreshInquiries() throws SQLException {
         populateInquiriesFromDatabase();
     }
 
-    // Helper method to create a new inquiry
-    public Inquiry createInquiry(int inquirerId, int missingPersonId,
-                                 String date, String info, int locationId)
-            throws SQLException, IllegalArgumentException {
-
-        Person inquirer = personController.getPersonById(inquirerId);
-        if (inquirer == null) {
-            throw new IllegalArgumentException("Inquirer not found");
-        }
-
-        Person person = personController.getPersonById(missingPersonId);
-        if (!(person instanceof DisasterVictim)) {
-            throw new IllegalArgumentException("Missing person must be a DisasterVictim");
-        }
-        DisasterVictim missingPerson = (DisasterVictim) person;
-
-        Location location = locationController.getLocationById(locationId);
-        if (location == null) {
-            throw new IllegalArgumentException("Location not found");
-        }
-
-        return new Inquiry(inquirer, missingPerson, date, info, location);
-    }
 
 
+    /**
+     * Initializes the inquiry ID counter by retrieving the largest existing inquiry ID from the database.
+     *
+     * @throws SQLException if there is an error retrieving the largest inquiry ID from the database.
+     */
     private void initializeIdCounter() throws SQLException {
         int maxId = databaseManager.getLargestInquiryId();
         inquiryIdCounter = maxId + 1;
     }
 
+    /**
+     * Generates a new inquiry ID by adding 1 to inquiryIdCounter
+     *
+     * @return The next available inquiry ID.
+     */
     public int generateInquiryId() {
         return inquiryIdCounter++;
     }

@@ -1,3 +1,10 @@
+/**
+ * DatabaseManager.java
+ * Version: 3.0
+ * Author: Jibran Somroo
+ * Date: April 10, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.*;
@@ -1488,14 +1495,34 @@ public class DatabaseManager {
 
     // ID management
 
+
+    /**
+     * Gets the largest person ID currently in the database
+     *
+     * @return The largest person ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
     public int getLargestPersonId() throws SQLException {
         return getLargestIdFromTable("Person", "person_id");
     }
 
+    /**
+     * Gets the largest location ID currently in the database
+     *
+     * @return The largest locations ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
     public int getLargestLocationId() throws SQLException {
         return getLargestIdFromTable("Location", "location_id");
     }
 
+
+    /**
+     * Gets the largest inquiry ID currently in the database
+     *
+     * @return The largest inquiry ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
     public int getLargestInquiryId() throws SQLException {
         return getLargestIdFromTable("Inquiry", "inquiry_id");
     }
@@ -1510,10 +1537,28 @@ public class DatabaseManager {
         return getLargestIdFromTable("Supply", "supply_id");
     }
 
+
+    /**
+     * Gets the largest Medical Record ID currently in the database
+     *
+     * @return The largest medical record ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
     public int getLargestMedicalRecordId() throws SQLException {
         return getLargestIdFromTable("MedicalRecord", "medical_record_id");
     }
 
+
+
+    /**
+     * Gets the largest ID currently in the database
+     *
+     *
+     * @param tableName Takes the specific table name needed
+     * @param idColumn Takes the specific columm name
+     * @return The largest supply ID, or 0 if no supplies exist
+     * @throws SQLException If there's a database error
+     */
     private int getLargestIdFromTable(String tableName, String idColumn) throws SQLException {
         String query = "SELECT MAX(" + idColumn + ") AS max_id FROM " + tableName;
 

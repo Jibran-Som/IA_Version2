@@ -1,3 +1,10 @@
+/**
+ * Cot.java
+ * Version: 2.0
+ * Author: Jibran Somroo
+ * Date: April 4, 2025
+ */
+
 package edu.ucalgary.oop;
 
 public class Cot extends Supply {

@@ -1,3 +1,10 @@
+/**
+ * Inquiry.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.time.LocalDate;
@@ -51,32 +58,69 @@ public class Inquiry {
         setInquiryId(inquiryId);
     }
 
-    // Getters
+    /**
+     * Retrieves the inquirer
+     *
+     * @return The inquirer.
+     */
     public Person getInquirer() {
         return inquirer;
     }
 
+
+    /**
+     * Retrieves the missing person
+     *
+     * @return The DisasterVictim
+     */
     public DisasterVictim getMissingPerson() {
         return missingPerson;
     }
 
+    /**
+     * Retrieves the date of the inquiry.
+     *
+     * @return The date of the inquiry.
+     */
     public String getDateOfInquiry() {
         return dateOfInquiry;
     }
 
+    /**
+     * Retrieves the information provided in the inquiry.
+     *
+     * @return The information provided.
+     */
     public String getInfoProvided() {
         return infoProvided;
     }
 
+    /**
+     * Retrieves the last known location of the missing person.
+     *
+     * @return The last known location
+     */
     public Location getLastKnownLocation() {
         return lastKnownLocation;
     }
 
+
+    /**
+     * Retrieves the ID of the inquiry.
+     *
+     * @return The inquiry ID.
+     */
     public int getInquiryId() {
         return inquiryId;
     }
 
-    // Setters with validation
+
+    /**
+     * Sets the inquirer
+     *
+     * @param inquirer The Person object representing the inquirer.
+     * @throws IllegalArgumentException if the inquirer is null.
+     */
     public void setInquirer(Person inquirer) {
         if (inquirer == null) {
             throw new IllegalArgumentException("Inquirer cannot be null");
@@ -84,6 +128,13 @@ public class Inquiry {
         this.inquirer = inquirer;
     }
 
+
+    /**
+     * Sets the missing person
+     *
+     * @param missingPerson The (DisasterVictim) missing person.
+     * @throws IllegalArgumentException if the missingPerson is null.
+     */
     public void setMissingPerson(DisasterVictim missingPerson) {
         if (missingPerson == null) {
             throw new IllegalArgumentException("Missing person cannot be null");
@@ -91,6 +142,14 @@ public class Inquiry {
         this.missingPerson = missingPerson;
     }
 
+
+    /**
+     * Sets the date of the inquiry.
+     * Note: Must be in proper format (YYYY-MM-DD)
+     *
+     * @param dateOfInquiry A String representing the date of the inquiry.
+     * @throws IllegalArgumentException if the dateOfInquiry does not have a valid format.
+     */
     public void setDateOfInquiry(String dateOfInquiry) {
         if (!isValidDateFormat(dateOfInquiry)) {
             throw new IllegalArgumentException("Date of inquiry is invalid");
@@ -98,6 +157,12 @@ public class Inquiry {
         this.dateOfInquiry = dateOfInquiry;
     }
 
+    /**
+     * Sets the information provided in the inquiry.
+     *
+     * @param infoProvided A String containing the information provided in the inquiry.
+     * @throws IllegalArgumentException if the infoProvided is null or empty.
+     */
     public void setInfoProvided(String infoProvided) {
         if (infoProvided == null || infoProvided.trim().isEmpty()) {
             throw new IllegalArgumentException("Information provided cannot be null or empty");
@@ -105,6 +170,12 @@ public class Inquiry {
         this.infoProvided = infoProvided.trim();
     }
 
+    /**
+     * Sets the last known location of the person.
+     *
+     * @param lastKnownLocation The Location object representing the last known location.
+     * @throws IllegalArgumentException if the lastKnownLocation is null.
+     */
     public void setLastKnownLocation(Location lastKnownLocation) {
         if (lastKnownLocation == null) {
             throw new IllegalArgumentException("Last known location cannot be null");
@@ -112,12 +183,23 @@ public class Inquiry {
         this.lastKnownLocation = lastKnownLocation;
     }
 
+
+    /**
+     * Sets the ID for the inquiry.
+     *
+     * @param inquiryId The integer representing the inquiry ID.
+     */
     public void setInquiryId(int inquiryId) {
         this.inquiryId = inquiryId;
 
     }
 
-    // Helper methods
+    /**
+     * Validates if the provided date string matches the required format and is a valid date.
+     *
+     * @param date The date being checked
+     * @return true if the date is valid and follows the "yyyy-MM-dd" format; false otherwise.
+     */
     public static boolean isValidDateFormat(String date) {
         if (date == null || date.length() != 10) {
             return false;
@@ -148,6 +230,12 @@ public class Inquiry {
         }
     }
 
+    /**
+     * Returns the date of inquiry in a formatted string.
+     * Personal Note: Made for the inquiry report.
+     *
+     * @return A string representing the formatted date of inquiry.
+     */
     public String getFormattedDate() {
         try {
             LocalDate date = LocalDate.parse(dateOfInquiry, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -157,6 +245,12 @@ public class Inquiry {
         }
     }
 
+
+    /**
+     * Generates a summary string for the inquiry
+     *
+     * @return A string summarizing the inquiry
+     */
     public String getSummary() {
         return String.format("Inquiry #%d: %s reported %s missing at %s on %s",
                 inquiryId,
@@ -166,7 +260,14 @@ public class Inquiry {
                 getFormattedDate());
     }
 
-    // Database helper methods
+
+    /**
+     * Converts the Inquiry object to a string format.
+     * Note: Was initially created for the database storage but now is just
+     * used as a checking function.
+     *
+     * @return A string representation of the Inquiry object formatted for database storage.
+     */
     public String toDatabaseString() {
         return String.format("%d,%d,%d,%d,%s,%s",
                 inquiryId,
@@ -174,10 +275,16 @@ public class Inquiry {
                 missingPerson.getPersonId(),
                 lastKnownLocation.getLocationId(),
                 dateOfInquiry,
-                infoProvided.replace(",", "\\,")); // Escape commas in info
+                infoProvided.replace(",", "\\,"));
     }
 
 
+    /**
+     * Compares this Inquiry object with another object for equality.
+     *
+     * @param obj The object to compare this Inquiry object with.
+     * @return true if the two objects are equal
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -186,11 +293,23 @@ public class Inquiry {
         return inquiryId == inquiry.inquiryId;
     }
 
+
+    /**
+     * Returns a hash code value for the Inquiry object.
+     *
+     * @return The hash code value for this Inquiry object.
+     */
     @Override
     public int hashCode() {
         return inquiryId;
     }
 
+    /**
+     * Returns a string representation of the Inquiry object.
+     * Note: Originally created for testing purposes
+     *
+     * @return A string representing the summary of the Inquiry object.
+     */
     @Override
     public String toString() {
         return getSummary();

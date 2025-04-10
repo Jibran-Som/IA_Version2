@@ -49,6 +49,508 @@
 </translation>
 
 <translation>
+  <key>system_exit</key>
+  <value>Exiting system...</value>
+</translation>
+
+<translation>
+  <key>back_to_menu</key>
+  <value>0. Back to Main Menu</value>
+</translation>
+
+<translation>
+  <key>ask_choice</key>
+  <value>Enter your choice:</value>
+</translation>
+
+<translation>
+  <key>invalid_choice_main_menu</key>
+  <value>Invalid choice. Please enter a number between 0-5.</value>
+</translation>
+
+<translation>
+  <key>invalid_input</key>
+  <value>Invalid input. Please enter a valid number.</value>
+</translation>
+
+<translation>
+  <key>view_all_supply</key>
+  <value>View All Supplies</value>
+</translation>
+
+<translation>
+  <key>add_new_supply</key>
+  <value>Add New Supply</value>
+</translation>
+
+<translation>
+  <key>update_supply</key>
+  <value>Update Supply</value>
+</translation>
+
+<translation>
+  <key>allocate_supply</key>
+  <value>Allocate Supply</value>
+</translation>
+
+<translation>
+  <key>view_allocated_supplies</key>
+  <value>View Allocated Supplies</value>
+</translation>
+
+<translation>
+  <key>invalid_choice_supply</key>
+  <value>Invalid choice. Please enter a number between 0-4.</value>
+</translation>
+
+<translation>
+  <key>medical_title</key>
+  <value>Medical Records Management</value>
+</translation>
+
+<translation>
+  <key>view_all_medical_records</key>
+  <value>1. View All Medical Records</value>
+</translation>
+
+<translation>
+  <key>add_new_medical_record</key>
+  <value>2. Add New Medical Record</value>
+</translation>
+
+<translation>
+  <key>update_medical_record</key>
+  <value>3. Update Medical Record</value>
+</translation>
+
+<translation>
+  <key>invalid_choice_medical</key>
+  <value>Invalid choice. Please enter a number between 0-3.</value>
+</translation>
+
+<translation>
+  <key>person_management</key>
+  <value>Person Management</value>
+</translation>
+
+<translation>
+  <key>view_all_persons</key>
+  <value>1. View All Persons</value>
+</translation>
+
+<translation>
+  <key>add_new_person</key>
+  <value>2. Add New Person</value>
+</translation>
+
+<translation>
+  <key>update_person</key>
+  <value>3. Update Person</value>
+</translation>
+
+<translation>
+  <key>view_disaster_victims</key>
+  <value>4. View Disaster Victims</value>
+</translation>
+
+<translation>
+  <key>add_disaster_victim</key>
+  <value>5. Add Disaster Victim</value>
+</translation>
+
+<translation>
+  <key>convert_to_disaster_victim</key>
+  <value>6. Convert to Disaster Victim</value>
+</translation>
+
+<translation>
+  <key>add_change_family_group</key>
+  <value>7. Add/Change Family Group</value>
+</translation>
+
+<translation>
+  <key>inquiry_management</key>
+  <value>Inquiry Management</value>
+</translation>
+
+<translation>
+  <key>supply_selection_title</key>
+  <value>Select supply type:</value>
+</translation>
+
+<translation>
+  <key>supply_selection1</key>
+  <value>1. Blanket</value>
+</translation>
+
+<translation>
+  <key>supply_selection2</key>
+  <value>2. Cot</value>
+</translation>
+
+<translation>
+  <key>supply_selection3</key>
+  <value>3. Personal Belonging</value>
+</translation>
+
+<translation>
+  <key>supply_selection4</key>
+  <value>4. Water</value>
+</translation>
+
+<translation>
+  <key>supply_selection5</key>
+  <value>5. Other</value>
+</translation>
+
+<translation>
+  <key>supply_selection0</key>
+  <value>0. Exit</value>
+</translation>
+
+<translation>
+  <key>supply_selection_choices</key>
+  <value>Enter your choice (1-5):</value>
+</translation>
+
+<translation>
+  <key>supply_selection_return</key>
+  <value>Returning to main menu...</value>
+</translation>
+
+<translation>
+  <key>cot_input_grid</key>
+  <value>Enter grid location:</value>
+</translation>
+
+<translation>
+  <key>cot_input_room</key>
+  <value>Enter room location:</value>
+</translation>
+
+<translation>
+  <key>personal_item_input_description</key>
+  <value>Enter item description:</value>
+</translation>
+
+<translation>
+  <key>water_input_date</key>
+  <value>Enter allocation date (YYYY-MM-DD):</value>
+</translation>
+
+<translation>
+  <key>general_supply_input_type</key>
+  <value>Enter supply type (general category):</value>
+</translation>
+
+<translation>
+  <key>general_supply_input_comments</key>
+  <value>Enter supply comments:</value>
+</translation>
+
+<translation>
+  <key>successful_supply_addition</key>
+  <value>Supply added successfully!</value>
+</translation>
+
+<translation>
+  <key>view_person_allocated_supplies</key>
+  <value>1. View supplies allocated to a person</value>
+</translation>
+
+<translation>
+  <key>view_location_allocated_supplies</key>
+  <value>2. View supplies allocated to a location</value>
+</translation>
+
+<translation>
+  <key>view_allocated_supplies_return</key>
+  <value>0. Back</value>
+</translation>
+
+<translation>
+  <key>view_allocated_supplies_invalid</key>
+  <value>Invalid choice. Please enter (0-2).</value>
+</translation>
+
+<translation>
+  <key>available_people</key>
+  <value>Available People:</value>
+</translation>
+
+<translation>
+  <key>enter_person_id</key>
+  <value>Enter the ID of the person:</value>
+</translation>
+
+<translation>
+  <key>supplies_allocated_person_id</key>
+  <value>Supplies allocated to Person ID</value>
+</translation>
+
+<translation>
+  <key>available_locations</key>
+  <value>Available Locations:</value>
+</translation>
+
+<translation>
+  <key>enter_location_id</key>
+  <value>Enter the ID of the location:</value>
+</translation>
+
+<translation>
+  <key>supplies_allocated_location_id</key>
+  <value>Supplies allocated to Location ID</value>
+</translation>
+
+<translation>
+  <key>supplies_input_id_update</key>
+  <value>Enter the ID of the supply to update:</value>
+</translation>
+
+<translation>
+  <key>supplies_no_found_id</key>
+  <value>No supply found with ID:</value>
+</translation>
+
+<translation>
+  <key>current_supply_details</key>
+  <value>Current Supply Details:</value>
+</translation>
+
+<translation>
+  <key>supply_new_details</key>
+  <value>Enter new details (leave blank to keep current value):</value>
+</translation>
+
+<translation>
+  <key>type</key>
+  <value>Type</value>
+</translation>
+
+<translation>
+  <key>comments</key>
+  <value>Comments</value>
+</translation>
+
+<translation>
+  <key>room_location</key>
+  <value>Room Location</value>
+</translation>
+
+<translation>
+  <key>grid_location</key>
+  <value>Grid Location</value>
+</translation>
+
+<translation>
+  <key>description</key>
+  <value>Description</value>
+</translation>
+
+<translation>
+  <key>allocation_date</key>
+  <value>Allocation Date</value>
+</translation>
+
+<translation>
+  <key>location_management</key>
+  <value>Location Management</value>
+</translation>
+
+<translation>
+  <key>location_management1</key>
+  <value>1. View All Locations</value>
+</translation>
+
+<translation>
+  <key>location_management2</key>
+  <value>2. Add New Location</value>
+</translation>
+
+<translation>
+  <key>location_management3</key>
+  <value>3. Update Location</value>
+</translation>
+
+<translation>
+  <key>location_management4</key>
+  <value>4. View Location Occupants</value>
+</translation>
+
+<translation>
+  <key>location_management5</key>
+  <value>5. Add Occupant to Location</value>
+</translation>
+
+<translation>
+  <key>location_management6</key>
+  <value>6. Remove Occupant from Location</value>
+</translation>
+
+<translation>
+  <key>location_management7</key>
+  <value>0. Back to Main Menu</value>
+</translation>
+
+<translation>
+  <key>location_management8</key>
+  <value>Invalid choice. Please enter a number between 0-6.</value>
+</translation>
+
+<translation>
+    <key>inquiry_management1</key>
+    <value>1. View All Inquiries</value>
+</translation>
+
+<translation>
+  <key>inquiry_management2</key>
+  <value>2. Add New Inquiry</value>
+</translation>
+
+<translation>
+  <key>inquiry_management3</key>
+  <value>3. Update Inquiry</value>
+</translation>
+
+<translation>
+  <key>inquiry_management4</key>
+  <value>4. Delete Inquiry</value>
+</translation>
+
+<translation>
+  <key>inquiry_management5</key>
+  <value>5. Generate Inquiry Report</value>
+</translation>
+
+<translation>
+  <key>inquiry_management6</key>
+  <value>0. Back to Main Menu</value>
+</translation>
+
+<translation>
+  <key>inquiry_management7</key>
+  <value>Invalid choice. Please enter a number between 0-4.</value>
+</translation>
+
+<translation>
+  <key>error1</key>
+  <value>An error occurred</value>
+</translation>
+
+<translation>
+  <key>new_name</key>
+  <value>New Name</value>
+</translation>
+
+<translation>
+  <key>new_type</key>
+  <value>New Type</value>
+</translation>
+
+<translation>
+  <key>new</key>
+  <value>New</value>
+</translation>
+
+<translation>
+  <key>new_desc</key>
+  <value>New description</value>
+</translation>
+
+<translation>
+  <key>new_alloc</key>
+  <value>New allocation date</value>
+</translation>
+
+<translation>
+  <key>supply_update_success</key>
+  <value>Supply updated successfully!</value>
+</translation>
+
+<translation>
+  <key>supply_invalid_input</key>
+  <value>Invalid input. Please enter a valid number for the supply ID.</value>
+</translation>
+
+<translation>
+  <key>allocate_to</key>
+  <value>Allocate to:</value>
+</translation>
+
+<translation>
+  <key>allocate_to1</key>
+  <value>1. Person</value>
+</translation>
+
+<translation>
+  <key>allocate_to2</key>
+  <value>2. Location</value>
+</translation>
+
+<translation>
+  <key>allocate_to3</key>
+  <value>3. Person at specific location (from location's supplies)</value>
+</translation>
+
+<translation>
+  <key>allocate_to_choice</key>
+  <value>Enter your choice (1-3):</value>
+</translation>
+
+<translation>
+  <key>allocate_to_invalid_choice</key>
+  <value>Invalid choice. Allocation cancelled.</value>
+</translation>
+
+<translation>
+  <key>available_supplies</key>
+  <value>Available Supplies:</value>
+</translation>
+
+<translation>
+  <key>available_supplies1</key>
+  <value>Available Unallocated Supplies:</value>
+</translation>
+
+<translation>
+  <key>available_supplies_empty</key>
+  <value>No unallocated supplies available.</value>
+</translation>
+
+<translation>
+  <key>input_supply_id_to_allocate</key>
+  <value>Enter the ID of the supply to allocate:</value>
+</translation>
+
+<translation>
+  <key>supply_id_not_found</key>
+  <value>No supply found with ID:</value>
+</translation>
+
+<translation>
+  <key>error.locationNameEmpty</key>
+  <value>Location name cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.locationAddressEmpty</key>
+  <value>Location address cannot be null or empty</value>
+</translation>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<translation>
   <key>input_firstname</key>
   <value>Enter the person's first name:</value>
 </translation>

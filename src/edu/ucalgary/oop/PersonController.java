@@ -1,3 +1,10 @@
+/**
+ * PersonController.java
+ * Version: 4.0
+ * Author: Jibran Somroo
+ * Date: April 10, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.SQLException;
@@ -12,6 +19,11 @@ public class PersonController {
     private static int personIdCounter;
 
 
+    /**
+     * Constructs a new PersonController
+     *
+     * @throws RuntimeException if the initialization of the PersonController fails
+     */
     public PersonController() {
         try {
             this.databaseManager = DatabaseManager.getInstance();
@@ -22,6 +34,20 @@ public class PersonController {
         }
     }
 
+    /**
+     * Constructs a new PersonController for PersonControllerTest
+     */
+    public PersonController(int test) {
+        this.personModels = new ArrayList<>();
+
+    }
+
+
+    /**
+     * Populates the local list of people models from the database.
+     *
+     * @throws SQLException if an error occurs while fetching the people data from the database.
+     */
     private void populatePeopleFromDatabase() throws SQLException {
         try {
             ArrayList<Person> people = (ArrayList<Person>) databaseManager.getAllPeople();
@@ -34,9 +60,26 @@ public class PersonController {
         }
     }
 
-    public List<Person> getAllPeople() {
+    /**
+     * Retrieves a copy of the list of all people
+     *
+     * @return A new ArrayList containing all people.
+     */
+    public ArrayList<Person> getAllPeople() {
         return new ArrayList<>(this.personModels);
     }
+
+
+    /**
+     * Retrieves a copy of the list of all people for test purposes
+     *
+     * @return A ArrayList containing all people.
+     */
+    public ArrayList<Person> getAllPeopleTest() {
+        return this.personModels;
+    }
+
+
 
     public void addPerson(Person person) throws SQLException {
         if (person == null) {
@@ -57,6 +100,12 @@ public class PersonController {
         }
     }
 
+    /**
+     * Updates the information of a person in both the database and the local model.
+     *
+     * @param person The person object containing the updated details.
+     * @throws SQLException If there is an error while updating the person in the database.
+     */
     public void updatePerson(Person person) throws SQLException {
         databaseManager.updatePerson(person);
         // Find and replace the person in the local list
@@ -68,12 +117,25 @@ public class PersonController {
         }
     }
 
+
+    /**
+     * Deletes a person from both the database and the local model.
+     *
+     * @param personId The ID of the person to be deleted.
+     * @throws SQLException If there is an error while deleting the person from the database.
+     */
     public void deletePerson(int personId) throws SQLException {
         databaseManager.deletePerson(personId);
-        // Remove the person from the local list
         personModels.removeIf(p -> p.getPersonId() == personId);
     }
 
+    /**
+     * Retrieves a person by their ID.
+     *
+     * @param personId The ID of the person to be retrieved.
+     * @return The Person object corresponding to the given ID.
+     * @throws SQLException If an error occurs while retrieving the person from the database.
+     */
     public Person getPersonById(int personId) throws SQLException {
         // First check local list
         for (Person person : personModels) {
@@ -85,12 +147,14 @@ public class PersonController {
         return databaseManager.getPersonById(personId);
     }
 
-    public void refresh() throws SQLException {
-        populatePeopleFromDatabase();
-    }
 
-
-
+    /**
+     * Converts a Person to a DisasterVictim by copying over relevant properties and transferring
+     * related entities like medical records and allocated supplies.
+     *
+     * @param personId The ID of the person to be converted.
+     * @throws SQLException If an error occurs during database interaction.
+     */
     public void convertToDisasterVictim(int personId) throws SQLException {
         Person person = getPersonById(personId);
         if (person == null) {
@@ -276,18 +340,28 @@ public class PersonController {
             throw new IllegalArgumentException("Family group not found with ID: " + familyGroupId);
         }
 
-        // Remove all members from the family group
         for (Person member : new ArrayList<>(familyGroup.getMembers())) {
             member.setFamilyGroup(null);
             databaseManager.updatePerson(member);
         }
     }
 
+
+    /**
+     * Initializes the person ID counter by retrieving the largest existing person ID from the database.
+     *
+     * @throws SQLException if there is an error retrieving the largest person ID from the database.
+     */
     private void initializeIdCounter() throws SQLException {
         int maxId = databaseManager.getLargestPersonId();
         personIdCounter = maxId + 1;
     }
 
+    /**
+     * Generates a new person ID by adding 1 to medicalRecordIdCounter
+     *
+     * @return The next available person ID.
+     */
     public int generatePersonId() {
         return personIdCounter++;
     }

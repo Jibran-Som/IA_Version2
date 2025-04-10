@@ -1,3 +1,10 @@
+/**
+ * TranslationManager.java
+ * Version: 2.0
+ * Author: Jibran Somroo
+ * Date: April 8, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.HashMap;
@@ -9,11 +16,16 @@ public class TranslationManager {
     private final Map<String, String> translations = new HashMap<>();
     private static TranslationManager instance;
 
-    // Private constructor for singleton pattern
-    private TranslationManager() {
-    }
+    /**
+     * Private constructor for singleton pattern
+     */
+    private TranslationManager() {}
 
-    // Singleton instance getter
+    /**
+     * Singleton class to manage the translation system.
+     *
+     * @return instance of TranslationManager
+     */
     public static synchronized TranslationManager getInstance() {
         if (instance == null) {
             instance = new TranslationManager();
@@ -21,7 +33,11 @@ public class TranslationManager {
         return instance;
     }
 
-    // Load translations from XML file
+    /**
+     * Loads translation data from a specified file.
+     *
+     * @param filePath The path to the file containing the translation data.
+     */
     public void loadTranslations(String filePath) {
         FileModel fileModel = new FileModel(filePath, "");
         try {
@@ -39,7 +55,11 @@ public class TranslationManager {
         }
     }
 
-    // Parse XML content and populate translations map
+    /**
+     * Parses the given XML content to extract translations and stores them in the translations map.
+     *
+     * @param xmlContent The XML content as a string that contains the translation entries.
+     */
     private void parseTranslations(String xmlContent) {
         translations.clear(); // Clear any existing translations
 
@@ -58,7 +78,13 @@ public class TranslationManager {
         }
     }
 
-    // Get translation by key
+    /**
+     * Retrieves the translation for the specified key.
+     *
+     * @param key The translation key whose value is to be retrieved.
+     * @return The translation value corresponding to the given key.
+     * @throws IllegalArgumentException if the key does not exist in the translations map.
+     */
     public String getTranslation(String key) {
         if (!translations.containsKey(key)) {
             throw new IllegalArgumentException("No translation found for key: " + key);
@@ -66,7 +92,12 @@ public class TranslationManager {
         return translations.get(key);
     }
 
-    // Check if a translation exists
+    /**
+     * Checks if a translation exists for the specified key.
+     *
+     * @param key The translation key to check for existence.
+     * @return true if the key exists in the translations map, false otherwise.
+     */
     public boolean hasTranslation(String key) {
         return translations.containsKey(key);
     }

@@ -1,3 +1,10 @@
+/**
+ * Water.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 public class Water extends Supply {
@@ -5,51 +12,32 @@ public class Water extends Supply {
     public static final int EXPIRATION_DAYS = 1;
 
 
+    /**
+     * Constructor for creating a Water supply.
+     *
+     * @param supplyName The name of the water supply
+     * @param supplyType The type of the supply
+     */
     public Water(String supplyName, String supplyType) {
         super(supplyName, supplyType);
     }
 
+    /**
+     * Retrieves the allocation date of the supply.
+     *
+     * @return The allocation date as a string.
+     */
     public String getAllocationDate() {
         return allocationDate;
     }
 
+    /**
+     * Sets the allocation date for the supply.
+     *
+     * @param allocationDate The allocation date to be set for the supply.
+     */
     public void setAllocationDate(String allocationDate) {
         this.allocationDate = allocationDate;
-    }
-
-
-    private static boolean isValidDateFormat(String date) {
-        if (date == null || date.length() != 10) {
-            return false;
-        }
-
-        if (date.charAt(4) != '-' || date.charAt(7) != '-') {
-            return false;
-        }
-
-        String yearStr = date.substring(0, 4);
-        String monthStr = date.substring(5, 7);
-        String dayStr = date.substring(8, 10);
-
-
-        int year = Integer.parseInt(yearStr);
-        int month = Integer.parseInt(monthStr);
-        int day = Integer.parseInt(dayStr);
-
-        if (month < 1 || month > 12) {
-            return false;
-        }
-
-        if (day < 1 || day > 31) {
-            return false;
-        }
-
-        if(year < 1900 || year > 2026) {
-            return false;
-        }
-
-        return true;
-
     }
 
 

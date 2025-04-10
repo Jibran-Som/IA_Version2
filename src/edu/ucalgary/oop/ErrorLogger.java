@@ -1,3 +1,10 @@
+/**
+ * ErrorLogger.java
+ * Version: 4.0
+ * Author: Jibran Somroo
+ * Date: April 9, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.io.*;

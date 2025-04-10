@@ -1,3 +1,10 @@
+/**
+ * Blanket.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.SQLException;

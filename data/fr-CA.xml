@@ -49,6 +49,465 @@
 </translation>
 
 <translation>
+    <key>system_exit</key>
+    <value>Quitter le système...</value>
+</translation>
+
+<translation>
+    <key>back_to_menu</key>
+    <value>0. Retour au menu principal</value>
+</translation>
+
+<translation>
+    <key>ask_choice</key>
+    <value>Entrez votre choix:</value>
+</translation>
+
+<translation>
+    <key>invalid_choice_main_menu</key>
+    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 5.</value>
+</translation>
+
+<translation>
+    <key>invalid_input</key>
+    <value>Entrée non valide. Veuillez saisir un nombre.</value>
+</translation>
+
+<translation>
+    <key>view_all_supply</key>
+    <value>Voir Toutes les Fournitures</value>
+</translation>
+
+<translation>
+    <key>add_new_supply</key>
+    <value>Ajouter une Nouvelle Fourniture</value>
+</translation>
+
+<translation>
+    <key>update_supply</key>
+    <value>Mettre à jour l'approvisionnement</value>
+</translation>
+
+<translation>
+    <key>allocate_supply</key>
+    <value>Allouer l'approvisionnement</value>
+</translation>
+
+<translation>
+    <key>view_allocated_supplies</key>
+    <value>Afficher les fournitures allouées</value>
+</translation>
+
+<translation>
+    <key>invalid_choice_supply</key>
+    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 4.</value>
+</translation>
+
+<translation>
+    <key>medical_title</key>
+    <value>Gestion des dossiers médicaux</value>
+</translation>
+
+<translation>
+    <key>view_all_medical_records</key>
+    <value>1. Afficher tous les dossiers médicaux</value>
+</translation>
+
+<translation>
+    <key>add_new_medical_record</key>
+    <value>2. Ajouter un nouveau dossier médical</value>
+</translation>
+
+<translation>
+    <key>update_medical_record</key>
+    <value>3. Mettre à jour le dossier médical</value>
+</translation>
+
+<translation>
+    <key>invalid_choice_medical</key>
+    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 3.</value>
+</translation>
+
+<translation>
+    <key>person_management</key>
+    <value>Gestion des personnes</value>
+</translation>
+
+<translation>
+    <key>view_all_persons</key>
+    <value>1. Afficher toutes les personnes</value>
+</translation>
+
+<translation>
+    <key>add_new_person</key>
+    <value>2. Ajouter une nouvelle personne</value>
+</translation>
+
+<translation>
+    <key>update_person</key>
+    <value>3. Mettre à jour la personne</value>
+</translation>
+
+<translation>
+    <key>view_disaster_victims</key>
+    <value>4. Voir les victimes de la catastrophe</value>
+</translation>
+
+<translation>
+    <key>add_disaster_victim</key>
+    <value>5. Ajouter une victime de la catastrophe</value>
+</translation>
+
+<translation>
+    <key>convert_to_disaster_victim</key>
+    <value>6. Convertissez-vous en victime de catastrophe</value>
+</translation>
+
+<translation>
+    <key>add_change_family_group</key>
+    <value>7. Ajouter/modifier un groupe familial</value>
+</translation>
+
+<translation>
+    <key>inquiry_management</key>
+    <value>Gestion des Demandes</value>
+</translation>
+
+<translation>
+    <key>supply_selection_title</key>
+    <value>Sélectionnez le type de fourniture:</value>
+</translation>
+
+<translation>
+    <key>supply_selection1</key>
+    <value>1. Couverture</value>
+</translation>
+
+<translation>
+    <key>supply_selection2</key>
+    <value>2. Lit bébé</value>
+</translation>
+
+<translation>
+    <key>supply_selection3</key>
+    <value>3. Effets personnels</value>
+</translation>
+
+<translation>
+    <key>supply_selection4</key>
+    <value>4. Eau</value>
+</translation>
+
+<translation>
+    <key>supply_selection5</key>
+    <value>5. Autre</value>
+</translation>
+
+<translation>
+    <key>supply_selection0</key>
+    <value>0. Sortie</value>
+</translation>
+
+<translation>
+    <key>supply_selection_choices</key>
+    <value>Entrez votre choix (1-5):</value>
+</translation>
+
+<translation>
+    <key>supply_selection_return</key>
+    <value>Retour au menu principal...</value>
+</translation>
+
+<translation>
+    <key>cot_input_grid</key>
+    <value>Entrez l'emplacement de la grille:</value>
+</translation>
+
+<translation>
+    <key>cot_input_room</key>
+    <value>Entrez l'emplacement de la salle:</value>
+</translation>
+
+<translation>
+    <key>personal_item_input_description</key>
+    <value>Entrez la description de l'article:</value>
+</translation>
+
+<translation>
+    <key>water_input_date</key>
+    <value>Saisissez la date d'attribution (AAAA-MM-JJ):</value>
+</translation>
+
+<translation>
+    <key>general_supply_input_type</key>
+    <value>Entrez le type d'approvisionnement (catégorie générale):</value>
+</translation>
+
+<translation>
+    <key>general_supply_input_comments</key>
+    <value>Saisissez les commentaires sur l'approvisionnement:</value>
+</translation>
+
+<translation>
+    <key>successful_supply_addition</key>
+    <value>Fourniture ajoutée avec succès!</value>
+</translation>
+
+<translation>
+    <key>view_person_allocated_supplies</key>
+    <value>1. Afficher les fournitures allouées à une personne</value>
+</translation>
+
+<translation>
+    <key>view_location_allocated_supplies</key>
+    <value>2. Afficher les fournitures allouées à un emplacement</value>
+</translation>
+
+<translation>
+    <key>view_allocated_supplies_return</key>
+    <value>0. Retour</value>
+</translation>
+
+<translation>
+    <key>view_allocated_supplies_invalid</key>
+    <value>Choix invalide. Veuillez saisir (0-2).</value>
+</translation>
+
+<translation>
+    <key>available_people</key>
+    <value>Personnes disponibles:</value>
+</translation>
+
+<translation>
+    <key>enter_person_id</key>
+    <value>EEntrez l'identifiant de la personne:</value>
+</translation>
+
+<translation>
+    <key>supplies_allocated_person_id</key>
+    <value>Fournitures attribuées à la personne ID</value>
+</translation>
+
+<translation>
+    <key>available_locations</key>
+    <value>Emplacements disponibles:</value>
+</translation>
+
+<translation>
+    <key>enter_location_id</key>
+    <value>Entrez l'ID de l'emplacement:</value>
+</translation>
+
+<translation>
+    <key>supplies_allocated_location_id</key>
+    <value>Fournitures attribuées à l'ID d'emplacement</value>
+</translation>
+
+<translation>
+    <key>supplies_input_id_update</key>
+    <value>Saisissez l'ID de la fourniture à mettre à jour:</value>
+</translation>
+
+<translation>
+    <key>supplies_no_found_id</key>
+    <value>Aucune fourniture trouvée avec l'ID:</value>
+</translation>
+
+<translation>
+    <key>current_supply_details</key>
+    <value>Détails de l'approvisionnement actuel:</value>
+</translation>
+
+<translation>
+    <key>supply_new_details</key>
+    <value>Saisissez les nouveaux détails (laissez vide pour conserver la valeur actuelle):</value>
+</translation>
+
+<translation>
+    <key>type</key>
+    <value>Taper</value>
+</translation>
+
+<translation>
+    <key>comments</key>
+    <value>Commentaires</value>
+</translation>
+
+<translation>
+    <key>room_location</key>
+    <value>Emplacement de la chambre</value>
+</translation>
+
+<translation>
+    <key>grid_location</key>
+    <value>Emplacement de la grille</value>
+</translation>
+
+<translation>
+    <key>description</key>
+    <value>Description</value>
+</translation>
+
+<translation>
+    <key>allocation_date</key>
+    <value>Date d'attribution</value>
+</translation>
+
+<translation>
+    <key>location_management</key>
+    <value>Gestion des emplacements</value>
+</translation>
+
+<translation>
+    <key>location_management1</key>
+    <value>1. Voir tous les emplacements</value>
+</translation>
+
+<translation>
+<key>location_management2</key>
+<value>2. Ajouter un nouvel emplacement</value>
+</translation>
+
+<translation>
+    <key>location_management3</key>
+    <value>3. Mettre à jour l'emplacement</value>
+</translation>
+
+<translation>
+    <key>location_management4</key>
+    <value>4. Afficher les occupants de l'emplacement</value>
+</translation>
+
+<translation>
+    <key>location_management5</key>
+    <value>5. Ajouter un occupant à l'emplacement</value>
+</translation>
+
+<translation>
+    <key>location_management6</key>
+    <value>6. Retirer l'occupant des lieux</value>
+</translation>
+
+<translation>
+    <key>location_management7</key>
+    <value>0. Retour au menu principal</value>
+</translation>
+
+<translation>
+    <key>location_management8</key>
+    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 6.</value>
+</translation>
+
+<translation>
+    <key>inquiry_management1</key>
+    <value>1. Voir toutes les demandes</value>
+</translation>
+
+<translation>
+    <key>inquiry_management2</key>
+    <value>2. Ajouter une nouvelle demande</value>
+</translation>
+
+<translation>
+    <key>inquiry_management3</key>
+    <value>3. Demande de mise à jour</value>
+</translation>
+
+<translation>
+    <key>inquiry_management4</key>
+    <value>4. Supprimer la demande</value>
+</translation>
+
+<translation>
+    <key>inquiry_management5</key>
+    <value>5. Générer un rapport d'enquête</value>
+</translation>
+
+<translation>
+    <key>inquiry_management6</key>
+    <value>0. Retour au menu principal</value>
+</translation>
+
+<translation>
+    <key>inquiry_management7</key>
+    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 4.</value>
+</translation>
+
+<translation>
+    <key>error1</key>
+    <value>Une erreur s'est produite</value>
+</translation>
+
+<translation>
+    <key>new_name</key>
+    <value>Nouveau nom</value>
+</translation>
+
+<translation>
+    <key>new_type</key>
+    <value>Nouveau type</value>
+</translation>
+
+<translation>
+    <key>new</key>
+    <value>Nouveau</value>
+</translation>
+
+<translation>
+    <key>new_desc</key>
+    <value>Nouvelle description</value>
+</translation>
+
+<translation>
+    <key>new_alloc</key>
+    <value>Nouvelle date d'attribution</value>
+</translation>
+
+<translation>
+    <key>supply_update_success</key>
+    <value>Approvisionnement mis à jour avec succès!</value>
+</translation>
+
+<translation>
+    <key>supply_invalid_input</key>
+    <value>Entrée non valide. Veuillez saisir un numéro valide pour l'identifiant de l'offre.</value>
+</translation>
+
+<translation>
+    <key>allocate_to</key>
+    <value>Affecter à:</value>
+</translation>
+
+<translation>
+    <key>allocate_to1</key>
+    <value>1. Personne</value>
+</translation>
+
+<translation>
+    <key>allocate_to2</key>
+    <value>2. Emplacement</value>
+</translation>
+
+<translation>
+    <key>allocate_to3</key>
+    <value>3. Personne à un endroit précis (à partir des fournitures de l'endroit)</value>
+</translation>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<translation>
     <key>input_firstname</key>
     <value>Entrez le prénom de la personne:</value>
 </translation>

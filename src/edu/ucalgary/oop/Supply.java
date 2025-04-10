@@ -1,3 +1,10 @@
+/**
+ * Supply.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.SQLException;
@@ -8,12 +15,14 @@ public class Supply {
     private int supplyId;
 
 
-    // Constructor
+    /**
+     * Constructs a Supply object with the specified supply name and supply type.
+     *
+     * @param supplyName The name of the supply
+     * @param supplyType The type of the supply
+     * @throws IllegalArgumentException If supply type is null or empty.
+     */
     public Supply(String supplyName, String supplyType) {
-        /*
-        if (supplyName == null || supplyName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Supply name cannot be null or empty");
-        }*/
         if (supplyType == null || supplyType.trim().isEmpty()) {
             throw new IllegalArgumentException("Supply type cannot be null or empty");
         }
@@ -22,21 +31,39 @@ public class Supply {
     }
 
 
-    // Getters
-    public String getSupplyName() {
+    /**
+     * Retrieves the name of the supply.
+     *
+     * @return The name of the supply
+     */    public String getSupplyName() {
         return supplyName;
     }
 
+    /**
+     * Retrieves the type of the supply.
+     *
+     * @return The type of the supply
+     */
     public String getSupplyType() {
         return supplyType;
     }
 
+    /**
+     * Retrieves the id of the supply.
+     *
+     * @return The id of the supply
+     */
     public int getSupplyId() {
         return supplyId;
     }
 
 
-    // Setters
+    /**
+     * Sets the name of the supply.
+     *
+     * @param supplyName The name of the supply to set
+     * @throws IllegalArgumentException if the supply name is null or empty.
+     */
     public void setSupplyName(String supplyName) {
         if (supplyName == null || supplyName.trim().isEmpty()) {
             throw new IllegalArgumentException("Supply name cannot be null or empty");
@@ -44,6 +71,13 @@ public class Supply {
         this.supplyName = supplyName;
     }
 
+
+    /**
+     * Sets the type of the supply.
+     *
+     * @param supplyType The type of the supply to set
+     * @throws IllegalArgumentException if the supply type is null or empty.
+     */
     public void setSupplyType(String supplyType) {
         if (supplyType == null || supplyType.trim().isEmpty()) {
             throw new IllegalArgumentException("Supply type cannot be null or empty");
@@ -52,6 +86,11 @@ public class Supply {
     }
 
 
+    /**
+     * Sets the id of the supply.
+     *
+     * @param supplyId The id of the supply to set
+     */
     public void setSupplyId(int supplyId) {
         this.supplyId = supplyId;
     }

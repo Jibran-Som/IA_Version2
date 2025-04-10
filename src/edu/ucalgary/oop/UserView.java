@@ -1,3 +1,10 @@
+/**
+ * UserView.java
+ * Version: 4.0
+ * Author: Jibran Somroo
+ * Date: April 9, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.sql.SQLException;
@@ -17,7 +24,20 @@ public class UserView {
 
 
 
-    // Constructor
+    /**
+     * UserView Constructor
+     *
+     * This constructor initializes the UserView object and handles loading translations based on the user's input language code.
+     *
+     * The constructor also initializes various controller objects used throughout the application, including:
+     * - SupplyController: Manages supply-related operations
+     * - LocationController: Manages location-related operations
+     * - MedicalRecordController: Manages medical records
+     * - PersonController: Manages person-related operations
+     * - InquiryController: Handles user inquiries
+     *
+     * The translationManager is used to load and manage translation files for different languages.
+     */
     public UserView() {
         Scanner scanner = new Scanner(System.in);
         translationManager = TranslationManager.getInstance();
@@ -43,7 +63,7 @@ public class UserView {
                 translationManager.loadTranslations("data/en-CA.xml");
             } catch (Exception defaultException) {
                 errorLogger.logFatalError(defaultException, "UserView constructor - loading default translations",
-                        "Fatal error: Could not load any translations! The application will now exit.");
+                        "Fatal error: Could not load any translations!");
                 System.err.println("Fatal error: Could not load default translations!");
                 throw new RuntimeException("Failed to load any translations", defaultException);
             }
@@ -61,7 +81,12 @@ public class UserView {
 
 
 
-    // Menu
+    /**
+     * Displays the main menu options and handles user input.
+     * Also loops until either a proper option is chosen in which
+     * case it calls that specific function or if exit is chose it
+     * ends the program.
+     */
     public static void displayMenuOptions() {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -74,7 +99,7 @@ public class UserView {
             System.out.println("4. " + translationManager.getTranslation("inquiry_detail"));
             System.out.println("5. " + translationManager.getTranslation("medical_detail"));
             System.out.println("0. " + translationManager.getTranslation("exit"));
-            System.out.print("\nEnter your choice: ");
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -97,15 +122,15 @@ public class UserView {
                         break;
                     case 0:
                         exit = true;
-                        System.out.println("Exiting system...");
+                        System.out.println(translationManager.getTranslation("system_exit"));
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-5.");
+                        System.out.println(translationManager.getTranslation("invalid_choice_main_menu"));
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -117,20 +142,26 @@ public class UserView {
 
 
     // Supply
+
+
+    /**
+     * Displays the supply details menu and handles user input for supply-related operations.
+     * If the user enters an invalid option or non-numeric input, an appropriate error message is shown.
+     */
     public static void displaySupplyDetails() {
         Scanner scanner = new Scanner(System.in);
         boolean stayInMenu = true;
 
         while (stayInMenu) {
             // Display menu options
-            System.out.println("\nSupply Details");
-            System.out.println("1. View All Supplies");
-            System.out.println("2. Add New Supply");
-            System.out.println("3. Update Supply");
-            System.out.println("4. Allocate Supply");
-            System.out.println("5. View Allocated Supplies");
-            System.out.println("0. Back to Main Menu");
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("supply_detail"));
+            System.out.println("1. " + translationManager.getTranslation("view_all_supply"));
+            System.out.println("2. " + translationManager.getTranslation("add_new_supply"));
+            System.out.println("3. " + translationManager.getTranslation("update_supply"));
+            System.out.println("4. " + translationManager.getTranslation("allocate_supply"));
+            System.out.println("5. " + translationManager.getTranslation("view_allocated_supplies"));
+            System.out.println(translationManager.getTranslation("back_to_menu"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -155,17 +186,21 @@ public class UserView {
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-4.");
+                        System.out.println(translationManager.getTranslation("invalid_choice_supply"));
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace(); // Useful for debugging
             }
         }
     }
 
+    /**
+     * Displays a list of all supplies with their details in a formatted table.
+     * A separator line is printed before and after the list to improve the readability of the output.
+     */
     public static void viewAllSupplies() {
         System.out.println("\n-----------------------------------------------------------");
         System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "ALLOCATION DATE");
@@ -255,63 +290,18 @@ public class UserView {
     }
 
 
-
-    public static void allocateSupplyToPersonAtLocation() {
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            // Show all locations
-            viewAllLocations();
-            System.out.print("\nEnter the ID of the location: ");
-            int locationId = Integer.parseInt(scanner.nextLine());
-
-            // Show occupants at this location
-            ArrayList<Person> occupants = locationController.getOccupantsAtLocation(locationId);
-            if (occupants == null || occupants.isEmpty()) {
-                System.out.println("No occupants found at this location.");
-                return;
-            }
-
-            System.out.println("\nOccupants at this location:");
-            for (Person person : occupants) {
-                System.out.println(person.getPersonId() + ": " +
-                        person.getFirstName() + " " + person.getLastName());
-            }
-
-            System.out.print("\nEnter the ID of the person to allocate to: ");
-            int personId = Integer.parseInt(scanner.nextLine());
-
-            // Show available supplies at this location
-            ArrayList<Supply> supplies = locationController.getSuppliesAtLocation(locationId);
-            if (supplies == null || supplies.isEmpty()) {
-                System.out.println("No supplies found at this location.");
-                return;
-            }
-
-            System.out.println("\nAvailable supplies at this location:");
-            for (Supply supply : supplies) {
-                System.out.println(supply.getSupplyId() + ": " +
-                        supply.getSupplyType() + " - " + supply.getSupplyName());
-            }
-
-            System.out.print("\nEnter the ID of the supply to allocate: ");
-            int supplyId = Integer.parseInt(scanner.nextLine());
-
-            // Perform the allocation
-            locationController.allocateSupplyToPersonAtLocation(supplyId, personId, locationId);
-            System.out.println("Supply successfully allocated to person at this location!");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter valid numbers.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
+    /**
+     * Allows the user to add a new supply to the system by selecting a supply type and entering relevant details.
+     *
+     * This method provides a menu for the user to select the type of supply they wish to add, including:
+     * - Blanket
+     * - Cot
+     * - Personal Belonging
+     * - Water
+     * - Other (general supply type)
+     *
+     * If an error occurs (e.g., invalid input), appropriate error messages are shown.
+     */
     public static void addNewSupply() {
         Scanner scanner = new Scanner(System.in);
 
@@ -320,18 +310,18 @@ public class UserView {
 
         try {
             // Select supply type
-            System.out.println("Select supply type:");
-            System.out.println("1. Blanket");
-            System.out.println("2. Cot");
-            System.out.println("3. Personal Belonging");
-            System.out.println("4. Water");
-            System.out.println("5. Other");
-            System.out.println("0. Exit");
-            System.out.print("Enter your choice (1-5): ");
+            System.out.println(translationManager.getTranslation("supply_selection_title"));
+            System.out.println(translationManager.getTranslation("supply_selection1"));
+            System.out.println(translationManager.getTranslation("supply_selection2"));
+            System.out.println(translationManager.getTranslation("supply_selection3"));
+            System.out.println(translationManager.getTranslation("supply_selection4"));
+            System.out.println(translationManager.getTranslation("supply_selection5"));
+            System.out.println(translationManager.getTranslation("supply_selection0"));
+            System.out.print(translationManager.getTranslation("supply_selection_choices") + " ");
             int typeChoice = Integer.parseInt(scanner.nextLine());
 
             if (typeChoice == 0) {
-                System.out.println("Returning to main menu...");
+                System.out.println(translationManager.getTranslation("supply_selection_return"));
                 return;  // This exits the method and returns to the calling menu
             }
 
@@ -347,10 +337,10 @@ public class UserView {
                     break;
 
                 case 2: // Cot
-                    System.out.print("Enter grid location: ");
+                    System.out.print(translationManager.getTranslation("cot_input_grid") + " ");
                     String gridLocation = scanner.nextLine();
 
-                    System.out.print("Enter room location: ");
+                    System.out.print(translationManager.getTranslation("cot_input_room") + " ");
                     String roomLocation = scanner.nextLine();
 
 
@@ -358,7 +348,7 @@ public class UserView {
                     break;
 
                 case 3: // Personal Belonging
-                    System.out.print("Enter item description: ");
+                    System.out.print(translationManager.getTranslation("personal_item_input_description") + " ");
                     String description = scanner.nextLine();
 
                     newSupply = new PersonalBelonging(description, "personal item", description);
@@ -367,7 +357,7 @@ public class UserView {
                 case 4: // Water
                     newSupply = new Water(null, "water");
 
-                    System.out.print("Enter allocation date (YYYY-MM-DD): ");
+                    System.out.print(translationManager.getTranslation("water_input_date") + " ");
                     String allocationDate = scanner.nextLine();
                     if(allocationDate.isEmpty()) {
                         ((Water)newSupply).setAllocationDate(null);
@@ -377,9 +367,9 @@ public class UserView {
                     break;
 
                 default:
-                    System.out.print("Enter supply type (general category): ");
+                    System.out.print(translationManager.getTranslation("general_supply_input_type") + " ");
                     String supplyType = scanner.nextLine();
-                    System.out.print("Enter supply comments: ");
+                    System.out.print(translationManager.getTranslation("general_supply_input_comments") + " ");
                     String name = scanner.nextLine();
                     newSupply = new Supply(name, supplyType);
                     break;
@@ -389,44 +379,47 @@ public class UserView {
             // Add the supply through the controller
             supplyController.addSupply(newSupply);
 
-            System.out.println("\nSupply added successfully!");
-            System.out.println("Type: " + newSupply.getSupplyType());
-            System.out.println("Name: " + newSupply.getSupplyName());
+            System.out.println("\n" + translationManager.getTranslation("successful_supply_addition"));
+            System.out.println(translationManager.getTranslation("type") + ": " + newSupply.getSupplyType());
+            System.out.println(translationManager.getTranslation("comments") + ": " + newSupply.getSupplyName());
 
             // Display additional info based on type
             if (newSupply instanceof Cot) {
                 Cot cot = (Cot)newSupply;
-                System.out.println("Room Location: " + cot.getRoomLocation());
-                System.out.println("Grid Location: " + cot.getGridLocation());
+                System.out.println(translationManager.getTranslation("room_location") + ": " + cot.getRoomLocation());
+                System.out.println(translationManager.getTranslation("grid_location") + ": " + cot.getGridLocation());
             }
             else if (newSupply instanceof PersonalBelonging) {
                 PersonalBelonging pb = (PersonalBelonging)newSupply;
-                System.out.println("Description: " + pb.getItemDescription());
+                System.out.println("Description" + ": " + pb.getItemDescription());
             }
             else if (newSupply instanceof Water) {
                 Water water = (Water)newSupply;
-                System.out.println("Allocation Date: " + water.getAllocationDate());
+                System.out.println(translationManager.getTranslation("allocation_date") + ": " + water.getAllocationDate());
             }
 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid numeric input. Please enter a valid number.");
+            System.out.println(translationManager.getTranslation("invalid_input"));
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1")+": " + e.getMessage());
         }
     }
 
 
+    /**
+     * Displays a menu for viewing allocated supplies based on either a person or a location.
+     */
     public static void viewAllocatedSupplies() {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            System.out.println("\nView Allocated Supplies");
-            System.out.println("1. View supplies allocated to a person");
-            System.out.println("2. View supplies allocated to a location");
-            System.out.println("0. Back");
-            System.out.print("Enter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("view_allocated_supplies"));
+            System.out.println(translationManager.getTranslation("view_person_allocated_supplies"));
+            System.out.println(translationManager.getTranslation("view_location_allocated_supplies"));
+            System.out.println(translationManager.getTranslation("view_allocated_supplies_return"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             int choice = Integer.parseInt(scanner.nextLine());
 
@@ -440,34 +433,42 @@ public class UserView {
                 case 0:
                     return;
                 default:
-                    System.out.println("Invalid choice. Please enter 1, 2, or 0.");
+                    System.out.println(translationManager.getTranslation("view_allocated_supplies_invalid"));
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println(translationManager.getTranslation("invalid_input"));
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    /**
+     * Displays the list of supplies allocated to a specific person based on their ID.
+     *
+     * This method first retrieves and displays all available people by listing their IDs and names.
+     * The user is then prompted to enter the ID of the person for whom they want to view the allocated supplies.
+     *
+     * @throws SQLException If there is an error retrieving data from the database.
+     */
     private static void viewSuppliesAllocatedToPerson() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         // First show all people
-        System.out.println("\nAvailable People:");
+        System.out.println("\n" + translationManager.getTranslation("available_people"));
         for (Person person : personController.getAllPeople()) {
             System.out.println(person.getPersonId() + ": " +
                     person.getFirstName() + " " + person.getLastName());
         }
 
-        System.out.print("\nEnter the ID of the person: ");
+        System.out.print("\n" + translationManager.getTranslation("enter_person_id") + " ");
         int personId = Integer.parseInt(scanner.nextLine());
 
         // Get allocated supplies
         ArrayList<Supply> supplies = supplyController.getSuppliesAllocatedTo(personId, null);
 
         // Display results
-        System.out.println("\nSupplies allocated to Person ID " + personId + ":");
+        System.out.println("\n" + translationManager.getTranslation("supplies_allocated_person_id") + " " + personId + ":");
         System.out.println("--------------------------------------------------");
         System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "NAME");
         System.out.println("--------------------------------------------------");
@@ -482,24 +483,32 @@ public class UserView {
         System.out.println("--------------------------------------------------");
     }
 
+    /**
+     * Displays the list of supplies allocated to a specific location based on its ID.
+     *
+     * This method first retrieves and displays all available locations by listing their IDs, names, and addresses.
+     * The user is then prompted to enter the ID of the location for which they want to view the allocated supplies.
+     *
+     * @throws SQLException If there is an error retrieving data from the database.
+     */
     private static void viewSuppliesAllocatedToLocation() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         // First show all locations
-        System.out.println("\nAvailable Locations:");
+        System.out.println("\n" + translationManager.getTranslation("available_locations"));
         for (Location location : locationController.getAllLocations()) {
             System.out.println(location.getLocationId() + ": " +
                     location.getLocationName() + " - " + location.getLocationAddress());
         }
 
-        System.out.print("\nEnter the ID of the location: ");
+        System.out.print("\n" + translationManager.getTranslation("enter_location_id") + " ");
         int locationId = Integer.parseInt(scanner.nextLine());
 
         // Get allocated supplies
         ArrayList<Supply> supplies = supplyController.getSuppliesAllocatedTo(null, locationId);
 
         // Display results
-        System.out.println("\nSupplies allocated to Location ID " + locationId + ":");
+        System.out.println("\n" + translationManager.getTranslation("supplies_allocated_location_id") + " " + locationId + ":");
         System.out.println("--------------------------------------------------");
         System.out.printf("%-8s %-15s %-20s%n", "ID", "TYPE", "NAME");
         System.out.println("--------------------------------------------------");
@@ -515,17 +524,27 @@ public class UserView {
     }
 
 
+    /**
+     * Updates the details of an existing supply.
+     *
+     * The method handles the following types of supplies by various specification:
+     * - Cot: Updates room location and grid location.
+     * - Personal Belonging: Updates item description.
+     * - Water: Updates the allocation date.
+     *
+     * @throws SQLException If there is an error when interacting with the database.
+     */
     public static void updateSupply() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nUpdate Supply");
+        System.out.println("\n"+ translationManager.getTranslation("update_supply"));
         System.out.println("----------------");
 
         try {
             // First show all available supplies
             viewAllSupplies();
 
-            System.out.print("\nEnter the ID of the supply to update: ");
+            System.out.print("\n" + translationManager.getTranslation("supplies_input_id_update") + " ");
             int supplyId = Integer.parseInt(scanner.nextLine());
 
             // Find the supply to update
@@ -538,40 +557,40 @@ public class UserView {
             }
 
             if (supplyToUpdate == null) {
-                System.out.println("No supply found with ID: " + supplyId);
+                System.out.println(translationManager.getTranslation("supplies_no_found_id") + " " + supplyId);
                 return;
             }
 
             // Display current details
-            System.out.println("\nCurrent Supply Details:");
-            System.out.println("Type: " + supplyToUpdate.getSupplyType());
-            System.out.println("Comments: " + supplyToUpdate.getSupplyName());
+            System.out.println("\n" + translationManager.getTranslation("current_supply_details"));
+            System.out.println(translationManager.getTranslation("type") + ": " + supplyToUpdate.getSupplyType());
+            System.out.println(translationManager.getTranslation("comments") + ": " + supplyToUpdate.getSupplyName());
 
             // Display type-specific details
             if (supplyToUpdate instanceof Cot) {
                 Cot cot = (Cot)supplyToUpdate;
-                System.out.println("Room Location: " + cot.getRoomLocation());
-                System.out.println("Grid Location: " + cot.getGridLocation());
+                System.out.println(translationManager.getTranslation("room_location") + ": " + cot.getRoomLocation());
+                System.out.println(translationManager.getTranslation("grid_location") + cot.getGridLocation());
             }
             else if (supplyToUpdate instanceof PersonalBelonging) {
                 PersonalBelonging pb = (PersonalBelonging)supplyToUpdate;
-                System.out.println("Description: " + pb.getItemDescription());
+                System.out.println(translationManager.getTranslation("description") + ": " + pb.getItemDescription());
             }
             else if (supplyToUpdate instanceof Water) {
                 Water water = (Water)supplyToUpdate;
-                System.out.println("Allocation Date: " + water.getAllocationDate());
+                System.out.println(translationManager.getTranslation("allocation_date") +": " + water.getAllocationDate());
             }
 
             // Get updated information
-            System.out.println("\nEnter new details (leave blank to keep current value):");
+            System.out.println("\n" + translationManager.getTranslation("supply_new_details"));
 
-            System.out.print("New name [" + supplyToUpdate.getSupplyName() + "]: ");
+            System.out.print(translationManager.getTranslation("new_name") + " [" + supplyToUpdate.getSupplyName() + "]: ");
             String newName = scanner.nextLine();
             if (!newName.isEmpty()) {
                 supplyToUpdate.setSupplyName(newName);
             }
 
-            System.out.print("New type [" + supplyToUpdate.getSupplyType() + "]: ");
+            System.out.print(translationManager.getTranslation("new_type") + " [" + supplyToUpdate.getSupplyType() + "]: ");
             String newType = scanner.nextLine();
             if (!newType.isEmpty()) {
                 supplyToUpdate.setSupplyType(newType);
@@ -581,13 +600,15 @@ public class UserView {
             if (supplyToUpdate instanceof Cot) {
                 Cot cot = (Cot) supplyToUpdate;
 
-                System.out.print("New room location [" + cot.getRoomLocation() + "]: ");
+                System.out.print(translationManager.getTranslation("new") + " " +
+                        translationManager.getTranslation("room_location") + " [" + cot.getRoomLocation() + "]: ");
                 String newRoomLocation = scanner.nextLine();
                 if (!newRoomLocation.isEmpty()) {
                     cot.setRoomLocation(newRoomLocation);
                 }
 
-                System.out.print("New grid location [" + cot.getGridLocation() + "]: ");
+                System.out.print(translationManager.getTranslation("new") + " " +
+                        translationManager.getTranslation("grid_location") + " [" + cot.getGridLocation() + "]: ");
                 String newGridLocation = scanner.nextLine();
                 if (!newGridLocation.isEmpty()) {
                     cot.setGridLocation(newGridLocation);
@@ -596,7 +617,7 @@ public class UserView {
             else if (supplyToUpdate instanceof PersonalBelonging) {
                 PersonalBelonging pb = (PersonalBelonging)supplyToUpdate;
 
-                System.out.print("New description [" + pb.getItemDescription() + "]: ");
+                System.out.print(translationManager.getTranslation("new_desc") + " [" + pb.getItemDescription() + "]: ");
                 String newDescription = scanner.nextLine();
                 if (!newDescription.isEmpty()) {
                     pb.setItemDescription(newDescription);
@@ -605,7 +626,7 @@ public class UserView {
             else if (supplyToUpdate instanceof Water) {
                 Water water = (Water) supplyToUpdate;
 
-                System.out.print("New allocation date [" + water.getAllocationDate() + "]: ");
+                System.out.print(translationManager.getTranslation("new_alloc") + " [" + water.getAllocationDate() + "]: ");
                 String newAllocationDate = scanner.nextLine();
                 if (!newAllocationDate.isEmpty()) {
                     water.setAllocationDate(newAllocationDate);
@@ -615,10 +636,10 @@ public class UserView {
             // Update the supply through the controller
             supplyController.updateSupply(supplyToUpdate);
 
-            System.out.println("\nSupply updated successfully!");
+            System.out.println("\n" + translationManager.getTranslation("supply_update_success"));
 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number for the supply ID.");
+            System.out.println(translationManager.getTranslation("supply_invalid_input"));
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
@@ -627,27 +648,49 @@ public class UserView {
     }
 
 
+    /**
+     * Allocates a supply to a person, location, or a person at a specific location.
+     *
+     * This method allows the user to allocate available supplies in three different ways:
+     * 1. Allocate a supply to a person.
+     * 2. Allocate a supply to a location.
+     * 3. Allocate a supply to a person at a specific location (from the location's supplies).
+     *
+     * The method works as follows:
+     * - First, the user is prompted to choose the allocation type.
+     * - The method displays the available unallocated supplies.
+     * - The user selects a supply to allocate
+     * - If allocating to a person or location, the supply is allocated
+     * - If allocating a supply to a person at a specific location, the supply is moved from the location's inventory to the person's inventory.
+     *
+     * This method also includes specific handling for Water supplies where the allocation date is required.
+     *
+     * @throws SQLException If a database error occurs during the allocation process.
+     * @throws NumberFormatException If the user inputs invalid Ids
+     * @throws Exception If any other error occurs during the allocation process.
+     */
+
     public static void allocateSupply() {
         Scanner scanner = new Scanner(System.in);
 
         try {
             // Ask allocation type first
-            System.out.println("\nAllocate to:");
-            System.out.println("1. Person");
-            System.out.println("2. Location");
-            System.out.println("3. Person at specific location (from location's supplies)");
-            System.out.print("Enter your choice (1-3): ");
+            System.out.println("\n" + translationManager.getTranslation("allocate_to"));
+            System.out.println(translationManager.getTranslation("allocate_to1"));
+            System.out.println(translationManager.getTranslation("allocate_to2"));
+            System.out.println(translationManager.getTranslation("allocate_to3"));
+            System.out.print(translationManager.getTranslation("allocate_to_choice") + " ");
             int allocationChoice = Integer.parseInt(scanner.nextLine());
 
             if (allocationChoice < 1 || allocationChoice > 3) {
-                System.out.println("Invalid choice. Allocation cancelled.");
+                System.out.println(translationManager.getTranslation("allocate_to_invalid_choice"));
                 return;
             }
 
             if (allocationChoice == 1) {
                 // Option 1: Allocate to person (original code)
-                System.out.println("\nAvailable Supplies:");
-                System.out.println("\nAvailable Unallocated Supplies:");
+                System.out.println("\n" + translationManager.getTranslation("available_supplies"));
+                System.out.println("\n" + translationManager.getTranslation("available_supplies1"));
                 ArrayList<Supply> availableSupplies = new ArrayList<>();
                 for (Supply supply : supplyController.getAllSupplies()) {
                     if (!supplyController.isSupplyAllocated(supply.getSupplyId())) {
@@ -659,11 +702,11 @@ public class UserView {
                     }
                 }
                 if (availableSupplies.isEmpty()) {
-                    System.out.println("No unallocated supplies available.");
+                    System.out.println(translationManager.getTranslation("available_supplies_empty"));
                     return;
                 }
 
-                System.out.print("\nEnter the ID of the supply to allocate: ");
+                System.out.print("\n" + translationManager.getTranslation("input_supply_id_to_allocate") + " ");
                 int supplyId = Integer.parseInt(scanner.nextLine());
 
                 Supply supplyToAllocate = null;
@@ -675,12 +718,12 @@ public class UserView {
                 }
 
                 if (supplyToAllocate == null) {
-                    System.out.println("No supply found with ID: " + supplyId);
+                    System.out.println(translationManager.getTranslation("supply_id_not_found") + " " + supplyId);
                     return;
                 }
 
                 viewDisasterVictims();
-                System.out.print("\nEnter the ID of the person to allocate to: ");
+                System.out.print("\n" + "Enter the ID of the person to allocate to:" + " ");
                 int personId = Integer.parseInt(scanner.nextLine());
 
                 Person person = personController.getPersonById(personId);
@@ -866,7 +909,7 @@ public class UserView {
         } catch (SQLException e) {
             System.out.println("Database error during allocation: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
@@ -898,21 +941,39 @@ public class UserView {
 
 
     // Location
-    // Location menu functions
+    /**
+     * Displays the location management menu and handles user input for location-related operations.
+     *
+     * This method presents a menu to the user with options to:
+     * 1. View all locations.
+     * 2. Add a new location.
+     * 3. Update an existing location.
+     * 4. View the occupants of a location.
+     * 5. Add an occupant to a location.
+     * 6. Remove an occupant from a location.
+     * 0. Exit back to the main menu.
+     *
+     * It allows the user to interact with the location management system, providing the ability
+     * to manage locations and their respective occupants. The method keeps looping the menu
+     * until the user chooses to exit by selecting the '0' option.
+     *
+     * @throws NumberFormatException If the user enters an invalid number when prompted for a choice.
+     * @throws Exception If any other error occurs during the operation.
+     */
     public static void displayLocationDetails() {
         Scanner scanner = new Scanner(System.in);
         boolean stayInMenu = true;
 
         while (stayInMenu) {
-            System.out.println("\nLocation Management");
-            System.out.println("1. View All Locations");
-            System.out.println("2. Add New Location");
-            System.out.println("3. Update Location");
-            System.out.println("4. View Location Occupants");
-            System.out.println("5. Add Occupant to Location");
-            System.out.println("6. Remove Occupant from Location");
-            System.out.println("0. Back to Main Menu");
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("location_management"));
+            System.out.println(translationManager.getTranslation("location_management1"));
+            System.out.println(translationManager.getTranslation("location_management2"));
+            System.out.println(translationManager.getTranslation("location_management3"));
+            System.out.println(translationManager.getTranslation("location_management4"));
+            System.out.println(translationManager.getTranslation("location_management5"));
+            System.out.println(translationManager.getTranslation("location_management6"));
+            System.out.println(translationManager.getTranslation("location_management7"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -940,17 +1001,22 @@ public class UserView {
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-6.");
+                        System.out.println(translationManager.getTranslation("location_management8"));
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
+
+    /**
+     * Displays all locations in the system in a formatted table.
+     * The table shows the ID, Name, and Address of each location.
+     */
     public static void viewAllLocations() {
         System.out.println("\n------------------------------------------------------------");
         System.out.printf("%-8s %-25s %-30s%n", "ID", "NAME", "ADDRESS");
@@ -966,6 +1032,12 @@ public class UserView {
         System.out.println("------------------------------------------------------------");
     }
 
+    /**
+     * Prompts the user to input a new location's name and address, then adds the location to the system.
+     * Displays a success message along with the details of the newly added location.
+     *
+     * @throws IllegalArgumentException if the input is invalid
+     */
     public static void addNewLocation() {
         Scanner scanner = new Scanner(System.in);
 
@@ -973,7 +1045,7 @@ public class UserView {
         System.out.println("----------------");
 
         try {
-            System.out.print("Enter location name: ");
+            System.out.print("Enter location name" + ": ");
             String name = scanner.nextLine();
 
             System.out.print("Enter location address: ");
@@ -990,10 +1062,16 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Allows the user to update an existing location's details, such as name and address.
+     * The user is prompted to select a location by ID, and then they can update the name and address.
+     *
+     * @throws NumberFormatException if the input for the location ID is not a valid number.
+     */
     public static void updateLocation() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1048,6 +1126,13 @@ public class UserView {
         }
     }
 
+    /**
+     * Displays a list of occupants at a specific location.
+     * The user is prompted to enter the location ID, and if the location is found,
+     * the details of its occupants (ID, first name, and last name) are shown.
+     *
+     * @throws NumberFormatException if the input for the location ID is not a valid number.
+     */
     public static void viewLocationOccupants() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1080,11 +1165,18 @@ public class UserView {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a valid number.");
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
             }
 
     }
 
+    /**
+     * Adds a person to a specific location.
+     * The user is prompted to select a location and a person who is not currently assigned to any location.
+     * Once the person and location are selected, the person is added to the location.
+     *
+     * @throws NumberFormatException if the input for the location ID or person ID is not a valid number.
+     */
     public static void addOccupantToLocation() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1093,7 +1185,7 @@ public class UserView {
             System.out.print("\nEnter the ID of the location: ");
             int locationId = Integer.parseInt(scanner.nextLine());
 
-            // In a real application, you would list available people here
+            viewPeopleNotAtAnyLocation();
             System.out.print("Enter the ID of the person to add: ");
             int personId = Integer.parseInt(scanner.nextLine());
 
@@ -1103,11 +1195,64 @@ public class UserView {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter valid numbers.");
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
-    public static <List> void removeOccupantFromLocation() {
+    /**
+     * Displays a list of people who are not assigned to any location.
+     * This method retrieves all people and checks their location status.
+     * If a person is not assigned to any location, they are added to the result list,
+     * which is then displayed to the user.
+     */
+    public static void viewPeopleNotAtAnyLocation() {
+        try {
+            // Get all people
+            ArrayList<Person> allPeople = personController.getAllPeople();
+            ArrayList<Person> peopleNotAtLocation = new ArrayList<>();
+
+            // Check each person's location status
+            for (Person person : allPeople) {
+                boolean isAtLocation = false;
+
+                // Check all locations to see if this person is at any of them
+                for (Location location : locationController.getAllLocations()) {
+                    ArrayList<Person> occupants = locationController.getOccupantsAtLocation(location.getLocationId());
+                    if (occupants != null && occupants.contains(person)) {
+                        isAtLocation = true;
+                        break;
+                    }
+                }
+
+                if (!isAtLocation) {
+                    peopleNotAtLocation.add(person);
+                }
+            }
+
+            // Display results
+            if (peopleNotAtLocation.isEmpty()) {
+                System.out.println("All people are assigned to locations.");
+            } else {
+                System.out.println("\nPeople not assigned to any location:");
+                System.out.println("------------------------------------");
+                for (Person person : peopleNotAtLocation) {
+                    System.out.printf("ID: %d, Name: %s %s%n",
+                            person.getPersonId(),
+                            person.getFirstName(),
+                            person.getLastName());
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving data: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Removes a person from a specific location.
+     *
+     * @throws NumberFormatException if the input for location ID or person ID is not a valid number.
+     */
+    public static void removeOccupantFromLocation() {
         Scanner scanner = new Scanner(System.in);
 
         try {
@@ -1132,7 +1277,7 @@ public class UserView {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter valid numbers.");
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
@@ -1141,21 +1286,28 @@ public class UserView {
 
 
 
-    // Medical Record
-    // Medical Record menu functions
+    /**
+     * Displays the menu for managing medical records and allows the user to select different operations.
+     *
+     * This method provides an interactive menu for users to:
+     * 1. View all medical records
+     * 2. Add a new medical record
+     * 3. Update an existing medical record
+
+     *
+     * @throws NumberFormatException if the user enters an invalid number when selecting an option.
+     */
     public static void displayMedicalDetails() {
         Scanner scanner = new Scanner(System.in);
         boolean stayInMenu = true;
 
         while (stayInMenu) {
-            System.out.println("\nMedical Records Management");
-            System.out.println("1. View All Medical Records");
-            System.out.println("2. Add New Medical Record");
-            System.out.println("3. Update Medical Record");
-            //System.out.println("4. View Records for Person");
-            //System.out.println("5. View Records at Location");
-            System.out.println("0. Back to Main Menu");
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("medical_title"));
+            System.out.println(translationManager.getTranslation("view_all_medical_records"));
+            System.out.println(translationManager.getTranslation("add_new_medical_record"));
+            System.out.println(translationManager.getTranslation("update_medical_record"));
+            System.out.println(translationManager.getTranslation("back_to_menu"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -1170,29 +1322,31 @@ public class UserView {
                     case 3:
                         updateMedicalRecord();
                         break;
-                    /* Don't work and not needed
-                    case 4:
-                        viewMedicalRecordsForPerson();
-                        break;
-                    case 5:
-                        viewMedicalRecordsAtLocation();
-                        break;
-                    */
                     case 0:
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-3.");
+                        System.out.println(translationManager.getTranslation("invalid_choice_medical"));
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Displays all medical records in a formatted table.
+     *
+     * This method retrieves all medical records from the controller and displays them with the following details:
+     * - ID of the medical record
+     * - Patient's full name
+     * - Location where the treatment took place
+     * - Date of treatment
+     * - Details of the treatment
+     */
     public static void viewAllMedicalRecords() {
         System.out.println("\n----------------------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-25s %-25s %-15s %-30s%n",
@@ -1212,7 +1366,22 @@ public class UserView {
         System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
-    // In UserView.java - update addNewMedicalRecord()
+    /**
+     * Adds a new medical record to the system.
+     *
+     * This method allows the user to input details for a new medical record, including:
+     * - The patient (person) associated with the medical record.
+     * - The location where the treatment took place.
+     * - The treatment details.
+     * - The date of treatment.
+     *
+     * The user will be prompted to choose a patient from the available list of people and a location
+     * from the available list of locations. Once the details are provided, a new medical record is
+     * created and added to the system.
+     *
+     * @throws NumberFormatException if an invalid number is entered for IDs.
+     * @throws IllegalArgumentException if the selected person or location is invalid.
+     */
     public static void addNewMedicalRecord() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1222,8 +1391,7 @@ public class UserView {
         try {
             // List available people
             System.out.println("\nAvailable People:");
-            // You'll need to implement getAllPeople() in your PersonController
-            ArrayList<Person> people = (ArrayList<Person>) personController.getAllPeople();
+            ArrayList<Person> people = personController.getAllPeople();
             for (Person person : people) {
                 System.out.println(person.getPersonId() + ": " +
                         person.getFirstName() + " " + person.getLastName());
@@ -1279,10 +1447,24 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+
+    /**
+     * Updates an existing medical record.
+     *
+     * This method allows the user to update an existing medical record. The user can modify the following
+     * details of the medical record:
+     * - Patient's first and last name.
+     * - Location name.
+     * - Date of treatment.
+     * - Treatment details.
+     *
+     * @throws NumberFormatException if an invalid number is entered for the record ID.
+     * @throws IllegalArgumentException if an invalid input is provided for the details being updated.
+     */
     public static void updateMedicalRecord() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1369,106 +1551,42 @@ public class UserView {
         }
     }
 
-    public static void viewMedicalRecordsForPerson() {
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            // In a real app, you would list available people here
-            System.out.print("\nEnter the ID of the person: ");
-            int personId = Integer.parseInt(scanner.nextLine());
-
-            ArrayList<MedicalRecord> records = medicalRecordController.getMedicalRecordsForPerson(personId);
-
-            System.out.println("\nMedical Records for Person ID " + personId + ":");
-            System.out.println("--------------------------------------------------");
-            System.out.printf("%-8s %-20s %-15s %-30s%n",
-                    "ID", "LOCATION", "DATE", "TREATMENT DETAILS");
-            System.out.println("--------------------------------------------------");
-
-            for (MedicalRecord record : records) {
-                System.out.printf("%-8s %-20s %-15s %-30s%n",
-                        record.getMedicalRecordId(),
-                        record.getLocation().getLocationName(),
-                        record.getDateOfTreatment(),
-                        record.getTreatmentDetails());
-            }
-
-            System.out.println("--------------------------------------------------");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
-    public static void viewMedicalRecordsAtLocation() {
-        Scanner scanner = new Scanner(System.in);
-
-        try {
-            // First show available locations
-            System.out.println("\nAvailable Locations:");
-            for (Location location : locationController.getAllLocations()) {
-                System.out.println(location.getLocationId() + ": " + location.getLocationName());
-            }
-
-            System.out.print("\nEnter the ID of the location: ");
-            int locationId = Integer.parseInt(scanner.nextLine());
-
-            ArrayList<MedicalRecord> records = medicalRecordController.getMedicalRecordsAtLocation(locationId);
-
-            System.out.println("\nMedical Records at Location ID " + locationId + ":");
-            System.out.println("--------------------------------------------------");
-            System.out.printf("%-8s %-20s %-15s %-30s%n",
-                    "ID", "PATIENT", "DATE", "TREATMENT DETAILS");
-            System.out.println("--------------------------------------------------");
-
-            for (MedicalRecord record : records) {
-                String patientName = record.getPerson().getFirstName() + " " + record.getPerson().getLastName();
-                System.out.printf("%-8s %-20s %-15s %-30s%n",
-                        record.getMedicalRecordId(),
-                        patientName,
-                        record.getDateOfTreatment(),
-                        record.getTreatmentDetails());
-            }
-
-            System.out.println("--------------------------------------------------");
-
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
-
-
-
-
-
-
-
-
 
     // Person
     // In UserView.java
 
-    // Person Management
+    /**
+     * Displays a menu for managing person details and handles user input.
+     *
+     * The following options are available:
+     * 1. View All Persons - Display a list of all persons.
+     * 2. Add New Person - Add a new person to the system.
+     * 3. Update Person - Update details of an existing person.
+     * 4. View Disaster Victims - Display a list of disaster victims.
+     * 5. Add Disaster Victim - Add a new disaster victim.
+     * 6. Convert to Disaster Victim - Convert an existing person to a disaster victim.
+     * 7. Add/Change Family Group - Assign or change the family group for a person.
+     * 0. Back to Main Menu - Exit the person management menu and return to the main menu.
+     *
+     * If the user enters an invalid choice or input, an error message is displayed.
+     *
+     * @throws NumberFormatException if the user enters an invalid number when selecting a menu option.
+     */
     public static void displayPersonDetails() {
         Scanner scanner = new Scanner(System.in);
         boolean stayInMenu = true;
 
         while (stayInMenu) {
-            System.out.println("\nPerson Management");
-            System.out.println("1. View All Persons");
-            System.out.println("2. Add New Person");
-            System.out.println("3. Update Person");
-            System.out.println("4. View Disaster Victims");
-            System.out.println("5. Add Disaster Victim");
-            System.out.println("6. Convert to Disaster Victim");
-            System.out.println("7. Add/Change Family Group");
-            System.out.println("0. Back to Main Menu");
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("person_management"));
+            System.out.println(translationManager.getTranslation("view_all_persons"));
+            System.out.println(translationManager.getTranslation("add_new_person"));
+            System.out.println(translationManager.getTranslation("update_person"));
+            System.out.println(translationManager.getTranslation("view_disaster_victims"));
+            System.out.println(translationManager.getTranslation("add_disaster_victim"));
+            System.out.println(translationManager.getTranslation("convert_to_disaster_victim"));
+            System.out.println(translationManager.getTranslation("add_change_family_group"));
+            System.out.println(translationManager.getTranslation("back_to_menu"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -1502,14 +1620,28 @@ public class UserView {
                         System.out.println("Invalid choice. Please enter a number between 0-5.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Displays a list of all persons in the system along with their details.
+     *
+     * This method prints a table containing the following information for each person:
+     * - Person ID
+     * - First name
+     * - Last name
+     * - Date of birth (if available)
+     * - Gender (if available)
+     * - Phone number (if available)
+     * - Family group ID (if available)
+     *
+     * The method uses the `personController.getAllPeople()` method to retrieve all persons from the system.
+     */
     public static void viewAllPersons() {
         System.out.println("\n----------------------------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
@@ -1530,6 +1662,21 @@ public class UserView {
         System.out.println("----------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Prompts the user to input details for a new person and adds the person to the system.
+     *
+     * This method performs the following steps:
+     * 1. Prompts the user for the person's first name, last name, date of birth (optional),
+     *    gender (optional), phone number (optional), and comments (optional).
+     * 2. Creates a new `Person` object using the provided details.
+     * 3. If any optional fields (gender, phone number, comments) are provided, they are set in the `Person` object.
+     * 4. Adds the newly created person to the system using `personController.addPerson()`.
+     * 5. Prints a success message along with the ID of the newly added person.
+     *
+     * If any validation errors or exceptions occur during input or person creation, an error message is displayed.
+     *
+     * @throws IllegalArgumentException if any invalid arguments are passed when creating the person.
+     */
     public static void addNewPerson() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1572,10 +1719,25 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Allows the user to update an existing person's details.
+     *
+     * This method performs the following steps:
+     * 1. Displays a list of all persons by calling `viewAllPersons()`.
+     * 2. Prompts the user to input the ID of the person they want to update.
+     * 3. If the person exists, it displays the current details of the person.
+     * 4. Prompts the user to select a field (1-6) to update or 0 to cancel.
+     * 5. If the field to be updated is the gender, the user is presented with predefined gender options.
+     *    If any other field is selected, the user is prompted to enter a new value.
+     * 6. The selected field of the person is updated with the new value.
+     *
+     * @throws NumberFormatException if the input cannot be parsed as an integer or invalid number is entered.
+     * @throws IllegalArgumentException if the user provides invalid data for a field (e.g., empty field when it's not allowed).
+     */
     public static void updatePerson() {
         Scanner scanner = new Scanner(System.in);
         TranslationManager translator = TranslationManager.getInstance();
@@ -1595,8 +1757,8 @@ public class UserView {
             }
 
             System.out.println("\nCurrent Details:");
-            System.out.println("1. First Name: " + person.getFirstName());
-            System.out.println("2. Last Name: " + person.getLastName());
+            System.out.println("1. First Name:" + " " + person.getFirstName());
+            System.out.println("2. Last Name:" + " " + person.getLastName());
             System.out.println("3. Date of Birth: " + (person.getDateOfBirth() != null ? person.getDateOfBirth() : "N/A"));
             System.out.println("4. Gender: " + (person.getGender() != null ? person.getGender() : "N/A"));
             System.out.println("5. Phone Number: " + (person.getPhoneNumber() != null ? person.getPhoneNumber() : "N/A"));
@@ -1669,10 +1831,21 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Converts an existing person into a disaster victim.
+     *
+     * This method performs the following actions:
+     * 1. Displays a list of all persons by calling `viewAllPersons()`.
+     * 2. Prompts the user to input the ID of the person they want to convert to a disaster victim.
+     * 3. Attempts to convert the selected person into a disaster victim by calling the `convertToDisasterVictim()` method of the person controller.
+     * 4. Displays a success message if the conversion is successful.
+     *
+     * @throws NumberFormatException if the input cannot be parsed as an integer or invalid number is entered.
+     */
     public static void convertToDisasterVictim() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1686,12 +1859,27 @@ public class UserView {
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a valid number.");
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
 
-    // Disaster Victim specific methods
+    /**
+     * Displays a list of all disaster victims.
+     *
+     * This method iterates through all people and checks if each person is an instance of
+     * the `DisasterVictim` class. For each disaster victim found, it displays their
+     * information in a tabular format, including:
+     * - ID
+     * - First Name
+     * - Last Name
+     * - Date of Birth
+     * - Gender
+     * - Phone Number
+     * - Inventory Size (number of items in the victim's personal inventory)
+     *
+     * If no disaster victims are found, the table will simply be empty.
+     */
     public static void viewDisasterVictims() {
         System.out.println("\n----------------------------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-15s %-15s %-12s %-20s %-15s %-10s%n",
@@ -1715,6 +1903,20 @@ public class UserView {
         System.out.println("----------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Adds a new disaster victim to the system.
+     *
+     * This method collects information about a new disaster victim, including personal details
+     * (such as first name, last name, date of birth, gender, phone number, and comments),
+     * and adds them to the system.
+     *
+     * The process involves the following steps:
+     * 1. Collecting basic personal information for the victim (first name, last name, date of birth, gender, phone number, comments).
+     * 2. Allowing the user to add items to the victim's inventory
+     * 3. Storing the victim's information and inventory in the system.
+     *
+     * Note: The main difference between a DisasterVictim and a Person is that a Person does not have an inventory
+     */
     public static void addDisasterVictim() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1777,10 +1979,20 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+
+
+    /**
+     * Allows the user to modify a person's family group.
+     *
+     * This method provides options to:
+     * 1. Add the person to an existing family group.
+     * 2. Create a new family group with the person and other members.
+     * 3. Remove the person from their current family group.
+     */
     public static void changePersonFamilyGroup() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1885,26 +2097,37 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
 
 
 
+    /**
+     * Displays a menu for managing inquiries, allowing the user to view, add, update, delete, and generate reports for inquiries.
+     *
+     * This method provides an interactive menu that enables the user to choose from the following options:
+     * 1. View All Inquiries: Displays all inquiries in the system.
+     * 2. Add New Inquiry: Prompts the user to add a new inquiry.
+     * 3. Update Inquiry: Allows the user to update an existing inquiry.
+     * 4. Delete Inquiry: Allows the user to delete an inquiry by selecting it.
+     * 5. Generate Inquiry Report: Generates a report based on the existing inquiries in the system.
+     * 0. Back to Main Menu: Exits the inquiry management menu and returns to the main menu.
+     */
     public static void displayInquiryDetails() {
         Scanner scanner = new Scanner(System.in);
         boolean stayInMenu = true;
 
         while (stayInMenu) {
-            System.out.println("\nInquiry Management");
-            System.out.println("1. View All Inquiries");
-            System.out.println("2. Add New Inquiry");
-            System.out.println("3. Update Inquiry");
-            System.out.println("4. Delete Inquiry");
-            System.out.println("5. Generate Inquiry Report");  // New option
-            System.out.println("0. Back to Main Menu");
-            System.out.print("\nEnter your choice: ");
+            System.out.println("\n" + translationManager.getTranslation("inquiry_management"));
+            System.out.println(translationManager.getTranslation("inquiry_management1"));
+            System.out.println(translationManager.getTranslation("inquiry_management2"));
+            System.out.println(translationManager.getTranslation("inquiry_management3"));
+            System.out.println(translationManager.getTranslation("inquiry_management4"));
+            System.out.println(translationManager.getTranslation("inquiry_management5"));  // New option
+            System.out.println(translationManager.getTranslation("inquiry_management6"));
+            System.out.print("\n" + translationManager.getTranslation("ask_choice") + " ");
 
             try {
                 int choice = Integer.parseInt(scanner.nextLine());
@@ -1929,17 +2152,30 @@ public class UserView {
                         stayInMenu = false;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 0-4.");
+                        System.out.println(translationManager.getTranslation("inquiry_management7"));
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number.");
+                System.out.println(translationManager.getTranslation("invalid_input"));
             } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+                System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Displays a list of all inquiries in the system, showing details such as the inquirer, missing person,
+     * the date of the inquiry, location, and additional comments.
+     *
+     * This method retrieves all inquiries through the InquiryController.
+     * Each row includes the following information:
+     * - Inquiry ID
+     * - Inquirer’s name (First and Last)
+     * - Missing Person's name (First and Last)
+     * - Date of the Inquiry
+     * - Last Known Location
+     * - Additional Comments provided by the inquirer
+     */
     public static void viewAllInquiries() {
         System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
         System.out.printf("%-8s %-25s %-25s %-15s %-25s %-30s%n",
@@ -1963,6 +2199,14 @@ public class UserView {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Allows the user to add a new inquiry to the system.
+     * This method guides the user through the process of creating a new inquiry by:
+     * - Selecting an inquirer (from available people in the system),
+     * - Selecting a missing person (who is a disaster victim),
+     * - Selecting the last known location of the missing person,
+     * - Providing the date of the inquiry and additional information related to the inquiry.
+     */
     public static void addNewInquiry() {
         Scanner scanner = new Scanner(System.in);
 
@@ -2033,10 +2277,20 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Allows the user to update an existing inquiry in the system.
+     * This method presents the user with a list of all inquiries and allows them to select
+     * an inquiry to update. The user can choose to update the following fields:
+     * - Inquirer: The person making the inquiry.
+     * - Missing Person: The person who is missing (must be a disaster victim).
+     * - Last Known Location: The location where the missing person was last seen.
+     * - Date of Inquiry: The date when the inquiry is being made.
+     * - Information Provided: Additional information related to the inquiry.
+     */
     public static void updateInquiry() {
         Scanner scanner = new Scanner(System.in);
 
@@ -2120,10 +2374,13 @@ public class UserView {
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Allows the user to delete an existing inquiry from the system.
+     */
     public static void deleteInquiry() {
         Scanner scanner = new Scanner(System.in);
 
@@ -2140,12 +2397,16 @@ public class UserView {
             System.out.println("Inquiry deleted successfully!");
 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
+            System.out.println(translationManager.getTranslation("invalid_input"));
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 
+    /**
+     * Generates a detailed report for a specific inquiry (It just writes it
+     * in a more complicated way).
+     */
     public static void generateInquiryReport() {
         Scanner scanner = new Scanner(System.in);
         TranslationManager translator = TranslationManager.getInstance();
@@ -2186,11 +2447,11 @@ public class UserView {
             System.out.println("----------------");
 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid number.");
+            System.out.println(translationManager.getTranslation("invalid_input"));
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println(translationManager.getTranslation("error1") + ": " + e.getMessage());
         }
     }
 

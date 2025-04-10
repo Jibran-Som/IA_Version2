@@ -1,3 +1,10 @@
+/**
+ * MedicalRecord.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 public class MedicalRecord {
@@ -8,7 +15,15 @@ public class MedicalRecord {
     private int medicalRecordId;
 
 
-    // Constructor
+    /**
+     * Constructs a new MedicalRecord with the specified person, location, treatment details, and treatment date.
+     *
+     * @param person           The person associated with the medical record.
+     * @param location         The location where treatment was administered.
+     * @param treatmentDetails A description of the treatment provided.
+     * @param dateOfTreatment  The date the treatment occurred
+     * @throws IllegalArgumentException if the date format is invalid.
+     */
     public MedicalRecord(Person person, Location location, String treatmentDetails, String dateOfTreatment) {
         this.person = person;
         this.location = location;
@@ -31,30 +46,74 @@ public class MedicalRecord {
         this.dateOfTreatment = dateOfTreatment;
     }
 
-    // Getters
+    /**
+     * Retrieves the person associated with the medical record.
+     *
+     * @return The person associated with this medical record.
+     */
     public Person getPerson() {
         return person;
     }
 
+    /**
+     * Retrieves the location associated with the medical record.
+     *
+     * @return The location associated with this medical record.
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * Retrieves the treatment details associated with the medical record.
+     *
+     * @return The treatment details associated with this medical record.
+     */
     public String getTreatmentDetails() {
         return treatmentDetails;
     }
 
+    /**
+     * Retrieves the date of treatment associated with the medical record.
+     *
+     * @return The date of treatment associated with this medical record.
+     */
     public String getDateOfTreatment() {
         return dateOfTreatment;
     }
 
+    /**
+     * Retrieves the id associated with the medical record.
+     *
+     * @return The id associated with this medical record.
+     */
     public int getMedicalRecordId() {
         return medicalRecordId;
     }
 
 
+    /**
+     * Sets the person associated with the medical record.
+     *
+     * @param person The new person to be associated with the medical record.
+     * @throws IllegalArgumentException if the provided location is null
+     */
+    public void setPerson(Person person) {
+        if(person == null) {
+            throw new IllegalArgumentException("Person cannot be null");
+        }
+        this.person = person;
 
-    // Setters
+    }
+
+
+
+    /**
+     * Sets the location associated with the medical record.
+     *
+     * @param newLocation The new location to be associated with the medical record.
+     * @throws IllegalArgumentException if the provided location is null
+     */
     public void setLocation(Location newLocation) {
         if(newLocation == null) {
             throw new IllegalArgumentException("Location cannot be null");
@@ -63,6 +122,12 @@ public class MedicalRecord {
 
     }
 
+    /**
+     * Sets the date of treatment associated with the medical record.
+     *
+     * @param dateOfTreatment The new date of treatment to be associated with the medical record.
+     * @throws IllegalArgumentException if the provided is null
+     */
     public void setDateOfTreatment(String dateOfTreatment) {
         if(!isValidDateFormat(dateOfTreatment)) {
             throw new IllegalArgumentException("Invalid date format");
@@ -70,6 +135,13 @@ public class MedicalRecord {
         this.dateOfTreatment = dateOfTreatment;
     }
 
+
+    /**
+     * Sets the treatment details for the medical record.
+     *
+     * @param treatmentDetails A description of the treatment provided.
+     * @throws IllegalArgumentException if the treatment details are null
+     */
     public void setTreatmentDetails(String treatmentDetails) {
         if(treatmentDetails == null) {
             throw new IllegalArgumentException("Treatment details cannot be null");
@@ -80,21 +152,22 @@ public class MedicalRecord {
         this.treatmentDetails = treatmentDetails;
     }
 
+    /**
+     * Sets the ID for the medical record.
+     *
+     * @param medicalRecordId The ID to be assigned to the medical record.
+     */
     public void setMedicalRecordId(int medicalRecordId) {
         this.medicalRecordId = medicalRecordId;
     }
 
 
-
-
-
-
-
-
-
-
-
-    // Private Code for Checking or Initialization
+    /**
+     * Validates whether the provided date string is in the correct format (YYYY-MM-DD).
+     *
+     * @param date The date string to be validated.
+     * @return true if the date is in a valid format
+     */
     private static boolean isValidDateFormat(String date) {
         if (date == null) {
             return false;
@@ -136,10 +209,7 @@ public class MedicalRecord {
         }
     }
 
-
-
-
-
+    
 
 
 }

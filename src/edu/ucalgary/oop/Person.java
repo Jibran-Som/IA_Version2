@@ -1,3 +1,10 @@
+/**
+ * Person.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: April 7, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import java.util.ArrayList;
@@ -14,7 +21,13 @@ public class Person {
     private ArrayList<MedicalRecord> medicalRecords;
     private int personId;
 
-    // Constructors
+    /**
+     * Constructs a Person object with the given first and last name.
+     *
+     * @param firstName The first name of the person. Must not be null or empty.
+     * @param lastName The last name of the person. Must not be null or empty.
+     * @throws IllegalArgumentException if the first or last name is null or empty.
+     */
     public Person(String firstName, String lastName) {
         if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("First name cannot be null or empty");
@@ -30,6 +43,14 @@ public class Person {
     }
 
 
+    /**
+     * Constructs a Person object with the given first name, last name and date of birth.
+     *
+     * @param firstName The first name of the person. Must not be null or empty.
+     * @param lastName The last name of the person. Must not be null or empty.
+     * @param dateOfBirth The date of birth of the person.
+     * @throws IllegalArgumentException if a value is null/improperly formatted.
+     */
     public Person(String firstName, String lastName, String dateOfBirth) {
         if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("First name cannot be null or empty");
@@ -49,47 +70,97 @@ public class Person {
     }
 
 
-    // Getters
+    /**
+     * Retrieves the first name of the person.
+     *
+     * @return The first name of the person.
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Retrieves the last name of the person.
+     *
+     * @return The last name of the person.
+     */
     public String getLastName() {
         return lastName;
     }
 
+
+    /**
+     * Retrieves the date of birth
+     *
+     * @return The date of birth
+     */
     public String getDateOfBirth() {
         return dateOfBirth;
     }
 
 
+    /**
+     * Retrieves the comments
+     *
+     * @return The comments
+     */
     public String getComments() {
         return comments;
     }
 
+    /**
+     * Retrieves the phone number
+     *
+     * @return The phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
 
+    /**
+     * Retrieves the family group
+     *
+     * @return The family group
+     */
     public FamilyGroup getFamilyGroup() {
         return familyGroup;
     }
 
+    /**
+     * Retrieves the gender
+     *
+     * @return The gender
+     */
     public String getGender() {
         return gender;
     }
 
+    /**
+     * Retrieves the medical records
+     *
+     * @return The medical records
+     */
     public ArrayList<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
     }
 
+    /**
+     * Retrieves the id
+     *
+     * @return The id
+     */
     public int getPersonId() {
         return personId;
     }
 
 
-    // Setters
+    /**
+     * Sets the first name of the person.
+     *
+     * @param firstName The first name to be set.
+     * @throws IllegalArgumentException if the provided first name is null or empty.
+     */
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.trim().isEmpty()) {
             throw new IllegalArgumentException("First name cannot be null or empty");
@@ -97,6 +168,12 @@ public class Person {
         this.firstName = firstName;
     }
 
+    /**
+     * Sets the last name of the person.
+     *
+     * @param lastName The last name to be set.
+     * @throws IllegalArgumentException if the provided last name is null or empty.
+     */
     public void setLastName(String lastName) {
         if (lastName == null || lastName.trim().isEmpty()) {
             throw new IllegalArgumentException("Last name cannot be null or empty");
@@ -104,6 +181,12 @@ public class Person {
         this.lastName = lastName;
     }
 
+    /**
+     * Sets the date of birth of the person.
+     *
+     * @param dateOfBirth The date of birth to be set.
+     * @throws IllegalArgumentException if the provided date of birth is improperly formatted
+     */
     public void setDateOfBirth(String dateOfBirth) {
         if(isValidDateFormat(dateOfBirth)) {
             this.dateOfBirth = dateOfBirth;
@@ -113,32 +196,51 @@ public class Person {
         }
     }
 
+    /**
+     * Sets the comments of the person.
+     *
+     * @param comments The comments to be set.
+     */
     public void setComments(String comments) {
         this.comments = comments;
     }
 
 
+    /**
+     * Sets the phone number of the person.
+     *
+     * @param phoneNumber The phone number to be set.
+     */
     public void setPhoneNumber(String phoneNumber) {
         if(isValidPhoneNumberSimpleFormat(phoneNumber)){
             this.phoneNumber = phoneNumber;
         }
-        /*else {
-            throw new IllegalArgumentException("Phone number cannot be null or empty");
-        }*/
     }
 
+    /**
+     * Sets the family group of the person.
+     *
+     * @param familyGroup The family group to be set.
+     */
     public void setFamilyGroup(FamilyGroup familyGroup) {
         this.familyGroup = familyGroup;
 
     }
 
+    /**
+     * Sets the gender of the person.
+     *
+     * @param gender The gender to be set.
+     */
     public void setGender(String gender) {
-        /*if (gender == null) {
-            throw new IllegalArgumentException("Gender cannot be null");
-        }*/
         this.gender = gender;
     }
 
+    /**
+     * Sets the medical records of the person.
+     *
+     * @param medicalRecords The medical records to be set.
+     */
     public void setMedicalRecords(ArrayList<MedicalRecord> medicalRecords) {
         this.medicalRecords = medicalRecords;
     }
@@ -149,50 +251,12 @@ public class Person {
 
 
 
-    // Class Specific Code
-
-    public void addMedicalRecord(MedicalRecord record) {
-        if (record == null) {
-            throw new IllegalArgumentException("Medical record cannot be null");
-        }
-        this.medicalRecords.add(record);
-    }
-
-
-
-    public Inquiry createInquiry(Object missingPerson, String date, String infoProvided, Location lastKnownLocation) {
-        // Validate inputs
-        if (missingPerson == null) {
-            throw new IllegalArgumentException("Missing person cannot be null");
-        }
-        if (!(missingPerson instanceof DisasterVictim)) {
-            throw new IllegalArgumentException("Missing person must be a DisasterVictim");
-        }
-        DisasterVictim victim = (DisasterVictim) missingPerson;
-
-        if (date == null || !isValidDateFormat(date)) {
-            throw new IllegalArgumentException("Invalid date format");
-        }
-        if (infoProvided == null || infoProvided.trim().isEmpty()) {
-            throw new IllegalArgumentException("Info provided cannot be null or empty");
-        }
-        if (lastKnownLocation == null) {
-            throw new IllegalArgumentException("Last known location cannot be null");
-        }
-
-        return new Inquiry(this, victim, date, infoProvided, lastKnownLocation);
-    }
-
-
-
-
-
-
-
-
-
-
-    // Private Code for Checking or Initialization
+    /**
+     * Validates if the provided date string matches the required format and is a valid date.
+     *
+     * @param date The date being checked
+     * @return true if the date is valid and follows the "yyyy-MM-dd" format; false otherwise.
+     */
     private static boolean isValidDateFormat(String date) {
         if (date == null || date.length() != 10) {
             return false;
@@ -227,6 +291,16 @@ public class Person {
 
     }
 
+
+    /**
+     * Validates if the given phone number matches a simple format.
+     * Checks for two formats:
+     * 1. XXX-XXX-XXXX (12 characters)
+     * 2. XXX-XXXX (8 characters)
+     *
+     * @param phone The phone number to be validated.
+     * @return true if the phone number is valid according to the specified formats, false otherwise.
+     */
     private static boolean isValidPhoneNumberSimpleFormat(String phone) {
         if (phone == null) {
             return false;
