@@ -586,7 +586,7 @@
 
 <translation>
   <key>error.familyGroupPersonNotInFamilyGroup</key>
-  <value>Person is not in the family group</value>
+  <value>Person can't be put in the family group</value>
 </translation>
 
 <translation>
