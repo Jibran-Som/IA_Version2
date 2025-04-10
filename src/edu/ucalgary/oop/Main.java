@@ -18,29 +18,6 @@ public class Main {
 
 
 
-        // Incomplete
-
-        // Every method is adequately documented with @param, @return and information about the purpose.
-        // Create function that allows it so that I can allocate supply from location to person
-
-
-
-
-        //System.out.println(personController.getAllPeople());
-
-
-
-
-
-
-        //
-        // System.out.println(locationController.getAllLocations());
-
-        //translationManager = TranslationManager.getInstance();
-        //System.out.println(translationManager.getTranslation("gender_man"));
-
-
-
 
 
 
@@ -48,6 +25,25 @@ public class Main {
     }
 
 }
+
+
+    //System.out.println(personController.getAllPeople());
+
+
+
+
+
+
+    //
+    // System.out.println(locationController.getAllLocations());
+
+    //translationManager = TranslationManager.getInstance();
+    //System.out.println(translationManager.getTranslation("gender_man"));
+
+    // TB
+
+    // Every method is adequately documented with @param, @return and information about the purpose.
+    // Create function that allows it so that I can allocate supply from location to person
 
 /*
 

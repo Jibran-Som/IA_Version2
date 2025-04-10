@@ -1,3 +1,10 @@
+/**
+ * TranslationManagerTest.java
+ * Version: 3.0
+ * Author: Jibran Somroo
+ * Date: April 1, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import org.junit.*;

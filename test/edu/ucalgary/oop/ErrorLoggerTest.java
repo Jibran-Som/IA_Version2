@@ -1,3 +1,10 @@
+/**
+ * ErrorLoggerTest.java
+ * Version: 2.0
+ * Author: Jibran Somroo
+ * Date: April 9, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import org.junit.*;

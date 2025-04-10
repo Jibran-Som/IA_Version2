@@ -1865,7 +1865,7 @@ public class UserView {
                     break;
                     // person.setComments(newValue);
                 default:
-                    System.out.println("Invalid field number");
+                    System.out.println(translationManager.getTranslation("invalid_field_num"));
                     return;
             }
 

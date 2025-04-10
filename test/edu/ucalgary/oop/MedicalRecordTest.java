@@ -1,3 +1,10 @@
+/**
+ * MedicalRecordTest.java
+ * Version: 1.0
+ * Author: Jibran Somroo
+ * Date: March 28, 2025
+ */
+
 package edu.ucalgary.oop;
 
 import org.junit.Before;
