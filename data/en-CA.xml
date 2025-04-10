@@ -149,6 +149,11 @@
 </translation>
 
 <translation>
+  <key>update_person_title</key>
+  <value>Update Person</value>
+</translation>
+
+<translation>
   <key>view_disaster_victims</key>
   <value>4. View Disaster Victims</value>
 </translation>
@@ -538,17 +543,366 @@
   <value>Location address cannot be null or empty</value>
 </translation>
 
+<translation>
+  <key>error.locationSupplyNull</key>
+  <value>Supply cannot be null</value>
+</translation>
+
+<translation>
+  <key>error.locationPersonalBelonging</key>
+  <value>Personal belongings cannot be added to a location</value>
+</translation>
+
+<translation>
+  <key>error.locationUnavailableSupply</key>
+  <value>Supply not available in this location</value>
+</translation>
+
+<translation>
+  <key>error.locationAllocatingPersonalBelonging</key>
+  <value>Cannot allocate personal belongings</value>
+</translation>
 
 
+<translation>
+  <key>error.cotRoomLocationNullOrEmpty</key>
+  <value>Room location cannot be null or empty</value>
+</translation>
 
+<translation>
+  <key>error.cotGridLocationNullOrEmpty</key>
+  <value>Grid location cannot be null or empty</value>
+</translation>
 
+<translation>
+  <key>error.familyGroupMembersNullOrEmpty</key>
+  <value>Members cannot be null or empty</value>
+</translation>
 
+<translation>
+  <key>error.nullPerson</key>
+  <value>Person cannot be null</value>
+</translation>
 
+<translation>
+  <key>error.familyGroupPersonNotInFamilyGroup</key>
+  <value>Person is not in the family group</value>
+</translation>
 
+<translation>
+  <key>error.inquirySetNullInquirer</key>
+  <value>Inquirer cannot be null</value>
+</translation>
 
+<translation>
+  <key>error.inquirySetNullMissingPerson</key>
+  <value>Missing person cannot be null</value>
+</translation>
 
+<translation>
+  <key>error.inquirySetInvalidDate</key>
+  <value>Date of inquiry is invalid</value>
+</translation>
 
+<translation>
+  <key>error.inquirySetInfoNullOrEmpty</key>
+  <value>Information provided cannot be null or empty</value>
+</translation>
 
+<translation>
+  <key>error.inquirySetLocationNull</key>
+  <value>Last known location cannot be null</value>
+</translation>
+
+<translation>
+  <key>error.medicalRecordSetInvalidDate</key>
+  <value>Invalid date format</value>
+</translation>
+
+<translation>
+  <key>error.medicalRecordSetTreatmentDetailsNull</key>
+  <value>Treatment details cannot be null</value>
+</translation>
+
+<translation>
+  <key>error.medicalRecordSetTreatmentDetailsEmpty</key>
+  <value>Treatment details cannot be empty</value>
+</translation>
+
+<translation>
+  <key>error.nullLocation</key>
+  <value>Location cannot be null</value>
+</translation>
+
+<translation>
+  <key>error.firstNameNullOrEmpty</key>
+  <value>First name cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.lastNameNullOrEmpty</key>
+  <value>Last name cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.dateOfBirthInvalidFormat</key>
+  <value>Date of birth is not a valid date format</value>
+</translation>
+
+<translation>
+  <key>error.dateOfBirthInvalidFormat</key>
+  <value>Date of birth is not a valid date format</value>
+</translation>
+
+<translation>
+  <key>error.itemDescriptionNullOrEmpty</key>
+  <value>Item description cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.supplyTypeNullOrEmpty</key>
+  <value>Supply type cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.supplyNameNullOrEmpty</key>
+  <value>Supply name cannot be null or empty</value>
+</translation>
+
+<translation>
+  <key>error.userViewUpdatingSupply</key>
+  <value>An error occurred while updating the supply</value>
+</translation>
+
+<translation>
+  <key>input_person_id_for_allocation</key>
+  <value>Enter the ID of the person to allocate to:</value>
+</translation>
+
+<translation>
+  <key>error.userViewNoPersonIdFound</key>
+  <value>No person found with ID</value>
+</translation>
+
+<translation>
+  <key>error.userViewPersonNotDisasterVictim</key>
+  <value>Person is not a Disaster Victim</value>
+</translation>
+
+<translation>
+  <key>successful_supply_allocation</key>
+  <value>Supply allocated to person successfully!</value>
+</translation>
+
+<translation>
+  <key>input_supply_allocation_id</key>
+  <value>Enter the ID of the supply to allocate:</value>
+</translation>
+
+<translation>
+  <key>input_allocation_date</key>
+  <value>Enter allocation date (YYYY-MM-DD):</value>
+</translation>
+
+<translation>
+  <key>input_allocation_location_id</key>
+  <value>Enter the ID of the location to allocate to:</value>
+</translation>
+
+<translation>
+  <key>error.userViewNoLocationIdFound</key>
+  <value>No location found with ID</value>
+</translation>
+
+<translation>
+  <key>error.databaseManagerConnectionFailureContext</key>
+  <value>DatabaseManager constructor - database connection</value>
+</translation>
+
+<translation>
+  <key>error.databaseManagerConnectionFailureMessage</key>
+  <value>DatabaseManager constructor - database connection</value>
+</translation>
+
+<translation>
+  <key>error.databaseManagerConnectionFailureMessage2</key>
+  <value>Error connecting to database</value>
+</translation>
+
+<translation>
+  <key>successful_supply_to_location_allocation</key>
+  <value>Supply allocated to location successfully!</value>
+</translation>
+
+<translation>
+  <key>supplies_available_at_location</key>
+  <value>Supplies available at this location:</value>
+</translation>
+
+<translation>
+  <key>no_supplies_available_at_location</key>
+  <value>No supplies available at this location.</value>
+</translation>
+
+<translation>
+  <key>occupants_at_location</key>
+  <value>Occupants at this location:</value>
+</translation>
+
+<translation>
+  <key>no_occupants_at_location</key>
+  <value>No occupants found at this location.</value>
+</translation>
+
+<translation>
+  <key>successful_supply_from_location_allocation_to_person</key>
+  <value>Supply successfully allocated from location to person!</value>
+</translation>
+
+<translation>
+  <key>add_new_location_title</key>
+  <value>Add New Location</value>
+</translation>
+
+<translation>
+  <key>input_location_name</key>
+  <value>Enter location name</value>
+</translation>
+
+<translation>
+  <key>input_location_address</key>
+  <value>Enter location address</value>
+</translation>
+
+<translation>
+  <key>successful_location_addition</key>
+  <value>Location added successfully!</value>
+</translation>
+
+<translation>
+  <key>update_location_title</key>
+  <value>Update Location</value>
+</translation>
+
+<translation>
+  <key>input_location_id_to_update</key>
+  <value>Enter the ID of the location to update:</value>
+</translation>
+
+<translation>
+  <key>current_location_details</key>
+  <value>Current Location Details:</value>
+</translation>
+
+<translation>
+  <key>new_address</key>
+  <value>New address</value>
+</translation>
+
+<translation>
+  <key>successful_location_update</key>
+  <value>Location updated successfully!</value>
+</translation>
+
+<translation>
+  <key>invalid_input_for_location_update</key>
+  <value>Invalid input. Please enter a valid number for the location ID</value>
+</translation>
+
+<translation>
+  <key>input_location_id_for_occupants_view</key>
+  <value>Enter the ID of the location to view occupants:</value>
+</translation>
+
+<translation>
+  <key>input_person_id_for_adding</key>
+  <value>Enter the ID of the person to add:</value>
+</translation>
+
+<translation>
+  <key>successful_person_to_location_addition</key>
+  <value>Person added to location successfully!</value>
+</translation>
+
+<translation>
+  <key>all_people_assigned_to_location</key>
+  <value>All people are assigned to locations.</value>
+</translation>
+
+<translation>
+  <key>people_not_assigned_to_location</key>
+  <value>People not assigned to any location:</value>
+</translation>
+
+<translation>
+  <key>current_occupants_title</key>
+  <value>Current Occupants:</value>
+</translation>
+
+<translation>
+  <key>input_person_id_for_location_removal</key>
+  <value>Enter the ID of the person to remove:</value>
+</translation>
+
+<translation>
+  <key>successful_person_location_removal</key>
+  <value>Person removed from location successfully!</value>
+</translation>
+
+<translation>
+  <key>add_new_medical_record_title</key>
+  <value>Add New Medical Record</value>
+</translation>
+
+<translation>
+  <key>input_patient_id</key>
+  <value>Enter the ID of the patient:</value>
+</translation>
+
+<translation>
+  <key>invalid_location_id_mr</key>
+  <value>Invalid location ID</value>
+</translation>
+
+<translation>
+  <key>input_treatment_details</key>
+  <value>Enter treatment details:</value>
+</translation>
+
+<translation>
+  <key>input_treatment_date</key>
+  <value>Enter date of treatment (YYYY-MM-DD):</value>
+</translation>
+
+<translation>
+  <key>successful_medical_record_addition</key>
+  <value>Medical record added successfully!</value>
+</translation>
+
+<translation>
+  <key>update_medical_record_title</key>
+  <value>Update Medical Record</value>
+</translation>
+
+<translation>
+  <key>input_mr_to_update_id</key>
+  <value>Enter the ID of the medical record to update:</value>
+</translation>
+
+<translation>
+  <key>no_mr_id_found</key>
+  <value>No medical record found with ID:</value>
+</translation>
+
+<translation>
+  <key>current_mr_details_title</key>
+  <value>Current Medical Record Details:</value>
+</translation>
+
+<translation>
+  <key>add_new_person_title</key>
+  <value>Add New Person</value>
+</translation>
 
 <translation>
   <key>input_firstname</key>
@@ -556,6 +910,258 @@
 </translation>
 
 <translation>
+  <key>input_lastname</key>
+  <value>Enter the person's last name:</value>
+</translation>
+
+<translation>
+  <key>input_date_of_birth_adding_person</key>
+  <value>Date of Birth (YYYY-MM-DD, optional):</value>
+</translation>
+
+<translation>
+  <key>input_comments_person</key>
+  <value>Comments (optional):</value>
+</translation>
+
+<translation>
+  <key>input_phone_num_person</key>
+  <value>Phone Number (XXX-XXX-XXXX or XXX-XXXX, optional):</value>
+</translation>
+
+<translation>
+  <key>input_gender_person</key>
+  <value>Gender (optional):</value>
+</translation>
+
+<translation>
+  <key>gender_person_options_title</key>
+  <value>Gender Options:</value>
+</translation>
+
+<translation>
+  <key>gender_person_options_selection</key>
+  <value>Select gender option (1-3, or leave blank):</value>
+</translation>
+
+<translation>
+  <key>invalid_gender_person_options_selection</key>
+  <value>Invalid gender option, leaving blank</value>
+</translation>
+
+<translation>
+  <key>successful_person_addition</key>
+  <value>Person added successfully! ID:</value>
+</translation>
+
+<translation>
+  <key>inquiry_report_title</key>
+  <value>Inquiry Report:</value>
+</translation>
+
+<translation>
+  <key>inquiry_report_id_input</key>
+  <value>Enter ID of inquiry to generate report:</value>
+</translation>
+
+<translation>
+  <key>invalid_inquiry_report_id_input</key>
+  <value>No inquiry found with ID:</value>
+</translation>
+
+<translation>
+  <key>inquiry_report_additional_info</key>
+  <value>Additional Info:</value>
+</translation>
+
+<translation>
+  <key>inquiry_report_inquirer</key>
+  <value>Inquirer:</value>
+</translation>
+
+<translation>
+  <key>delete_inquiry_title</key>
+  <value>Delete Inquiry</value>
+</translation>
+
+<translation>
+  <key>delete_inquiry_id_input</key>
+  <value>Enter ID of inquiry to delete:</value>
+</translation>
+
+<translation>
+  <key>successful_inquiry_deletion</key>
+  <value>Inquiry deleted successfully!</value>
+</translation>
+
+<translation>
+  <key>update_inquiry_title</key>
+  <value>Update Inquiry</value>
+</translation>
+
+<translation>
+  <key>id</key>
+  <value>ID</value>
+</translation>
+
+<translation>
+  <key>first_name</key>
+  <value>FIRST NAME</value>
+</translation>
+
+<translation>
+  <key>last_name</key>
+  <value>LAST NAME</value>
+</translation>
+
+<translation>
+  <key>dob</key>
+  <value>DOB</value>
+</translation>
+
+<translation>
+  <key>gender</key>
+  <value>GENDER</value>
+</translation>
+
+<translation>
+  <key>phone</key>
+  <value>PHONE</value>
+</translation>
+
+<translation>
+  <key>family_group</key>
+  <value>FAMILY GROUP</value>
+</translation>
+
+<translation>
+  <key>type2</key>
+  <value>TYPE</value>
+</translation>
+
+<translation>
+  <key>alloc_date</key>
+  <value>ALLOCATION DATE</value>
+</translation>
+
+<translation>
+  <key>grid_loc</key>
+  <value>GRID LOCATION</value>
+</translation>
+
+<translation>
+  <key>room_loc</key>
+  <value>ROOM LOCATION</value>
+</translation>
+
+<translation>
+  <key>comments2</key>
+  <value>COMMENTS</value>
+</translation>
+
+<translation>
+  <key>type3</key>
+  <value>TYPE (GENERAL)</value>
+</translation>
+
+<translation>
+  <key>name2</key>
+  <value>NAME</value>
+</translation>
+
+<translation>
+  <key>address2</key>
+  <value>ADDRESS</value>
+</translation>
+
+<translation>
+  <key>patient2</key>
+  <value>PATIENT</value>
+</translation>
+
+<translation>
+  <key>inquirer2</key>
+  <value>INQUIRER</value>
+</translation>
+
+<translation>
+  <key>missing_person2</key>
+  <value>MISSING PERSON</value>
+</translation>
+
+<translation>
+  <key>loc2</key>
+  <value>LOCATION</value>
+</translation>
+
+<translation>
+  <key>date2</key>
+  <value>DATE</value>
+</translation>
+
+<translation>
+  <key>treat_details</key>
+  <value>TREATMENT DETAILS</value>
+</translation>
+
+<translation>
+  <key>inventory_size1</key>
+  <value>INVENTORY SIZE</value>
+</translation>
+
+<translation>
+  <key>invalid_choice_7</key>
+  <value>Invalid choice. Please enter a number between 0-7.</value>
+</translation>
+
+<translation>
+  <key>update_person_id_input</key>
+  <value>Enter ID of person to update:</value>
+</translation>
+
+<translation>
+  <key>invalid_update_person_id_input</key>
+  <value>No person found with ID:</value>
+</translation>
+
+<translation>
+  <key>enter_choices_6</key>
+  <value>Enter field number to update (1-6) or 0 to cancel:</value>
+</translation>
+
+<translation>
+  <key>add_new_DisasterVictim</key>
+  <value>Add New Disaster Victim</value>
+</translation>
+
+<translation>
+  <key>invalid_field_num</key>
+  <value>Invalid field number</value>
+</translation>
+
+<translation>
+  <key>person_is_not_dv</key>
+  <value>Selected person is not a Disaster Victim</value>
+</translation>
+
+<translation>
+  <key>update_inquiry_title</key>
+  <value>Update Inquiry</value>
+</translation>
+
+<translation>
+  <key>update_inquiry_input_id</key>
+  <value>Enter ID of inquiry to update:</value>
+</translation>
+
+<translation>
+  <key>successful_inquiry_update</key>
+  <value>Inquiry updated successfully!</value>
+</translation>
+
+<translation>
   <key>report_person</key>
   <value>%s entered the %s facility on %s.</value>
 </translation>
+
+

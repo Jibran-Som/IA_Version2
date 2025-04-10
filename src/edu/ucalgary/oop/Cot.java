@@ -10,6 +10,7 @@ package edu.ucalgary.oop;
 public class Cot extends Supply {
     private String roomLocation;
     private String gridLocation;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
     /**
@@ -27,10 +28,10 @@ public class Cot extends Supply {
     public Cot(String supplyName, String supplyType, String roomLocation, String gridLocation) {
         super(supplyName, supplyType); // Call parent constructor
         if (roomLocation == null || roomLocation.trim().isEmpty()) {
-            throw new IllegalArgumentException("Room location cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.cotRoomLocationNullOrEmpty"));
         }
         if (gridLocation == null || gridLocation.trim().isEmpty()) {
-            throw new IllegalArgumentException("Grid location cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.cotGridLocationNullOrEmpty"));
         }
         this.roomLocation = roomLocation;
         this.gridLocation = gridLocation;
@@ -70,7 +71,7 @@ public class Cot extends Supply {
 
     public void setRoomLocation(String roomLocation) {
         if (roomLocation == null || roomLocation.trim().isEmpty()) {
-            throw new IllegalArgumentException("Room location cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.cotRoomLocationNullOrEmpty"));
         }
         this.roomLocation = roomLocation;
     }
@@ -85,7 +86,7 @@ public class Cot extends Supply {
      */
     public void setGridLocation(String gridLocation) {
         if (gridLocation == null || gridLocation.trim().isEmpty()) {
-            throw new IllegalArgumentException("Grid location cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.cotGridLocationNullOrEmpty"));
         }
         this.gridLocation = gridLocation;
     }

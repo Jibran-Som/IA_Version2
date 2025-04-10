@@ -12,7 +12,8 @@ import java.sql.SQLException;
 public class Supply {
     private String supplyName;
     private String supplyType;
-    private int supplyId;
+    private int supplyId = -1;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
     /**
@@ -24,7 +25,7 @@ public class Supply {
      */
     public Supply(String supplyName, String supplyType) {
         if (supplyType == null || supplyType.trim().isEmpty()) {
-            throw new IllegalArgumentException("Supply type cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.supplyTypeNullOrEmpty"));
         }
         this.supplyName = supplyName;
         this.supplyType = supplyType;
@@ -66,7 +67,7 @@ public class Supply {
      */
     public void setSupplyName(String supplyName) {
         if (supplyName == null || supplyName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Supply name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.supplyNameNullOrEmpty"));
         }
         this.supplyName = supplyName;
     }
@@ -80,7 +81,7 @@ public class Supply {
      */
     public void setSupplyType(String supplyType) {
         if (supplyType == null || supplyType.trim().isEmpty()) {
-            throw new IllegalArgumentException("Supply type cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.supplyTypeNullOrEmpty"));
         }
         this.supplyType = supplyType;
     }

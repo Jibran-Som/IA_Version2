@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TranslationManager {
-    private final Map<String, String> translations = new HashMap<>();
+    private final Map<String, String> TRANSLATIONS = new HashMap<>();
     private static TranslationManager instance;
 
     /**
@@ -61,7 +61,7 @@ public class TranslationManager {
      * @param xmlContent The XML content as a string that contains the translation entries.
      */
     private void parseTranslations(String xmlContent) {
-        translations.clear(); // Clear any existing translations
+        TRANSLATIONS.clear(); // Clear any existing translations
 
         // Regex pattern to match translation entries
         Pattern pattern = Pattern.compile(
@@ -74,7 +74,7 @@ public class TranslationManager {
         while (matcher.find()) {
             String key = matcher.group(1).trim();
             String value = matcher.group(2).trim();
-            translations.put(key, value);
+            TRANSLATIONS.put(key, value);
         }
     }
 
@@ -86,10 +86,10 @@ public class TranslationManager {
      * @throws IllegalArgumentException if the key does not exist in the translations map.
      */
     public String getTranslation(String key) {
-        if (!translations.containsKey(key)) {
+        if (!TRANSLATIONS.containsKey(key)) {
             throw new IllegalArgumentException("No translation found for key: " + key);
         }
-        return translations.get(key);
+        return TRANSLATIONS.get(key);
     }
 
     /**
@@ -99,6 +99,6 @@ public class TranslationManager {
      * @return true if the key exists in the translations map, false otherwise.
      */
     public boolean hasTranslation(String key) {
-        return translations.containsKey(key);
+        return TRANSLATIONS.containsKey(key);
     }
 }

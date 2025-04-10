@@ -9,6 +9,7 @@ package edu.ucalgary.oop;
 
 public class PersonalBelonging extends Supply {
     private String itemDescription;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
     /**
@@ -42,7 +43,7 @@ public class PersonalBelonging extends Supply {
      */
     public void setItemDescription(String itemDescription) {
         if (itemDescription == null || itemDescription.trim().isEmpty()) {
-            throw new IllegalArgumentException("Item description cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.itemDescriptionNullOrEmpty"));
         }
         this.itemDescription = itemDescription;
     }

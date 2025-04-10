@@ -20,6 +20,7 @@ public class Person {
     private String gender;
     private ArrayList<MedicalRecord> medicalRecords;
     private int personId;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
     /**
      * Constructs a Person object with the given first and last name.
@@ -30,10 +31,10 @@ public class Person {
      */
     public Person(String firstName, String lastName) {
         if (firstName == null || firstName.trim().isEmpty()) {
-            throw new IllegalArgumentException("First name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.firstNameNullOrEmpty"));
         }
         if (lastName == null || lastName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Last name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.lastNameNullOrEmpty"));
         }
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,10 +54,10 @@ public class Person {
      */
     public Person(String firstName, String lastName, String dateOfBirth) {
         if (firstName == null || firstName.trim().isEmpty()) {
-            throw new IllegalArgumentException("First name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.firstNameNullOrEmpty"));
         }
         if (lastName == null || lastName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Last name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.lastNameNullOrEmpty"));
         }
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,7 +65,7 @@ public class Person {
             this.dateOfBirth = dateOfBirth;
         }
         else {
-            throw new IllegalArgumentException("Date of birth cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.dateOfBirthInvalidFormat"));
         }
         this.medicalRecords = new ArrayList<>();
     }
@@ -163,7 +164,7 @@ public class Person {
      */
     public void setFirstName(String firstName) {
         if (firstName == null || firstName.trim().isEmpty()) {
-            throw new IllegalArgumentException("First name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.firstNameNullOrEmpty"));
         }
         this.firstName = firstName;
     }
@@ -176,7 +177,7 @@ public class Person {
      */
     public void setLastName(String lastName) {
         if (lastName == null || lastName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Last name cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.lastNameNullOrEmpty"));
         }
         this.lastName = lastName;
     }
@@ -192,7 +193,7 @@ public class Person {
             this.dateOfBirth = dateOfBirth;
         }
         else {
-            throw new IllegalArgumentException("Date of birth cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.dateOfBirthInvalidFormat"));
         }
     }
 

@@ -18,6 +18,7 @@ public class Inquiry {
     private String infoProvided;
     private Location lastKnownLocation;
     private int inquiryId;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
     /**
      * Constructor to create a new Inquiry instance.
@@ -123,7 +124,7 @@ public class Inquiry {
      */
     public void setInquirer(Person inquirer) {
         if (inquirer == null) {
-            throw new IllegalArgumentException("Inquirer cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.inquirySetNullInquirer"));
         }
         this.inquirer = inquirer;
     }
@@ -137,7 +138,7 @@ public class Inquiry {
      */
     public void setMissingPerson(DisasterVictim missingPerson) {
         if (missingPerson == null) {
-            throw new IllegalArgumentException("Missing person cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.inquirySetNullMissingPerson"));
         }
         this.missingPerson = missingPerson;
     }
@@ -152,7 +153,7 @@ public class Inquiry {
      */
     public void setDateOfInquiry(String dateOfInquiry) {
         if (!isValidDateFormat(dateOfInquiry)) {
-            throw new IllegalArgumentException("Date of inquiry is invalid");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.inquirySetInvalidDate"));
         }
         this.dateOfInquiry = dateOfInquiry;
     }
@@ -165,7 +166,7 @@ public class Inquiry {
      */
     public void setInfoProvided(String infoProvided) {
         if (infoProvided == null || infoProvided.trim().isEmpty()) {
-            throw new IllegalArgumentException("Information provided cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.inquirySetInfoNullOrEmpty"));
         }
         this.infoProvided = infoProvided.trim();
     }
@@ -178,7 +179,7 @@ public class Inquiry {
      */
     public void setLastKnownLocation(Location lastKnownLocation) {
         if (lastKnownLocation == null) {
-            throw new IllegalArgumentException("Last known location cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.inquirySetLocationNull"));
         }
         this.lastKnownLocation = lastKnownLocation;
     }

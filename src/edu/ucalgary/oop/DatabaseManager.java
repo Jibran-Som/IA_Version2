@@ -20,6 +20,8 @@ public class DatabaseManager {
     private final String DB_URL = "jdbc:postgresql://localhost:5432/ensf380project";
     private final String USER = "oop";
     private final String PASS = "ucalgary";
+    private static ErrorLogger errorLogger = ErrorLogger.getInstance();
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
     /**
      * Constructor for the DatabaseManager class.
@@ -33,10 +35,10 @@ public class DatabaseManager {
             connect();
         }
         catch (SQLException e) {
-            ErrorLogger.getInstance().logFatalError(
+            errorLogger.logFatalError(
                     e,
-                    "DatabaseManager constructor - database connection",
-                    "FATAL ERROR: Cannot connect to database. The application will now exit."
+                    translationManager.getTranslation("error.databaseManagerConnectionFailureContext"),
+                    translationManager.getTranslation("error.databaseManagerConnectionFailureMessage")
             );
             throw e;
 
@@ -52,7 +54,7 @@ public class DatabaseManager {
         try {
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
         } catch (SQLException e) {
-            System.err.println("Error connecting to database: " + e.getMessage());
+            System.err.println(translationManager.getTranslation("error.databaseManagerConnectionFailureMessage2") + ": " + e.getMessage());
             throw e;
         }
     }
@@ -115,7 +117,8 @@ public class DatabaseManager {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                rs.getInt(1);
+                int generatedId = rs.getInt(1);
+                supply.setSupplyId(generatedId);
                 return;
             }
             throw new SQLException("Failed to insert supply, no ID obtained");
@@ -785,7 +788,8 @@ public class DatabaseManager {
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, record.getLocation().getLocationId());
             pstmt.setInt(2, record.getPerson().getPersonId());
-            pstmt.setString(3, record.getDateOfTreatment());
+            Timestamp timestamp = Timestamp.valueOf(record.getDateOfTreatment() + " 00:00:00");
+            pstmt.setTimestamp(3, timestamp);
             pstmt.setString(4, record.getTreatmentDetails());
             pstmt.setInt(5, record.getMedicalRecordId());
 
@@ -796,26 +800,6 @@ public class DatabaseManager {
         }
     }
 
-
-    /**
-     * Deletes a medical record from the database based on the provided medical record ID.
-     * Mainly used for tests.
-     *
-     * @param medicalRecordId The ID of the medical record to be deleted.
-     * @throws SQLException If an error occurs while executing the delete query or if no rows are affected (i.e., the record does not exist).
-     */
-    public void deleteMedicalRecord(int medicalRecordId) throws SQLException {
-        String sql = "DELETE FROM MedicalRecord WHERE medical_record_id = ?";
-
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, medicalRecordId);
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Deleting medical record failed, no rows affected.");
-            }
-        }
-    }
 
     /**
      * Retrieves all medical records associated with a specific person from the database.

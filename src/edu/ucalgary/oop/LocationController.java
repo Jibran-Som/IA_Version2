@@ -14,6 +14,8 @@ public class LocationController {
     private ArrayList<Location> locationModels;
     private DatabaseManager databaseManager;
     private static int locationIdCounter;
+    private static ErrorLogger errorLogger = ErrorLogger.getInstance();
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
 

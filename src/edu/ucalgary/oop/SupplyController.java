@@ -16,6 +16,8 @@ public class SupplyController {
     private ArrayList<Supply> supplyModels;
     private static DatabaseManager databaseManager;
     private static int supplyIdCounter;
+    private static ErrorLogger errorLogger = ErrorLogger.getInstance();
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
     /**
@@ -97,14 +99,11 @@ public class SupplyController {
             throw new IllegalArgumentException("Supply cannot be null");
         }
 
-        // Set the ID before adding to database
-        if (supply.getSupplyId() <= 0) { // Assuming 0 or negative means unset
-            supply.setSupplyId(generateSupplyId());
-        }
-
         try {
             databaseManager.addSupply(supply);
             this.supplyModels.add(supply);
+
+            this.supplyIdCounter = databaseManager.getLargestSupplyId() + 1;
         } catch (SQLException e) {
             // If add fails, decrement counter to reuse the ID
             supplyIdCounter--;
@@ -293,8 +292,8 @@ public class SupplyController {
      * @throws SQLException if there is an error retrieving the largest supply ID from the database.
      */
     private void initializeIdCounter() throws SQLException {
-        int maxId = databaseManager.getLargestSupplyId();
-        supplyIdCounter = maxId + 1;
+        this.supplyIdCounter = databaseManager.getLargestSupplyId() + 1;
+
     }
 
 

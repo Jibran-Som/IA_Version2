@@ -13,6 +13,7 @@ public class MedicalRecord {
     private String treatmentDetails;
     private String dateOfTreatment;
     private int medicalRecordId;
+    private static TranslationManager translationManager = TranslationManager.getInstance();
 
 
     /**
@@ -34,13 +35,13 @@ public class MedicalRecord {
         }
 
         if (!isValidDateFormat(dateOfTreatment)) {
-            throw new IllegalArgumentException("Invalid date format: " + dateOfTreatment);
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetInvalidDate") + ": " + dateOfTreatment);
         }
         if (treatmentDetails == null) {
-            throw new IllegalArgumentException("Treatment details cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetTreatmentDetailsNull"));
         }
         if (treatmentDetails.trim().isEmpty()) {
-            throw new IllegalArgumentException("Treatment details cannot be empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetTreatmentDetailsEmpty"));
         }
         this.treatmentDetails = treatmentDetails;
         this.dateOfTreatment = dateOfTreatment;
@@ -100,7 +101,7 @@ public class MedicalRecord {
      */
     public void setPerson(Person person) {
         if(person == null) {
-            throw new IllegalArgumentException("Person cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.nullPerson"));
         }
         this.person = person;
 
@@ -116,7 +117,7 @@ public class MedicalRecord {
      */
     public void setLocation(Location newLocation) {
         if(newLocation == null) {
-            throw new IllegalArgumentException("Location cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.nullLocation"));
         }
         this.location = newLocation;
 
@@ -130,7 +131,7 @@ public class MedicalRecord {
      */
     public void setDateOfTreatment(String dateOfTreatment) {
         if(!isValidDateFormat(dateOfTreatment)) {
-            throw new IllegalArgumentException("Invalid date format");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetInvalidDate"));
         }
         this.dateOfTreatment = dateOfTreatment;
     }
@@ -144,10 +145,10 @@ public class MedicalRecord {
      */
     public void setTreatmentDetails(String treatmentDetails) {
         if(treatmentDetails == null) {
-            throw new IllegalArgumentException("Treatment details cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetTreatmentDetailsNull"));
         }
         if(treatmentDetails.trim().isEmpty()) {
-            throw new IllegalArgumentException("Treatment details cannot be empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.medicalRecordSetTreatmentDetailsEmpty"));
         }
         this.treatmentDetails = treatmentDetails;
     }

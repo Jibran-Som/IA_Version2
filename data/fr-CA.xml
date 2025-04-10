@@ -4,515 +4,1156 @@
 </translation>
 
 <translation>
-    <key>gender_woman</key>
-    <value>Femme</value>
+<key>gender_woman</key>
+<value>Femme</value>
 </translation>
 
 <translation>
-    <key>gender_nb</key>
-    <value>Non binaire</value>
+<key>gender_nb</key>
+<value>Non-binaire</value>
 </translation>
 
 <translation>
-    <key>program_title</key>
-    <value>Système d'information sur les victimes de catastrophes</value>
+<key>program_title</key>
+<value>Système d'Information sur les Victimes de Catastrophe</value>
 </translation>
 
 <translation>
-    <key>location_detail</key>
-    <value>Détails de l'emplacement</value>
+<key>location_detail</key>
+<value>Détails du Lieu</value>
 </translation>
 
 <translation>
-    <key>person_detail</key>
-    <value>Détails de la Personne</value>
+<key>person_detail</key>
+<value>Détails de la Personne</value>
 </translation>
 
 <translation>
-    <key>supply_detail</key>
-    <value>Détails de l'approvisionnement</value>
+<key>supply_detail</key>
+<value>Détails des Fournitures</value>
 </translation>
 
 <translation>
-    <key>inquiry_detail</key>
-    <value>Détails de la demande</value>
+<key>inquiry_detail</key>
+<value>Détails de l'Enquête</value>
 </translation>
 
 <translation>
-    <key>medical_detail</key>
-    <value>Détails médicaux</value>
+<key>medical_detail</key>
+<value>Détails Médicaux</value>
 </translation>
 
 <translation>
-    <key>exit</key>
-    <value>Sortie</value>
+<key>exit</key>
+<value>Quitter</value>
 </translation>
 
 <translation>
-    <key>system_exit</key>
-    <value>Quitter le système...</value>
+<key>system_exit</key>
+<value>Sortie du système...</value>
 </translation>
 
 <translation>
-    <key>back_to_menu</key>
-    <value>0. Retour au menu principal</value>
+<key>back_to_menu</key>
+<value>0. Retour au Menu Principal</value>
 </translation>
 
 <translation>
-    <key>ask_choice</key>
-    <value>Entrez votre choix:</value>
+<key>ask_choice</key>
+<value>Entrez votre choix :</value>
 </translation>
 
 <translation>
-    <key>invalid_choice_main_menu</key>
-    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 5.</value>
+<key>invalid_choice_main_menu</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-5.</value>
 </translation>
 
 <translation>
-    <key>invalid_input</key>
-    <value>Entrée non valide. Veuillez saisir un nombre.</value>
+<key>invalid_input</key>
+<value>Entrée invalide. Veuillez entrer un nombre valide.</value>
 </translation>
 
 <translation>
-    <key>view_all_supply</key>
-    <value>Voir Toutes les Fournitures</value>
+<key>view_all_supply</key>
+<value>Voir Toutes les Fournitures</value>
 </translation>
 
 <translation>
-    <key>add_new_supply</key>
-    <value>Ajouter une Nouvelle Fourniture</value>
+<key>add_new_supply</key>
+<value>Ajouter une Nouvelle Fourniture</value>
 </translation>
 
 <translation>
-    <key>update_supply</key>
-    <value>Mettre à jour l'approvisionnement</value>
+<key>update_supply</key>
+<value>Mettre à Jour une Fourniture</value>
 </translation>
 
 <translation>
-    <key>allocate_supply</key>
-    <value>Allouer l'approvisionnement</value>
+<key>allocate_supply</key>
+<value>Allouer une Fourniture</value>
 </translation>
 
 <translation>
-    <key>view_allocated_supplies</key>
-    <value>Afficher les fournitures allouées</value>
+<key>view_allocated_supplies</key>
+<value>Voir les Fournitures Allouées</value>
 </translation>
 
 <translation>
-    <key>invalid_choice_supply</key>
-    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 4.</value>
+<key>invalid_choice_supply</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-4.</value>
 </translation>
 
 <translation>
-    <key>medical_title</key>
-    <value>Gestion des dossiers médicaux</value>
+<key>medical_title</key>
+<value>Gestion des Dossiers Médicaux</value>
 </translation>
 
 <translation>
-    <key>view_all_medical_records</key>
-    <value>1. Afficher tous les dossiers médicaux</value>
+<key>view_all_medical_records</key>
+<value>1. Voir Tous les Dossiers Médicaux</value>
 </translation>
 
 <translation>
-    <key>add_new_medical_record</key>
-    <value>2. Ajouter un nouveau dossier médical</value>
+<key>add_new_medical_record</key>
+<value>2. Ajouter un Nouveau Dossier Médical</value>
 </translation>
 
 <translation>
-    <key>update_medical_record</key>
-    <value>3. Mettre à jour le dossier médical</value>
+<key>update_medical_record</key>
+<value>3. Mettre à Jour un Dossier Médical</value>
 </translation>
 
 <translation>
-    <key>invalid_choice_medical</key>
-    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 3.</value>
+<key>invalid_choice_medical</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-3.</value>
 </translation>
 
 <translation>
-    <key>person_management</key>
-    <value>Gestion des personnes</value>
+<key>person_management</key>
+<value>Gestion des Personnes</value>
 </translation>
 
 <translation>
-    <key>view_all_persons</key>
-    <value>1. Afficher toutes les personnes</value>
+<key>view_all_persons</key>
+<value>1. Voir Toutes les Personnes</value>
 </translation>
 
 <translation>
-    <key>add_new_person</key>
-    <value>2. Ajouter une nouvelle personne</value>
+<key>add_new_person</key>
+<value>2. Ajouter une Nouvelle Personne</value>
 </translation>
 
 <translation>
-    <key>update_person</key>
-    <value>3. Mettre à jour la personne</value>
+<key>update_person</key>
+<value>3. Mettre à Jour une Personne</value>
 </translation>
 
 <translation>
-    <key>view_disaster_victims</key>
-    <value>4. Voir les victimes de la catastrophe</value>
+<key>update_person_title</key>
+<value>Mettre à Jour une Personne</value>
 </translation>
 
 <translation>
-    <key>add_disaster_victim</key>
-    <value>5. Ajouter une victime de la catastrophe</value>
+<key>view_disaster_victims</key>
+<value>4. Voir les Victimes de Catastrophe</value>
 </translation>
 
 <translation>
-    <key>convert_to_disaster_victim</key>
-    <value>6. Convertissez-vous en victime de catastrophe</value>
+<key>add_disaster_victim</key>
+<value>5. Ajouter une Victime de Catastrophe</value>
 </translation>
 
 <translation>
-    <key>add_change_family_group</key>
-    <value>7. Ajouter/modifier un groupe familial</value>
+<key>convert_to_disaster_victim</key>
+<value>6. Convertir en Victime de Catastrophe</value>
 </translation>
 
 <translation>
-    <key>inquiry_management</key>
-    <value>Gestion des Demandes</value>
+<key>add_change_family_group</key>
+<value>7. Ajouter/Changer un Groupe Familial</value>
 </translation>
 
 <translation>
-    <key>supply_selection_title</key>
-    <value>Sélectionnez le type de fourniture:</value>
+<key>inquiry_management</key>
+<value>Gestion des Enquêtes</value>
 </translation>
 
 <translation>
-    <key>supply_selection1</key>
-    <value>1. Couverture</value>
+<key>supply_selection_title</key>
+<value>Sélectionnez le type de fourniture :</value>
 </translation>
 
 <translation>
-    <key>supply_selection2</key>
-    <value>2. Lit bébé</value>
+<key>supply_selection1</key>
+<value>1. Couverture</value>
 </translation>
 
 <translation>
-    <key>supply_selection3</key>
-    <value>3. Effets personnels</value>
+<key>supply_selection2</key>
+<value>2. Lit</value>
 </translation>
 
 <translation>
-    <key>supply_selection4</key>
-    <value>4. Eau</value>
+<key>supply_selection3</key>
+<value>3. Effets Personnels</value>
 </translation>
 
 <translation>
-    <key>supply_selection5</key>
-    <value>5. Autre</value>
+<key>supply_selection4</key>
+<value>4. Eau</value>
 </translation>
 
 <translation>
-    <key>supply_selection0</key>
-    <value>0. Sortie</value>
+<key>supply_selection5</key>
+<value>5. Autre</value>
 </translation>
 
 <translation>
-    <key>supply_selection_choices</key>
-    <value>Entrez votre choix (1-5):</value>
+<key>supply_selection0</key>
+<value>0. Quitter</value>
 </translation>
 
 <translation>
-    <key>supply_selection_return</key>
-    <value>Retour au menu principal...</value>
+<key>supply_selection_choices</key>
+<value>Entrez votre choix (1-5) :</value>
 </translation>
 
 <translation>
-    <key>cot_input_grid</key>
-    <value>Entrez l'emplacement de la grille:</value>
+<key>supply_selection_return</key>
+<value>Retour au menu principal...</value>
 </translation>
 
 <translation>
-    <key>cot_input_room</key>
-    <value>Entrez l'emplacement de la salle:</value>
+<key>cot_input_grid</key>
+<value>Entrez l'emplacement de la grille :</value>
 </translation>
 
 <translation>
-    <key>personal_item_input_description</key>
-    <value>Entrez la description de l'article:</value>
+<key>cot_input_room</key>
+<value>Entrez l'emplacement de la pièce :</value>
 </translation>
 
 <translation>
-    <key>water_input_date</key>
-    <value>Saisissez la date d'attribution (AAAA-MM-JJ):</value>
+<key>personal_item_input_description</key>
+<value>Entrez la description de l'article :</value>
 </translation>
 
 <translation>
-    <key>general_supply_input_type</key>
-    <value>Entrez le type d'approvisionnement (catégorie générale):</value>
+<key>water_input_date</key>
+<value>Entrez la date d'allocation (AAAA-MM-JJ) :</value>
 </translation>
 
 <translation>
-    <key>general_supply_input_comments</key>
-    <value>Saisissez les commentaires sur l'approvisionnement:</value>
+<key>general_supply_input_type</key>
+<value>Entrez le type de fourniture (catégorie générale) :</value>
 </translation>
 
 <translation>
-    <key>successful_supply_addition</key>
-    <value>Fourniture ajoutée avec succès!</value>
+<key>general_supply_input_comments</key>
+<value>Entrez les commentaires sur la fourniture :</value>
 </translation>
 
 <translation>
-    <key>view_person_allocated_supplies</key>
-    <value>1. Afficher les fournitures allouées à une personne</value>
+<key>successful_supply_addition</key>
+<value>Fourniture ajoutée avec succès !</value>
 </translation>
 
 <translation>
-    <key>view_location_allocated_supplies</key>
-    <value>2. Afficher les fournitures allouées à un emplacement</value>
+<key>view_person_allocated_supplies</key>
+<value>1. Voir les fournitures allouées à une personne</value>
 </translation>
 
 <translation>
-    <key>view_allocated_supplies_return</key>
-    <value>0. Retour</value>
+<key>view_location_allocated_supplies</key>
+<value>2. Voir les fournitures allouées à un lieu</value>
 </translation>
 
 <translation>
-    <key>view_allocated_supplies_invalid</key>
-    <value>Choix invalide. Veuillez saisir (0-2).</value>
+<key>view_allocated_supplies_return</key>
+<value>0. Retour</value>
 </translation>
 
 <translation>
-    <key>available_people</key>
-    <value>Personnes disponibles:</value>
+<key>view_allocated_supplies_invalid</key>
+<value>Choix invalide. Veuillez entrer (0-2).</value>
 </translation>
 
 <translation>
-    <key>enter_person_id</key>
-    <value>EEntrez l'identifiant de la personne:</value>
+<key>available_people</key>
+<value>Personnes Disponibles :</value>
 </translation>
 
 <translation>
-    <key>supplies_allocated_person_id</key>
-    <value>Fournitures attribuées à la personne ID</value>
+<key>enter_person_id</key>
+<value>Entrez l'ID de la personne :</value>
 </translation>
 
 <translation>
-    <key>available_locations</key>
-    <value>Emplacements disponibles:</value>
+<key>supplies_allocated_person_id</key>
+<value>Fournitures allouées à la personne ID</value>
 </translation>
 
 <translation>
-    <key>enter_location_id</key>
-    <value>Entrez l'ID de l'emplacement:</value>
+<key>available_locations</key>
+<value>Lieux Disponibles :</value>
 </translation>
 
 <translation>
-    <key>supplies_allocated_location_id</key>
-    <value>Fournitures attribuées à l'ID d'emplacement</value>
+<key>enter_location_id</key>
+<value>Entrez l'ID du lieu :</value>
 </translation>
 
 <translation>
-    <key>supplies_input_id_update</key>
-    <value>Saisissez l'ID de la fourniture à mettre à jour:</value>
+<key>supplies_allocated_location_id</key>
+<value>Fournitures allouées au lieu ID</value>
 </translation>
 
 <translation>
-    <key>supplies_no_found_id</key>
-    <value>Aucune fourniture trouvée avec l'ID:</value>
+<key>supplies_input_id_update</key>
+<value>Entrez l'ID de la fourniture à mettre à jour :</value>
 </translation>
 
 <translation>
-    <key>current_supply_details</key>
-    <value>Détails de l'approvisionnement actuel:</value>
+<key>supplies_no_found_id</key>
+<value>Aucune fourniture trouvée avec l'ID :</value>
 </translation>
 
 <translation>
-    <key>supply_new_details</key>
-    <value>Saisissez les nouveaux détails (laissez vide pour conserver la valeur actuelle):</value>
+<key>current_supply_details</key>
+<value>Détails Actuels de la Fourniture :</value>
 </translation>
 
 <translation>
-    <key>type</key>
-    <value>Taper</value>
+<key>supply_new_details</key>
+<value>Entrez les nouveaux détails (laissez vide pour conserver la valeur actuelle) :</value>
 </translation>
 
 <translation>
-    <key>comments</key>
-    <value>Commentaires</value>
+<key>type</key>
+<value>Type</value>
 </translation>
 
 <translation>
-    <key>room_location</key>
-    <value>Emplacement de la chambre</value>
+<key>comments</key>
+<value>Commentaires</value>
 </translation>
 
 <translation>
-    <key>grid_location</key>
-    <value>Emplacement de la grille</value>
+<key>room_location</key>
+<value>Emplacement de la Pièce</value>
 </translation>
 
 <translation>
-    <key>description</key>
-    <value>Description</value>
+<key>grid_location</key>
+<value>Emplacement de la Grille</value>
 </translation>
 
 <translation>
-    <key>allocation_date</key>
-    <value>Date d'attribution</value>
+<key>description</key>
+<value>Description</value>
 </translation>
 
 <translation>
-    <key>location_management</key>
-    <value>Gestion des emplacements</value>
+<key>allocation_date</key>
+<value>Date d'Allocation</value>
 </translation>
 
 <translation>
-    <key>location_management1</key>
-    <value>1. Voir tous les emplacements</value>
+<key>location_management</key>
+<value>Gestion des Lieux</value>
+</translation>
+
+<translation>
+<key>location_management1</key>
+<value>1. Voir Tous les Lieux</value>
 </translation>
 
 <translation>
 <key>location_management2</key>
-<value>2. Ajouter un nouvel emplacement</value>
+<value>2. Ajouter un Nouveau Lieu</value>
 </translation>
 
 <translation>
-    <key>location_management3</key>
-    <value>3. Mettre à jour l'emplacement</value>
+<key>location_management3</key>
+<value>3. Mettre à Jour un Lieu</value>
 </translation>
 
 <translation>
-    <key>location_management4</key>
-    <value>4. Afficher les occupants de l'emplacement</value>
+<key>location_management4</key>
+<value>4. Voir les Occupants d'un Lieu</value>
 </translation>
 
 <translation>
-    <key>location_management5</key>
-    <value>5. Ajouter un occupant à l'emplacement</value>
+<key>location_management5</key>
+<value>5. Ajouter un Occupant à un Lieu</value>
 </translation>
 
 <translation>
-    <key>location_management6</key>
-    <value>6. Retirer l'occupant des lieux</value>
+<key>location_management6</key>
+<value>6. Retirer un Occupant d'un Lieu</value>
 </translation>
 
 <translation>
-    <key>location_management7</key>
-    <value>0. Retour au menu principal</value>
+<key>location_management7</key>
+<value>0. Retour au Menu Principal</value>
 </translation>
 
 <translation>
-    <key>location_management8</key>
-    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 6.</value>
+<key>location_management8</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-6.</value>
 </translation>
 
 <translation>
-    <key>inquiry_management1</key>
-    <value>1. Voir toutes les demandes</value>
+<key>inquiry_management1</key>
+<value>1. Voir Toutes les Enquêtes</value>
 </translation>
 
 <translation>
-    <key>inquiry_management2</key>
-    <value>2. Ajouter une nouvelle demande</value>
+<key>inquiry_management2</key>
+<value>2. Ajouter une Nouvelle Enquête</value>
 </translation>
 
 <translation>
-    <key>inquiry_management3</key>
-    <value>3. Demande de mise à jour</value>
+<key>inquiry_management3</key>
+<value>3. Mettre à Jour une Enquête</value>
 </translation>
 
 <translation>
-    <key>inquiry_management4</key>
-    <value>4. Supprimer la demande</value>
+<key>inquiry_management4</key>
+<value>4. Supprimer une Enquête</value>
 </translation>
 
 <translation>
-    <key>inquiry_management5</key>
-    <value>5. Générer un rapport d'enquête</value>
+<key>inquiry_management5</key>
+<value>5. Générer un Rapport d'Enquête</value>
 </translation>
 
 <translation>
-    <key>inquiry_management6</key>
-    <value>0. Retour au menu principal</value>
+<key>inquiry_management6</key>
+<value>0. Retour au Menu Principal</value>
 </translation>
 
 <translation>
-    <key>inquiry_management7</key>
-    <value>Choix invalide. Veuillez saisir un nombre compris entre 0 et 4.</value>
+<key>inquiry_management7</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-4.</value>
 </translation>
 
 <translation>
-    <key>error1</key>
-    <value>Une erreur s'est produite</value>
+<key>error1</key>
+<value>Une erreur est survenue</value>
 </translation>
 
 <translation>
-    <key>new_name</key>
-    <value>Nouveau nom</value>
+<key>new_name</key>
+<value>Nouveau Nom</value>
 </translation>
 
 <translation>
-    <key>new_type</key>
-    <value>Nouveau type</value>
+<key>new_type</key>
+<value>Nouveau Type</value>
 </translation>
 
 <translation>
-    <key>new</key>
-    <value>Nouveau</value>
+<key>new</key>
+<value>Nouveau</value>
 </translation>
 
 <translation>
-    <key>new_desc</key>
-    <value>Nouvelle description</value>
+<key>new_desc</key>
+<value>Nouvelle description</value>
 </translation>
 
 <translation>
-    <key>new_alloc</key>
-    <value>Nouvelle date d'attribution</value>
+<key>new_alloc</key>
+<value>Nouvelle date d'allocation</value>
 </translation>
 
 <translation>
-    <key>supply_update_success</key>
-    <value>Approvisionnement mis à jour avec succès!</value>
+<key>supply_update_success</key>
+<value>Fourniture mise à jour avec succès !</value>
 </translation>
 
 <translation>
-    <key>supply_invalid_input</key>
-    <value>Entrée non valide. Veuillez saisir un numéro valide pour l'identifiant de l'offre.</value>
+<key>supply_invalid_input</key>
+<value>Entrée invalide. Veuillez entrer un nombre valide pour l'ID de la fourniture.</value>
 </translation>
 
 <translation>
-    <key>allocate_to</key>
-    <value>Affecter à:</value>
+<key>allocate_to</key>
+<value>Allouer à :</value>
 </translation>
 
 <translation>
-    <key>allocate_to1</key>
-    <value>1. Personne</value>
+<key>allocate_to1</key>
+<value>1. Personne</value>
 </translation>
 
 <translation>
-    <key>allocate_to2</key>
-    <value>2. Emplacement</value>
+<key>allocate_to2</key>
+<value>2. Lieu</value>
 </translation>
 
 <translation>
-    <key>allocate_to3</key>
-    <value>3. Personne à un endroit précis (à partir des fournitures de l'endroit)</value>
-</translation>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<translation>
-    <key>input_firstname</key>
-    <value>Entrez le prénom de la personne:</value>
+<key>allocate_to3</key>
+<value>3. Personne à un lieu spécifique (depuis les fournitures du lieu)</value>
 </translation>
 
 <translation>
-    <key>report_person</key>
-    <value>%s est entré dans l’installation %s le %s.</value>
+<key>allocate_to_choice</key>
+<value>Entrez votre choix (1-3) :</value>
+</translation>
+
+<translation>
+<key>allocate_to_invalid_choice</key>
+<value>Choix invalide. Allocation annulée.</value>
+</translation>
+
+<translation>
+<key>available_supplies</key>
+<value>Fournitures Disponibles :</value>
+</translation>
+
+<translation>
+<key>available_supplies1</key>
+<value>Fournitures Non Allouées Disponibles :</value>
+</translation>
+
+<translation>
+<key>available_supplies_empty</key>
+<value>Aucune fourniture non allouée disponible.</value>
+</translation>
+
+<translation>
+<key>input_supply_id_to_allocate</key>
+<value>Entrez l'ID de la fourniture à allouer :</value>
+</translation>
+
+<translation>
+<key>supply_id_not_found</key>
+<value>Aucune fourniture trouvée avec l'ID :</value>
+</translation>
+
+<translation>
+<key>error.locationNameEmpty</key>
+<value>Le nom du lieu ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.locationAddressEmpty</key>
+<value>L'adresse du lieu ne peut pas être nulle ou vide</value>
+</translation>
+
+<translation>
+<key>error.locationSupplyNull</key>
+<value>La fourniture ne peut pas être nulle</value>
+</translation>
+
+<translation>
+<key>error.locationPersonalBelonging</key>
+<value>Les effets personnels ne peuvent pas être ajoutés à un lieu</value>
+</translation>
+
+<translation>
+<key>error.locationUnavailableSupply</key>
+<value>Fourniture non disponible dans ce lieu</value>
+</translation>
+
+<translation>
+<key>error.locationAllocatingPersonalBelonging</key>
+<value>Impossible d'allouer des effets personnels</value>
+</translation>
+
+<translation>
+<key>error.cotRoomLocationNullOrEmpty</key>
+<value>L'emplacement de la pièce ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.cotGridLocationNullOrEmpty</key>
+<value>L'emplacement de la grille ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.familyGroupMembersNullOrEmpty</key>
+<value>Les membres ne peuvent pas être nuls ou vides</value>
+</translation>
+
+<translation>
+<key>error.nullPerson</key>
+<value>La personne ne peut pas être nulle</value>
+</translation>
+
+<translation>
+<key>error.familyGroupPersonNotInFamilyGroup</key>
+<value>La personne n'est pas dans le groupe familial</value>
+</translation>
+
+<translation>
+<key>error.inquirySetNullInquirer</key>
+<value>L'enquêteur ne peut pas être nul</value>
+</translation>
+
+<translation>
+<key>error.inquirySetNullMissingPerson</key>
+<value>La personne disparue ne peut pas être nulle</value>
+</translation>
+
+<translation>
+<key>error.inquirySetInvalidDate</key>
+<value>La date de l'enquête est invalide</value>
+</translation>
+
+<translation>
+<key>error.inquirySetInfoNullOrEmpty</key>
+<value>Les informations fournies ne peuvent pas être nulles ou vides</value>
+</translation>
+
+<translation>
+<key>error.inquirySetLocationNull</key>
+<value>Le dernier lieu connu ne peut pas être nul</value>
+</translation>
+
+<translation>
+<key>error.medicalRecordSetInvalidDate</key>
+<value>Format de date invalide</value>
+</translation>
+
+<translation>
+<key>error.medicalRecordSetTreatmentDetailsNull</key>
+<value>Les détails du traitement ne peuvent pas être nuls</value>
+</translation>
+
+<translation>
+<key>error.medicalRecordSetTreatmentDetailsEmpty</key>
+<value>Les détails du traitement ne peuvent pas être vides</value>
+</translation>
+
+<translation>
+<key>error.nullLocation</key>
+<value>Le lieu ne peut pas être nul</value>
+</translation>
+
+<translation>
+<key>error.firstNameNullOrEmpty</key>
+<value>Le prénom ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.lastNameNullOrEmpty</key>
+<value>Le nom de famille ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.dateOfBirthInvalidFormat</key>
+<value>Le format de la date de naissance est invalide</value>
+</translation>
+
+<translation>
+<key>error.itemDescriptionNullOrEmpty</key>
+<value>La description de l'article ne peut pas être nulle ou vide</value>
+</translation>
+
+<translation>
+<key>error.supplyTypeNullOrEmpty</key>
+<value>Le type de fourniture ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.supplyNameNullOrEmpty</key>
+<value>Le nom de la fourniture ne peut pas être nul ou vide</value>
+</translation>
+
+<translation>
+<key>error.userViewUpdatingSupply</key>
+<value>Une erreur est survenue lors de la mise à jour de la fourniture</value>
+</translation>
+
+<translation>
+<key>input_person_id_for_allocation</key>
+<value>Entrez l'ID de la personne à qui allouer :</value>
+</translation>
+
+<translation>
+<key>error.userViewNoPersonIdFound</key>
+<value>Aucune personne trouvée avec l'ID</value>
+</translation>
+
+<translation>
+<key>error.userViewPersonNotDisasterVictim</key>
+<value>La personne n'est pas une victime de catastrophe</value>
+</translation>
+
+<translation>
+<key>successful_supply_allocation</key>
+<value>Fourniture allouée à la personne avec succès !</value>
+</translation>
+
+<translation>
+<key>input_supply_allocation_id</key>
+<value>Entrez l'ID de la fourniture à allouer :</value>
+</translation>
+
+<translation>
+<key>input_allocation_date</key>
+<value>Entrez la date d'allocation (AAAA-MM-JJ) :</value>
+</translation>
+
+<translation>
+<key>input_allocation_location_id</key>
+<value>Entrez l'ID du lieu à qui allouer :</value>
+</translation>
+
+<translation>
+<key>error.userViewNoLocationIdFound</key>
+<value>Aucun lieu trouvé avec l'ID</value>
+</translation>
+
+<translation>
+<key>error.databaseManagerConnectionFailureContext</key>
+<value>Constructeur DatabaseManager - connexion à la base de données</value>
+</translation>
+
+<translation>
+<key>error.databaseManagerConnectionFailureMessage</key>
+<value>Constructeur DatabaseManager - connexion à la base de données</value>
+</translation>
+
+<translation>
+<key>error.databaseManagerConnectionFailureMessage2</key>
+<value>Erreur de connexion à la base de données</value>
+</translation>
+
+<translation>
+<key>successful_supply_to_location_allocation</key>
+<value>Fourniture allouée au lieu avec succès !</value>
+</translation>
+
+<translation>
+<key>supplies_available_at_location</key>
+<value>Fournitures disponibles à ce lieu :</value>
+</translation>
+
+<translation>
+<key>no_supplies_available_at_location</key>
+<value>Aucune fourniture disponible à ce lieu.</value>
+</translation>
+
+<translation>
+<key>occupants_at_location</key>
+<value>Occupants à ce lieu :</value>
+</translation>
+
+<translation>
+<key>no_occupants_at_location</key>
+<value>Aucun occupant trouvé à ce lieu.</value>
+</translation>
+
+<translation>
+<key>successful_supply_from_location_allocation_to_person</key>
+<value>Fourniture allouée du lieu à la personne avec succès !</value>
+</translation>
+
+<translation>
+<key>add_new_location_title</key>
+<value>Ajouter un Nouveau Lieu</value>
+</translation>
+
+<translation>
+<key>input_location_name</key>
+<value>Entrez le nom du lieu</value>
+</translation>
+
+<translation>
+<key>input_location_address</key>
+<value>Entrez l'adresse du lieu</value>
+</translation>
+
+<translation>
+<key>successful_location_addition</key>
+<value>Lieu ajouté avec succès !</value>
+</translation>
+
+<translation>
+<key>update_location_title</key>
+<value>Mettre à Jour un Lieu</value>
+</translation>
+
+<translation>
+<key>input_location_id_to_update</key>
+<value>Entrez l'ID du lieu à mettre à jour :</value>
+</translation>
+
+<translation>
+<key>current_location_details</key>
+<value>Détails Actuels du Lieu :</value>
+</translation>
+
+<translation>
+<key>new_address</key>
+<value>Nouvelle adresse</value>
+</translation>
+
+<translation>
+<key>successful_location_update</key>
+<value>Lieu mis à jour avec succès !</value>
+</translation>
+
+<translation>
+<key>invalid_input_for_location_update</key>
+<value>Entrée invalide. Veuillez entrer un nombre valide pour l'ID du lieu</value>
+</translation>
+
+<translation>
+<key>input_location_id_for_occupants_view</key>
+<value>Entrez l'ID du lieu pour voir les occupants :</value>
+</translation>
+
+<translation>
+<key>input_person_id_for_adding</key>
+<value>Entrez l'ID de la personne à ajouter :</value>
+</translation>
+
+<translation>
+<key>successful_person_to_location_addition</key>
+<value>Personne ajoutée au lieu avec succès !</value>
+</translation>
+
+<translation>
+<key>all_people_assigned_to_location</key>
+<value>Toutes les personnes sont assignées à des lieux.</value>
+</translation>
+
+<translation>
+<key>people_not_assigned_to_location</key>
+<value>Personnes non assignées à un lieu :</value>
+</translation>
+
+<translation>
+<key>current_occupants_title</key>
+<value>Occupants Actuels :</value>
+</translation>
+
+<translation>
+<key>input_person_id_for_location_removal</key>
+<value>Entrez l'ID de la personne à retirer :</value>
+</translation>
+
+<translation>
+<key>successful_person_location_removal</key>
+<value>Personne retirée du lieu avec succès !</value>
+</translation>
+
+<translation>
+<key>add_new_medical_record_title</key>
+<value>Ajouter un Nouveau Dossier Médical</value>
+</translation>
+
+<translation>
+<key>input_patient_id</key>
+<value>Entrez l'ID du patient :</value>
+</translation>
+
+<translation>
+<key>invalid_location_id_mr</key>
+<value>ID de lieu invalide</value>
+</translation>
+
+<translation>
+<key>input_treatment_details</key>
+<value>Entrez les détails du traitement :</value>
+</translation>
+
+<translation>
+<key>input_treatment_date</key>
+<value>Entrez la date du traitement (AAAA-MM-JJ) :</value>
+</translation>
+
+<translation>
+<key>successful_medical_record_addition</key>
+<value>Dossier médical ajouté avec succès !</value>
+</translation>
+
+<translation>
+<key>update_medical_record_title</key>
+<value>Mettre à Jour un Dossier Médical</value>
+</translation>
+
+<translation>
+<key>input_mr_to_update_id</key>
+<value>Entrez l'ID du dossier médical à mettre à jour :</value>
+</translation>
+
+<translation>
+<key>no_mr_id_found</key>
+<value>Aucun dossier médical trouvé avec l'ID :</value>
+</translation>
+
+<translation>
+<key>current_mr_details_title</key>
+<value>Détails Actuels du Dossier Médical :</value>
+</translation>
+
+<translation>
+<key>add_new_person_title</key>
+<value>Ajouter une Nouvelle Personne</value>
+</translation>
+
+<translation>
+<key>input_firstname</key>
+<value>Entrez le prénom de la personne :</value>
+</translation>
+
+<translation>
+<key>input_lastname</key>
+<value>Entrez le nom de famille de la personne :</value>
+</translation>
+
+<translation>
+<key>input_date_of_birth_adding_person</key>
+<value>Date de Naissance (AAAA-MM-JJ, optionnel) :</value>
+</translation>
+
+<translation>
+<key>input_comments_person</key>
+<value>Commentaires (optionnel) :</value>
+</translation>
+
+<translation>
+<key>input_phone_num_person</key>
+<value>Numéro de Téléphone (XXX-XXX-XXXX ou XXX-XXXX, optionnel) :</value>
+</translation>
+
+<translation>
+<key>input_gender_person</key>
+<value>Genre (optionnel) :</value>
+</translation>
+
+<translation>
+<key>gender_person_options_title</key>
+<value>Options de Genre :</value>
+</translation>
+
+<translation>
+<key>gender_person_options_selection</key>
+<value>Sélectionnez une option de genre (1-3, ou laissez vide) :</value>
+</translation>
+
+<translation>
+<key>invalid_gender_person_options_selection</key>
+<value>Option de genre invalide, laissée vide</value>
+</translation>
+
+<translation>
+<key>successful_person_addition</key>
+<value>Personne ajoutée avec succès ! ID :</value>
+</translation>
+
+<translation>
+<key>inquiry_report_title</key>
+<value>Rapport d'Enquête :</value>
+</translation>
+
+<translation>
+<key>inquiry_report_id_input</key>
+<value>Entrez l'ID de l'enquête à générer :</value>
+</translation>
+
+<translation>
+<key>invalid_inquiry_report_id_input</key>
+<value>Aucune enquête trouvée avec l'ID :</value>
+</translation>
+
+<translation>
+<key>inquiry_report_additional_info</key>
+<value>Informations Supplémentaires :</value>
+</translation>
+
+<translation>
+<key>inquiry_report_inquirer</key>
+<value>Enquêteur :</value>
+</translation>
+
+<translation>
+<key>delete_inquiry_title</key>
+<value>Supprimer une Enquête</value>
+</translation>
+
+<translation>
+<key>delete_inquiry_id_input</key>
+<value>Entrez l'ID de l'enquête à supprimer :</value>
+</translation>
+
+<translation>
+<key>successful_inquiry_deletion</key>
+<value>Enquête supprimée avec succès !</value>
+</translation>
+
+<translation>
+<key>update_inquiry_title</key>
+<value>Mettre à Jour une Enquête</value>
+</translation>
+
+<translation>
+<key>id</key>
+<value>ID</value>
+</translation>
+
+<translation>
+<key>first_name</key>
+<value>PRÉNOM</value>
+</translation>
+
+<translation>
+<key>last_name</key>
+<value>NOM</value>
+</translation>
+
+<translation>
+<key>dob</key>
+<value>DATE DE NAISSANCE</value>
+</translation>
+
+<translation>
+<key>gender</key>
+<value>GENRE</value>
+</translation>
+
+<translation>
+<key>phone</key>
+<value>TÉLÉPHONE</value>
+</translation>
+
+<translation>
+<key>family_group</key>
+<value>GROUPE FAMILIAL</value>
+</translation>
+
+<translation>
+<key>type2</key>
+<value>TYPE</value>
+</translation>
+
+<translation>
+<key>alloc_date</key>
+<value>DATE D'ALLOCATION</value>
+</translation>
+
+<translation>
+<key>grid_loc</key>
+<value>EMPLACEMENT DE LA GRILLE</value>
+</translation>
+
+<translation>
+<key>room_loc</key>
+<value>EMPLACEMENT DE LA PIÈCE</value>
+</translation>
+
+<translation>
+<key>comments2</key>
+<value>COMMENTAIRES</value>
+</translation>
+
+<translation>
+<key>type3</key>
+<value>TYPE (GÉNÉRAL)</value>
+</translation>
+
+<translation>
+<key>name2</key>
+<value>NOM</value>
+</translation>
+
+<translation>
+<key>address2</key>
+<value>ADRESSE</value>
+</translation>
+
+<translation>
+<key>patient2</key>
+<value>PATIENT</value>
+</translation>
+
+<translation>
+<key>inquirer2</key>
+<value>ENQUÊTEUR</value>
+</translation>
+
+<translation>
+<key>missing_person2</key>
+<value>PERSONNE DISPARUE</value>
+</translation>
+
+<translation>
+<key>loc2</key>
+<value>LIEU</value>
+</translation>
+
+<translation>
+<key>date2</key>
+<value>DATE</value>
+</translation>
+
+<translation>
+<key>treat_details</key>
+<value>DÉTAILS DU TRAITEMENT</value>
+</translation>
+
+<translation>
+<key>inventory_size1</key>
+<value>TAILLE DE L'INVENTAIRE</value>
+</translation>
+
+<translation>
+<key>invalid_choice_7</key>
+<value>Choix invalide. Veuillez entrer un nombre entre 0-7.</value>
+</translation>
+
+<translation>
+<key>update_person_id_input</key>
+<value>Entrez l'ID de la personne à mettre à jour :</value>
+</translation>
+
+<translation>
+<key>invalid_update_person_id_input</key>
+<value>Aucune personne trouvée avec l'ID :</value>
+</translation>
+
+<translation>
+<key>enter_choices_6</key>
+<value>Entrez le numéro du champ à mettre à jour (1-6) ou 0 pour annuler :</value>
+</translation>
+
+<translation>
+<key>add_new_DisasterVictim</key>
+<value>Ajouter une Nouvelle Victime de Catastrophe</value>
+</translation>
+
+<translation>
+<key>invalid_field_num</key>
+<value>Numéro de champ invalide</value>
+</translation>
+
+<translation>
+<key>person_is_not_dv</key>
+<value>La personne sélectionnée n'est pas une victime de catastrophe</value>
+</translation>
+
+<translation>
+<key>update_inquiry_title</key>
+<value>Mettre à Jour une Enquête</value>
+</translation>
+
+<translation>
+<key>update_inquiry_input_id</key>
+<value>Entrez l'ID de l'enquête à mettre à jour :</value>
+</translation>
+
+<translation>
+<key>successful_inquiry_update</key>
+<value>Enquête mise à jour avec succès !</value>
+</translation>
+
+<translation>
+<key>report_person</key>
+<value>%s est entré(e) dans l'établissement %s le %s.</value>
 </translation>

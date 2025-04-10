@@ -45,7 +45,8 @@ public class DisasterVictim extends Person {
      * Retrieves the personal inventory of the disaster victim.
      *
      * @return an ArrayList of Supply objects representing the person's personal inventory.
-     */    public ArrayList<Supply> getPersonalInventory() {
+     */
+    public ArrayList<Supply> getPersonalInventory() {
         return personalInventory;
     }
 

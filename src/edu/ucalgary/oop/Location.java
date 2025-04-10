@@ -163,10 +163,10 @@ public class Location {
      */
     public void addItem(Supply item) {
         if (item == null) {
-            throw new IllegalArgumentException("Supply cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.locationSupplyNull"));
         }
         if (item instanceof PersonalBelonging) {
-            throw new IllegalArgumentException("Personal belongings cannot be added to a location");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.locationPersonalBelonging"));
         }
 
 
@@ -189,11 +189,11 @@ public class Location {
      */
     public void allocateItem(DisasterVictim victim, Supply supply) {
         if (!inventory.contains(supply)) {
-            throw new IllegalArgumentException("Supply not available in this location");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.locationUnavailableSupply"));
         }
 
         if (supply instanceof PersonalBelonging) {
-            throw new IllegalArgumentException("Cannot allocate personal belongings");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.locationAllocatingPersonalBelonging"));
         }
 
         if (supply instanceof Water) {

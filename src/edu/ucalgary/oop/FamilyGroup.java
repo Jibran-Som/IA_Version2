@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class FamilyGroup {
     private ArrayList<Person> members;
     private int familyGroupId = createFamilyGroupId();
+    private static TranslationManager translationManager = TranslationManager.getInstance();
     private static int counter = 100;
 
     /**
@@ -23,7 +24,7 @@ public class FamilyGroup {
      */
     public FamilyGroup(ArrayList<Person> members) {
         if (members == null || members.isEmpty()) {
-            throw new IllegalArgumentException("Members cannot be null or empty");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.familyGroupMembersNullOrEmpty"));
         }
         this.members = members;
     }
@@ -78,7 +79,7 @@ public class FamilyGroup {
      */
     public void addMember(Person person) {
         if (person == null) {
-            throw new IllegalArgumentException("Person cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.nullPerson"));
         }
         members.add(person);
     }
@@ -92,10 +93,10 @@ public class FamilyGroup {
      */
     public void removeMember(Person person) {
         if (person == null) {
-            throw new IllegalArgumentException("Person cannot be null");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.nullPerson"));
         }
         if (!members.contains(person)) {
-            throw new IllegalArgumentException("Person is not in the family group");
+            throw new IllegalArgumentException(translationManager.getTranslation("error.familyGroupPersonNotInFamilyGroup"));
         }
         members.remove(person);
     }
