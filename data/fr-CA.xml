@@ -1154,6 +1154,16 @@
 </translation>
 
 <translation>
+<key>invalid_grid_format</key>
+<value>Format de grille non valide (doit être une lettre suivie d'un chiffre)</value>
+</translation>
+
+<translation>
+<key>invalid_room_format</key>
+<value>Format de pièce non valide (doit être un nombre)</value>
+</translation>
+
+<translation>
 <key>report_person</key>
 <value>%s est entré(e) dans l'établissement %s le %s.</value>
 </translation>

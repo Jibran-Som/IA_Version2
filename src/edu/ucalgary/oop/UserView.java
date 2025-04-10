@@ -344,12 +344,27 @@ public class UserView {
                     break;
 
                 case 2: // Cot
-                    System.out.print(translationManager.getTranslation("cot_input_grid") + " ");
-                    String gridLocation = scanner.nextLine();
+                    // Validate room location (must be a number)
+                    String roomLocation;
+                    while (true) {
+                        System.out.print(translationManager.getTranslation("cot_input_room") + " ");
+                        roomLocation = scanner.nextLine();
+                        if (roomLocation.matches("\\d+")) { // Checks if it's one or more digits
+                            break;
+                        }
+                        System.out.println(translationManager.getTranslation("invalid_room_format"));
+                    }
 
-                    System.out.print(translationManager.getTranslation("cot_input_room") + " ");
-                    String roomLocation = scanner.nextLine();
-
+                    // Validate grid location (must be letter + number)
+                    String gridLocation;
+                    while (true) {
+                        System.out.print(translationManager.getTranslation("cot_input_grid") + " ");
+                        gridLocation = scanner.nextLine().toUpperCase(); // Convert to uppercase for consistency
+                        if (gridLocation.matches("[A-Z]\\d+")) { // Checks for letter followed by one or more digits
+                            break;
+                        }
+                        System.out.println(translationManager.getTranslation("invalid_grid_format"));
+                    }
 
                     newSupply = new Cot(roomLocation + " " + gridLocation, "cot", roomLocation, gridLocation);
                     break;

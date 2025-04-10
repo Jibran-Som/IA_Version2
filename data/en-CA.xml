@@ -1160,6 +1160,16 @@
 </translation>
 
 <translation>
+  <key>invalid_grid_format</key>
+  <value>Invalid Grid Format (Should be a letter following by a number)</value>
+</translation>
+
+<translation>
+  <key>invalid_room_format</key>
+  <value>Invalid Room Format (Must be a number)</value>
+</translation>
+
+<translation>
   <key>report_person</key>
   <value>%s entered the %s facility on %s.</value>
 </translation>
